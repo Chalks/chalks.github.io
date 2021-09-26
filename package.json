@@ -7,7 +7,11 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "deploy": "rm -rf dist; npm run generate; npm run deploy:2",
+    "deploy:2": "cd dist; git init; git remote add origin git@github.com:Chalks/chalks.github.io.git; npm run deploy:3",
+    "deploy:3": "cd dist; git add .; git commit -m 'Initial commit'; npm run deploy:4",
+    "deploy:4": "cd dist; git push --force origin master:gh-pages"
   },
   "repository": {
     "type": "git",
