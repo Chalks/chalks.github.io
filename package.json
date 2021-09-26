@@ -25,5 +25,8 @@
   "homepage": "https://github.com/Chalks/chalks.github.io#readme",
   "dependencies": {
     "nuxt": "^2.15.8"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^4.2.1"
   }
 }

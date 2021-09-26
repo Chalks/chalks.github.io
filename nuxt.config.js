@@ -1,5 +1,13 @@
 export default () => ({
+    buildModules: ['@nuxtjs/tailwindcss'],
+
+    css: [
+        {src: `~/assets/css/tailwind.css`},
+    ],
+
     srcDir: 'src/',
-    telemetry: false,
+
     target: 'static',
+
+    telemetry: false,
 });
