@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <h1>Hello World</h1>
-        <p>Post deploy script.</p>
+    <div class="prose">
+        <h1>Hi, I'm Jonathan Walters</h1>
     </div>
 </template>
