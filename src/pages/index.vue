@@ -8,7 +8,7 @@ export default {
 
     methods: {
         focusContact() {
-            console.log('here');
+            this.$refs.contactForm.focus();
         }
     },
 };
@@ -28,6 +28,6 @@ export default {
             <li><a href="https://github.com/Chalks/chalks.github.io">Here's the source code</a></li>
         </ul>
 
-        <ContactForm />
+        <ContactForm ref="contactForm" />
     </div>
 </template>
