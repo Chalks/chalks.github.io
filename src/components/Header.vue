@@ -9,8 +9,9 @@
 
 <style scoped>
     .trigger {
-        @apply fixed top-0 left-0 right-0 z-50;
+        @apply fixed top-0 left-0 z-50;
         height: calc(1rem + 36px);
+        width: calc(1rem + 36px + 50px);
     }
 
     .trigger:hover .header {
@@ -74,11 +75,13 @@
 
     @keyframes rotate {
         0% { transform: rotate(-90deg); }
+        30% { transform: rotate(-90deg); }
         100% { transform: rotate(0); }
     }
 
     @keyframes reverseRotate {
         0% { transform: rotate(90deg); }
+        30% { transform: rotate(90deg); }
         100% { transform: rotate(0); }
     }
 </style>
