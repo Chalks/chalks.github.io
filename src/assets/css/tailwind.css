@@ -23,3 +23,8 @@
         @apply text-gray-400 text-xs;
     }
 }
+
+@font-face {
+    font-family: 'Cousine';
+    src: url(~/static/Cousine-bold.ttf);
+}
