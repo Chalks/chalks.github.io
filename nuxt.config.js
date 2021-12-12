@@ -5,10 +5,6 @@ export default () => ({
         {src: `~/assets/css/tailwind.css`},
     ],
 
-    generate: {
-        fallback: true,
-    },
-
     head: {
         title: 'Jonathan Walters',
         meta: [
