@@ -3,6 +3,7 @@
         <a href="https://youtube.com/feed/subscriptions" target="_blank">YOUTUBE.COM</a>
         <a href="https://old.reddit.com" target="_blank">REDDIT.COM</a>
         <a href="https://lichess.org" target="_blank">LICHESS.ORG</a>
+        <a href="https://alt.org/nethack/" target="_blank">NETHACK</a>
         <a href="https://tagpro.gg" target="_blank">TAGPRO.GG</a>
         <a href="https://teamwood.itch.io/super-auto-pets" target="_blank">SUPER.AUTO.PETS</a>
         <a href="https://facebook.com" target="_blank">FACEBOOK.COM</a>
