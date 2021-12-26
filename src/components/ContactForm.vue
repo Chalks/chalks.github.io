@@ -49,7 +49,7 @@ export default {
             placeholder="Your Email Address"
         />
 
-        <textarea
+        <input
             v-model="message"
             name="message"
             placeholder="Message"

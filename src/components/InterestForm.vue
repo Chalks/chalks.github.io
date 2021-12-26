@@ -1,9 +1,14 @@
 <script>
 export default {
+    props: {
+        interest: {
+            type: String,
+            default: '',
+        },
+    },
     data() {
         return {
             email: '',
-            message: '',
         };
     },
 
@@ -21,7 +26,7 @@ export default {
 
     methods: {
         onSubmit(token) {
-            this.$refs.errorForm.submit();
+            this.$refs.interestForm.submit();
         },
 
         focus() {
@@ -32,28 +37,27 @@ export default {
 </script>
 <template>
     <form
-        ref="errorForm"
+        ref="interestForm"
         class="prose mx-auto"
-        action="https://api.formcake.com/api/form/a5866167-1e7d-4aed-9898-2436a78b44df/submission"
+        action="https://api.formcake.com/api/form/ecbcefeb-9cb7-4d08-ad4d-c70e099d32aa/submission"
         method="post"
     >
-        <h3>Whoops, something broke</h3>
-        <p>Let me know what happened please!</p>
+        <h3>Interested in {{interest}}?</h3>
 
         <input type="hidden" name="honey" />
+
+        <input
+            type="hidden"
+            name="interest"
+            :value="interest"
+        />
 
         <input
             ref="emailField"
             v-model="email"
             type="text"
             name="email"
-            placeholder="Your email address"
-        />
-
-        <input
-            v-model="message"
-            name="message"
-            placeholder="Describe what happened!"
+            placeholder="Your Email Address"
         />
 
         <button
@@ -62,7 +66,7 @@ export default {
             data-callback='recaptchaJank'
             data-action='submit'
         >
-            Report Error
+            I'M INTERESTED
         </button>
     </form>
 </template>

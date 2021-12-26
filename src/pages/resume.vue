@@ -30,17 +30,3 @@
         </div>
     </div>
 </template>
-
-<style>
-    h1.pillar-word {
-        @apply bg-yellow-900 text-gray-50;
-    }
-
-    h2.pillar-word {
-        @apply bg-blue-400 text-gray-50;
-    }
-
-    p.pillar-word {
-        @apply bg-gray-400 text-gray-50;
-    }
-</style>
