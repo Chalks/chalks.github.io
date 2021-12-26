@@ -27,6 +27,11 @@
     .pillar {
         @apply break-all text-center;
         width: 300px;
+
+        &.wide {
+            width: 50%;
+            min-width: 300px;
+        }
     }
 
     .pillar-word {
@@ -56,6 +61,6 @@
 
 @media (hover: none) {
     .content {
-        margin-top: 36px;
+        margin-top: 16px;
     }
 }
