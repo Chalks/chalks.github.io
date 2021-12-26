@@ -1,5 +1,5 @@
 <template>
-    <div class="wip">
+    <div class="pillar bg-red-300">
         <div class="wipper">WIP</div>
     </div>
 </template>

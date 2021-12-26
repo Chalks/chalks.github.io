@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply bg-gray-50;
+        @apply bg-gray-50 text-gray-900;
     }
 
     input, textarea, button {
@@ -22,9 +22,40 @@
     .muted {
         @apply text-gray-400 text-xs;
     }
+
+
+    .pillar {
+        @apply break-all text-center;
+        width: 300px;
+    }
+
+    .pillar-word {
+        @apply inline;
+        font-family: 'Cousine', monospace;
+        font-weight: 600;
+        padding: 3px 6px 0 6px;
+        font-size: 20px;
+        line-height: 31px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    a.pillar-word {
+        @apply bg-gray-400 text-gray-50 transition-colors;
+
+        &:hover {
+            @apply bg-gray-900;
+        }
+    }
 }
 
 @font-face {
     font-family: 'Cousine';
     src: url(~/static/Cousine-bold.ttf);
+}
+
+@media (hover: none) {
+    .content {
+        margin-top: 36px;
+    }
 }

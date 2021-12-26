@@ -14,7 +14,7 @@ export default {
     <div class="flex flex-col min-h-screen">
         <Header />
 
-        <div class="container mx-auto flex-grow my-8">
+        <div class="content flex-grow overflow-auto">
             <nuxt />
         </div>
 

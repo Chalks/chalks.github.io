@@ -3,6 +3,7 @@
         <div class="header top-0 left-0 md:top-4 md:left-4">
             <NuxtLink to="/"><img src="/favicon-96x96.png" /></NuxtLink>
             <NuxtLink to="/resume">Resume</NuxtLink>
+            <NuxtLink to="/links">Links</NuxtLink>
         </div>
     </div>
 </template>
@@ -24,6 +25,7 @@
 
     @media (hover: none) {
         .trigger {
+            @apply relative;
             top: -100%;
         }
 
