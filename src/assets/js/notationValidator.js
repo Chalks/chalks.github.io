@@ -5,13 +5,13 @@ const BISHOP = 'Bishop';
 const KNIGHT = 'Knight';
 const PAWN = 'Pawn';
 
-const pieces = {
+export const pieces = {
     english: {
         K: KING, Q: QUEEN, R: ROOK, B: BISHOP, N: KNIGHT, P: PAWN,
     },
 };
 
-const removeDrawOffer = (parseObj) => {
+export const removeDrawOffer = (parseObj) => {
     if (parseObj.notation.endsWith(' (=)')) {
         return {
             ...parseObj,
@@ -23,7 +23,7 @@ const removeDrawOffer = (parseObj) => {
     return parseObj;
 };
 
-const removeEnPassant = (parseObj) => {
+export const removeEnPassant = (parseObj) => {
     if (parseObj.notation.endsWith(' e.p.')) {
         return {
             ...parseObj,
@@ -35,7 +35,7 @@ const removeEnPassant = (parseObj) => {
     return parseObj;
 };
 
-const removeChecks = (parseObj) => {
+export const removeChecks = (parseObj) => {
     if (parseObj.notation.endsWith('++')) {
         return {
             ...parseObj,
@@ -63,7 +63,7 @@ const removeChecks = (parseObj) => {
     return parseObj;
 };
 
-const removeCastles = (parseObj) => {
+export const removeCastles = (parseObj) => {
     if (parseObj.notation === '0-0-0' || parseObj.notation === 'O-O-O') {
         return {
             ...parseObj,
@@ -83,7 +83,7 @@ const removeCastles = (parseObj) => {
     return parseObj;
 };
 
-const removePromotion = (parseObj) => {
+export const removePromotion = (parseObj) => {
     const possiblePiece = parseObj.notation.slice(-1);
     const hasEqual = parseObj.notation.slice(-2, -1) === '=';
 
@@ -102,7 +102,7 @@ const removePromotion = (parseObj) => {
     return parseObj;
 };
 
-const removeTo = (parseObj) => {
+export const removeTo = (parseObj) => {
     // must always have full destination
     if (/[a-h][1-8]$/.exec(parseObj.notation)) {
         return {
@@ -115,7 +115,7 @@ const removeTo = (parseObj) => {
     return parseObj;
 };
 
-const removeCapture = (parseObj) => {
+export const removeCapture = (parseObj) => {
     if (parseObj.notation.endsWith('x')) {
         return {
             ...parseObj,
@@ -127,7 +127,7 @@ const removeCapture = (parseObj) => {
     return parseObj;
 };
 
-const removeFrom = (parseObj) => {
+export const removeFrom = (parseObj) => {
     if (/[a-h][1-8]$/.exec(parseObj.notation)) {
         return {
             ...parseObj,
@@ -148,7 +148,7 @@ const removeFrom = (parseObj) => {
     return parseObj;
 };
 
-const removePiece = (parseObj) => {
+export const removePiece = (parseObj) => {
     if (pieces[parseObj.language][parseObj.notation]) {
         return {
             ...parseObj,
@@ -163,7 +163,7 @@ const removePiece = (parseObj) => {
     };
 };
 
-const isValidDraw = ({offeredDraw, checkmate}) => {
+export const isValidDraw = ({offeredDraw, checkmate}) => {
     if (offeredDraw && checkmate) {
         // can't offer a draw after a checkmate
         return false;
@@ -172,7 +172,7 @@ const isValidDraw = ({offeredDraw, checkmate}) => {
     return true;
 };
 
-const isValidEnPassant = () => true;
+export const isValidEnPassant = () => true;
 // {
 //         usedPawn() {
 //             return this.piece === 'Pawn'
@@ -183,7 +183,7 @@ const isValidEnPassant = () => true;
 //     return true; // usedPawn;
 // };
 
-const isValidCheck = ({
+export const isValidCheck = ({
     check,
     checkmate,
     from,
@@ -299,7 +299,24 @@ export const isValidNotation = ({
 }) => isValidParsedNotation(parseNotation({notation, language}));
 
 export default {
-    parseNotation,
-    isValidParsedNotation,
-    isValidNotation,
+    isValidNotation, // e.g. `isValidNotation({notation: 'Nxd3+'})`
+
+    parseNotation, // notation parser
+    isValidParsedNotation, // checks the output of the parser
+
+    pieces,
+
+    removeDrawOffer,
+    removeEnPassant,
+    removeChecks,
+    removeCastles,
+    removePromotion,
+    removeTo,
+    removeCapture,
+    removeFrom,
+    removePiece,
+
+    isValidDraw,
+    isValidEnPassant,
+    isValidCheck,
 };
