@@ -1,6 +1,8 @@
 <script>
 const pieces = {
-    'english': {K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn'},
+    english: {
+        K: 'King', Q: 'Queen', R: 'Rook', B: 'Bishop', N: 'Knight', P: 'Pawn',
+    },
 };
 
 export default {
@@ -62,8 +64,6 @@ export default {
             return this.isValidDraw()
                 && this.isValidEnPassant()
                 && this.isValidCheck();
-
-            return true;
         },
 
         isValidDraw() {
@@ -189,12 +189,12 @@ export default {
         },
 
         removeCastles(notation) {
-            if ('0-0-0' === notation || 'O-O-O' === notation) {
+            if (notation === '0-0-0' || notation === 'O-O-O') {
                 this.queensideCastle = true;
                 return '';
             }
 
-            if ('0-0' === notation || 'O-O' == notation) {
+            if (notation === '0-0' || notation === 'O-O') {
                 this.kingsideCastle = true;
                 return '';
             }
@@ -268,8 +268,8 @@ export default {
         <p>This checks for valid algebraic notation</p>
         <input
             ref="notationField"
-            type="text"
             v-model="notation"
+            type="text"
             placeholder="Notation (e.g. Nxd3)"
         />
         <p>currentIsValid: {{ currentIsValid }}</p>

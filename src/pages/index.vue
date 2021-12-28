@@ -9,7 +9,7 @@ export default {
     methods: {
         focusContact() {
             this.$refs.contactForm.focus();
-        }
+        },
     },
 };
 </script>

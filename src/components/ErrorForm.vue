@@ -10,7 +10,7 @@ export default {
     head: {
         script: [
             {
-                src: "https://www.google.com/recaptcha/api.js",
+                src: 'https://www.google.com/recaptcha/api.js',
             },
         ],
     },
@@ -20,16 +20,17 @@ export default {
     },
 
     methods: {
-        onSubmit(token) {
+        onSubmit() {
             this.$refs.errorForm.submit();
         },
 
         focus() {
             this.$refs.emailField.focus();
         },
-    }
-}
+    },
+};
 </script>
+
 <template>
     <form
         ref="errorForm"
@@ -59,8 +60,8 @@ export default {
         <button
             class="g-recaptcha submit"
             data-sitekey="6Lf6IyUaAAAAAPTTe__sC4052VzvGcwFlBHeajA0"
-            data-callback='recaptchaJank'
-            data-action='submit'
+            data-callback="recaptchaJank"
+            data-action="submit"
         >
             Report Error
         </button>

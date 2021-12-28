@@ -17,6 +17,6 @@ export default {
             <p class="pillar-word">Let me know you want it!</p>
         </div>
 
-        <InterestForm interest="the Tagpro Themer"/>
+        <InterestForm interest="the Tagpro Themer" />
     </div>
 </template>

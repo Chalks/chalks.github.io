@@ -2,7 +2,7 @@ export default () => ({
     buildModules: ['@nuxtjs/tailwindcss'],
 
     css: [
-        {src: `~/assets/css/tailwind.css`},
+        {src: '~/assets/css/tailwind.css'},
     ],
 
     head: {
@@ -20,10 +20,29 @@ export default () => ({
             {hid: 'twitter-site', property: 'twitter:site', content: 'formcake.com'},
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-            {rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png'},
-            {rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png'},
-            {rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png'},
+            {
+                rel: 'icon',
+                type: 'image/x-icon',
+                href: '/favicon.ico',
+            },
+            {
+                rel: 'icon',
+                type: 'image/png',
+                sizes: '16x16',
+                href: '/favicon-16x16.png',
+            },
+            {
+                rel: 'icon',
+                type: 'image/png',
+                sizes: '32x32',
+                href: '/favicon-32x32.png',
+            },
+            {
+                rel: 'icon',
+                type: 'image/png',
+                sizes: '96x96',
+                href: '/favicon-96x96.png',
+            },
         ],
     },
 
@@ -32,4 +51,4 @@ export default () => ({
     target: 'static',
 
     telemetry: false,
-})
+});
