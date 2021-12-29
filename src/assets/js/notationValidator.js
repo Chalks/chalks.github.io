@@ -172,16 +172,29 @@ export const isValidDraw = ({offeredDraw, checkmate}) => {
     return true;
 };
 
-export const isValidEnPassant = () => true;
-// {
-//         usedPawn() {
-//             return this.piece === 'Pawn'
-//                 && !this.queensideCastle
-//                 && !this.kingsideCastle;
-//         },
-//     // FIXME need to validate files/rank too
-//     return true; // usedPawn;
-// };
+export const isValidEnPassant = ({
+    queensideCastle,
+    kingsideCastle,
+    to,
+    piece,
+    capture,
+}) => {
+    // castles aren't en passant
+    if (queensideCastle || kingsideCastle) return false;
+
+    // only pawns can en passant
+    if (piece !== PAWN) return false;
+
+    if (!to) return false;
+
+    // must be 6th or 3rd rank
+    if (!to.endsWith(6) && !to.endsWith(3)) return false;
+
+    // must be a capture
+    if (!capture) return false;
+
+    return true;
+};
 
 export const isValidCheck = ({
     check,
@@ -222,6 +235,106 @@ export const isValidCheck = ({
     }
 
     // all other moves could cause a check
+    return true;
+};
+
+export const isValidPromotion = ({
+    to,
+    piece,
+    promotion,
+}) => {
+    // you can't promote to a pawn
+    if (promotion === PAWN) return false;
+
+    // must have to
+    if (!to) return false;
+
+    // can only promote on the 8th or 1st rank
+    if (!to.endsWith(8) && !to.endsWith(1)) return false;
+
+    // only pawns can promote
+    if (piece !== PAWN) return false;
+
+    // every other case is valid
+    return true;
+};
+
+export const isValidCapture = ({
+    from,
+    to,
+    capture,
+    piece,
+}) => {
+    // all valid moves could be a valid capture with the exception of some pawn moves
+    // so we can rely on `isValidMove` for everything except those pawn moves this
+    // function therefore only checks for pawn moves that couldn't be a capture.
+    if (from && to && capture && piece === PAWN) {
+        if (from.startsWith(to.charAt(0))) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+export const isValidMove = ({
+    from,
+    to,
+    enPassant,
+    promotion,
+    capture,
+    piece,
+}) => {
+    // if we don't know where the piece came from, it's always valid. This is only
+    // true because we don't know the color of the piece. We ignore en passant,
+    // promotions, and captures in this case because they're handled in other
+    // validation functions above.
+    if (!from) return true;
+
+    // we must know where it went to
+    if (!to) return false;
+
+    // a piece can never move to the same space it came from
+    if (from === to) return false;
+
+    const fileTo = to.charCodeAt(0); // character codes are easier to work with
+    const rankTo = Number.parseInt(to.charAt(1), 10);
+
+    let fileFrom = null;
+    let rankFrom = null;
+    if (from.length === 2) {
+        fileFrom = from.charCodeAt(0);
+        rankFrom = Number.parseInt(from.charAt(1), 10);
+    } else if (from.length === 1) {
+        if (Number.isNaN(Number.parseInt(from, 10))) {
+            fileFrom = from.charCodeAt(0);
+        } else {
+            rankFrom = Number.parseInt(from, 10);
+        }
+    }
+
+    switch (piece) {
+        case ROOK:
+            return !fileFrom || !rankFrom || rankFrom === rankTo || fileFrom === fileTo;
+        case BISHOP:
+            if (fileFrom && rankFrom) {
+                // if we know where the bishop came from, the destination must be
+                // the same distance away in both rank and file.
+                return Math.abs(fileFrom - fileTo) === Math.abs(rankFrom - rankTo);
+            }
+            if (fileFrom) {
+                // if we only know what file the bishop came from then there exists
+                // a space that the bishop could have come from to get to the destination
+                // UNLESS that space is in the same file
+                return fileFrom !== fileTo;
+            }
+            if (rankFrom) {
+                // same logic as files
+                return rankFrom !== fileTo;
+            }
+        // no default
+    }
+
     return true;
 };
 
@@ -289,9 +402,21 @@ export const parseNotation = ({
     };
 };
 
+/*
+ * How validation works:
+ *
+ * 1. is the 'draw' parsing valid?
+ * 2. TODO
+ * 3. is the 'check' parsing valid?
+ * 4. we can skip castle checking because we're guaranteed that it's always valid (tested)
+ * 5. is the 'promotion' parsing valid?
+ */
 export const isValidParsedNotation = (parseObj) => isValidDraw(parseObj)
     && isValidEnPassant(parseObj)
-    && isValidCheck(parseObj);
+    && isValidCheck(parseObj)
+    && isValidPromotion(parseObj)
+    && isValidCapture(parseObj)
+    && isValidMove(parseObj);
 
 export const isValidNotation = ({
     notation,
@@ -319,4 +444,7 @@ export default {
     isValidDraw,
     isValidEnPassant,
     isValidCheck,
+    isValidPromotion,
+    isValidCapture,
+    isValidMove,
 };

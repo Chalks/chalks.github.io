@@ -297,6 +297,14 @@ describe('assets/js/notationValidator.js test parse helpers', () => {
         testParse = {...parseObj, notation: 'O-0'};
         output = removeCastles(testParse);
         expect(output).toEqual(testParse);
+
+        testParse = {...parseObj, notation: 'O-OQ'};
+        output = removeCastles(testParse);
+        expect(output).toEqual(testParse);
+
+        testParse = {...parseObj, notation: 'NO-O'};
+        output = removeCastles(testParse);
+        expect(output).toEqual(testParse);
     });
 
     it('removeCastles() removes the castle notation', () => {
