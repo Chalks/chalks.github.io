@@ -216,7 +216,7 @@ export const isValidCheck = ({
         if (from === 'a8'
             || from === 'h8'
             || from === 'a1'
-            || from === 'a8') {
+            || from === 'h1') {
             return false;
         }
     }

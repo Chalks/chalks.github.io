@@ -17,7 +17,7 @@ describe('assets/js/notationValidator.js test parse function', () => {
 
     beforeEach(() => {
         parseObj = {
-            notation: null, // each test changes this value
+            notation: null,
 
             language: 'english',
 
