@@ -1,4 +1,6 @@
 import {
+    pieces,
+    parseNotation,
     removeDrawOffer,
     removeEnPassant,
     removeChecks,
@@ -10,7 +12,7 @@ import {
     removePiece,
 } from './notationValidator.js';
 
-describe('assets/js/notationValidator.js parsing tests', () => {
+describe('assets/js/notationValidator.js test parse function', () => {
     let parseObj;
 
     beforeEach(() => {
@@ -35,7 +37,162 @@ describe('assets/js/notationValidator.js parsing tests', () => {
 
             piece: null,
 
-            notationAfterParse: null,
+            notationAfterParsing: null,
+        };
+    });
+
+    it.skip('parseNotation() calls helpers in order', () => {
+        // TODO
+    });
+
+    it('parseNotation() handles common happy paths', () => {
+        let output = parseNotation({notation: 'd4'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.P,
+            to: 'd4',
+            notation: 'd4',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd4'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            to: 'd4',
+            notation: 'Qd4',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd3d4'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            from: 'd3',
+            to: 'd4',
+            notation: 'Qd3d4',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd3xd4'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            from: 'd3',
+            to: 'd4',
+            capture: true,
+            notation: 'Qd3xd4',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd3xd4+'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            from: 'd3',
+            to: 'd4',
+            capture: true,
+            check: true,
+            notation: 'Qd3xd4+',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd3xd4++'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            from: 'd3',
+            to: 'd4',
+            capture: true,
+            checkmate: true,
+            notation: 'Qd3xd4++',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'Qd3xd4+ (=)'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.Q,
+            from: 'd3',
+            to: 'd4',
+            capture: true,
+            check: true,
+            offeredDraw: true,
+            notation: 'Qd3xd4+ (=)',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'd7xe8Q'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.P,
+            from: 'd7',
+            to: 'e8',
+            capture: true,
+            promotion: pieces.english.Q,
+            notation: 'd7xe8Q',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: 'e5xf6 e.p.'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.P,
+            from: 'e5',
+            to: 'f6',
+            capture: true,
+            enPassant: true,
+            notation: 'e5xf6 e.p.',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: '0-0 (=)'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.P, // a quirk of the parsing
+            kingsideCastle: true,
+            offeredDraw: true,
+            notation: '0-0 (=)',
+            notationAfterParsing: '',
+        });
+
+        output = parseNotation({notation: '0-0-0'});
+        expect(output).toEqual({
+            ...parseObj,
+            piece: pieces.english.P, // a quirk of the parsing
+            queensideCastle: true,
+            notation: '0-0-0',
+            notationAfterParsing: '',
+        });
+    });
+});
+
+describe('assets/js/notationValidator.js test parse helpers', () => {
+    let parseObj;
+
+    beforeEach(() => {
+        parseObj = {
+            notation: null, // each test changes this value
+
+            language: 'english',
+
+            offeredDraw: null,
+            enPassant: null,
+            check: null,
+            checkmate: null,
+
+            queensideCastle: null,
+            kingsideCastle: null,
+
+            promotion: null,
+
+            to: null,
+            capture: null,
+            from: null,
+
+            piece: null,
+
+            notationAfterParsing: null,
         };
     });
 
@@ -192,13 +349,22 @@ describe('assets/js/notationValidator.js parsing tests', () => {
     });
 
     it('removePromotion() removes the promotion notation', () => {
-        const testParse = {...parseObj, notation: 'd8Q'};
-        const output = removePromotion(testParse);
+        let testParse = {...parseObj, notation: 'd8Q'};
+        let output = removePromotion(testParse);
 
         expect(output).toEqual({
             ...parseObj,
             notation: 'd8',
-            promotion: 'Queen',
+            promotion: pieces.english.Q,
+        });
+
+        testParse = {...parseObj, notation: 'd8=Q'};
+        output = removePromotion(testParse);
+
+        expect(output).toEqual({
+            ...parseObj,
+            notation: 'd8',
+            promotion: pieces.english.Q,
         });
     });
 
@@ -315,7 +481,7 @@ describe('assets/js/notationValidator.js parsing tests', () => {
         expect(output).toEqual({
             ...parseObj,
             notation: '',
-            piece: 'Pawn',
+            piece: pieces.english.P,
         });
 
         testParse = {...parseObj, notation: 'N'};
@@ -324,7 +490,7 @@ describe('assets/js/notationValidator.js parsing tests', () => {
         expect(output).toEqual({
             ...parseObj,
             notation: '',
-            piece: 'Knight',
+            piece: pieces.english.N,
         });
     });
 });
