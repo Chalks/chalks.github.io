@@ -1,5 +1,6 @@
 import {
     removeDrawOffer,
+    removeEnPassant,
 } from './notationValidator.js';
 
 describe('assets/js/notationValidator.js parsing tests', () => {
@@ -32,8 +33,13 @@ describe('assets/js/notationValidator.js parsing tests', () => {
     });
 
     it('removeDrawOffer() ignores notations without a draw offer', () => {
-        const testParse = {...parseObj, notation: 'Nxd3'};
-        const output = removeDrawOffer(testParse);
+        let testParse = {...parseObj, notation: 'Nxd3'};
+        let output = removeDrawOffer(testParse);
+        expect(output).toEqual(testParse);
+
+        // malformed draw offer
+        testParse = {...parseObj, notation: 'Nxd3(=)'};
+        output = removeDrawOffer(testParse);
         expect(output).toEqual(testParse);
     });
 
@@ -45,6 +51,33 @@ describe('assets/js/notationValidator.js parsing tests', () => {
             ...parseObj,
             notation: 'Nxd3',
             offeredDraw: true,
+        });
+    });
+
+    it('removeEnPassant() ignores notations without an en passant', () => {
+        let testParse = {...parseObj, notation: 'Nxd3'};
+        let output = removeEnPassant(testParse);
+        expect(output).toEqual(testParse);
+
+        // malformed draw offer
+        testParse = {...parseObj, notation: 'Nxd3e.p.'};
+        output = removeEnPassant(testParse);
+        expect(output).toEqual(testParse);
+
+        // en passant, but not marked as such
+        testParse = {...parseObj, notation: 'fxe6'};
+        output = removeEnPassant(testParse);
+        expect(output).toEqual(testParse);
+    });
+
+    it('removeEnPassant() removes the en passant notation', () => {
+        const testParse = {...parseObj, notation: 'fxe6 e.p.'};
+        const output = removeEnPassant(testParse);
+
+        expect(output).toEqual({
+            ...parseObj,
+            notation: 'fxe6',
+            enPassant: true,
         });
     });
 });
