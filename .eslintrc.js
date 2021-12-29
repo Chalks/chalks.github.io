@@ -14,6 +14,7 @@ module.exports = {
         'airbnb-base',
         'plugin:vue/recommended',
     ],
+    ignorePatterns: ['dist/'],
     plugins: [
         'jest',
     ],
