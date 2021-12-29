@@ -249,7 +249,7 @@ export const parseNotation = ({
 
         piece: null,
 
-        notationAfterParse: null,
+        notationAfterParsing: null,
     };
 
     // the order matters here. Moving from the end back, we remove all possible
