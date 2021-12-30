@@ -5,6 +5,12 @@ export default {
     components: {
         ErrorForm,
     },
+
+    head() {
+        return {
+            title: 'Error - Jonathan Walters',
+        };
+    },
 };
 </script>
 

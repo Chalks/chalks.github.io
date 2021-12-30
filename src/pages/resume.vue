@@ -1,3 +1,13 @@
+<script>
+export default {
+    head() {
+        return {
+            title: 'Resume - Jonathan Walters',
+        };
+    },
+};
+</script>
+
 <template>
     <div class="flex justify-around flex-wrap">
         <div class="pillar wide">

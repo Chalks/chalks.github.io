@@ -1,3 +1,13 @@
+<script>
+export default {
+    head() {
+        return {
+            title: 'Links - Jonathan Walters',
+        };
+    },
+};
+</script>
+
 <template>
     <div class="flex justify-center">
         <div class="pillar">

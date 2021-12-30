@@ -1,3 +1,13 @@
+<script>
+export default {
+    head() {
+        return {
+            title: 'Thanks - Jonathan Walters',
+        };
+    },
+};
+</script>
+
 <template>
     <div class="prose my-12 mx-auto prose-red">
         <h1>Thanks for Contacting Me</h1>

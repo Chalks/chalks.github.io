@@ -17,6 +17,12 @@ export default {
         };
     },
 
+    head() {
+        return {
+            title: 'Validate a Chess Move',
+        };
+    },
+
     computed: {
         currentIsValid() {
             return isValidNotation({notation: this.notation});
