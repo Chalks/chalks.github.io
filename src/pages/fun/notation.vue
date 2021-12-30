@@ -67,8 +67,9 @@ export default {
 
         <p>
             If you need help finding a notation to validate, you can check out all
-            the possible legal ones
-            <NuxtLink to="/fun/all-notations">here</NuxtLink>.
+            the possible legal ones <NuxtLink to="/fun/all-notations">here</NuxtLink>.
+            If you want to see the code used to validate the notation, you can see
+            that <a href="https://github.com/Chalks/jdw.me/blob/master/src/assets/js/notationValidator.js">here</a>.
         </p>
 
         <p>Some fun questions to answer:</p>
