@@ -24,15 +24,26 @@ export default {
 </script>
 
 <template>
-    <div class="container mx-auto my-8">
-        <p>This checks for valid algebraic notation</p>
+    <div class="prose prose-red container mx-auto my-12 text-justify">
+        <h3>Validate a chess move</h3>
+
+        <p>
+            This checks for valid algebraic notation. I mostly adhered to
+            <a href="https://handbook.fide.com/chapter/E012018">FIDE's rules</a>,
+            but to handle a few more common notations I expanded it a bit. Both 0-0-0
+            and 0-0 are validated with zeros or capital Os. Promotions are acceptable
+            written as d8Q and d8=Q. If you need help finding a notation to validate,
+            you can check out all the possible legal ones
+            <NuxtLink to="/fun/all-notations">here</NuxtLink>.
+        </p>
+
         <input
             ref="notationField"
             v-model="notation"
             type="text"
             placeholder="Notation (e.g. Nxd3)"
         />
-        <p>currentIsValid: {{ currentIsValid }}</p>
+        <p>Is valid: {{ currentIsValid }}</p>
         <pre>{{ currentParse }}</pre>
     </div>
 </template>
