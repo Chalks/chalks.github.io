@@ -1,5 +1,4 @@
 import {
-    pieces,
     isValidParsedNotation,
     isValidNotation,
     parseNotation,
@@ -16,8 +15,78 @@ describe('assets/js/notationValidator.js test validation function', () => {
         // TODO
     });
 
-    it.skip('isValidNotation() uses parseNotation() and isValidParsedNotation() accurately', () => {
-        // TODO
+    it('isValidParsedNotation() fails if there is extra notation after parsing', () => {
+        let parseObj = parseNotation({notation: 'd4'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'yyyyd4'});
+        expect(parseObj.notationAfterParsing).toEqual('yyyy');
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'NO-O-OQ+ (=)'});
+        expect(parseObj.notationAfterParsing).toEqual('NO-O-O');
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'NO-O-OQ+ (=)'});
+        expect(parseObj.notationAfterParsing).toEqual('NO-O-O');
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+    });
+
+    it('isValidParsedNotation() rejects weird input ', () => {
+        let parseObj = parseNotation({notation: 'a5xb6+ e.p. (=)'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'i10'});
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Nx+ (=)'});
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+
+        // hmm... can you have a draw offer without any moves ever? I think this
+        // might actually be a valid case, but I'm not sure.
+        parseObj = parseNotation({notation: '(=)'});
+        expect(isValidParsedNotation(parseObj)).toBe(false);
+    });
+
+    it('isValidParsedNotation() validates', () => {
+        let parseObj = parseNotation({notation: 'Kb1xb2+ (=)'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Qc2f5'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Rhxh5++'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Bxg2'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Na3b5+'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'b3'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'bxc4'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'xe6++ e.p.'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'O-O-O+ (=)'});
+        expect(isValidParsedNotation(parseObj)).toBe(true);
+    });
+
+    it('isValidNotation() produces the same results as isValidParsedNotation()', () => {
+        expect(isValidNotation({notation: 'Kb1xb2+ (=)'})).toBe(true);
+        expect(isValidNotation({notation: 'Qc2f5'})).toBe(true);
+        expect(isValidNotation({notation: 'Rhxh5++'})).toBe(true);
+        expect(isValidNotation({notation: 'Bxg2'})).toBe(true);
+        expect(isValidNotation({notation: 'Na3b5+'})).toBe(true);
+        expect(isValidNotation({notation: 'b3'})).toBe(true);
+        expect(isValidNotation({notation: 'bxc4'})).toBe(true);
+        expect(isValidNotation({notation: 'xe6++ e.p.'})).toBe(true);
+        expect(isValidNotation({notation: 'O-O-O+ (=)'})).toBe(true);
     });
 });
 
@@ -178,11 +247,6 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
         // a piece can't move to its own square
         let parseObj = parseNotation({notation: 'a1a1'});
         expect(isValidMove(parseObj)).toBe(false);
-
-        // if we don't know where the piece came from, it's always a valid move
-        // ignoring en passant and promotions etc because validated above
-        parseObj = parseNotation({notation: 'a1'});
-        expect(isValidMove(parseObj)).toBe(true);
 
         // if we don't have a destination it's invalid
         parseObj = parseNotation({notation: 'Nd3x'});
@@ -351,12 +415,87 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
         expect(isValidMove(parseObj)).toBe(false);
     });
 
-    it('isValid() validates ', () => {
-        // TODO
-    });
+    it('isValidMove() validates pawns', () => {
+        // valid moves
+        let parseObj = parseNotation({notation: 'd4'});
+        expect(isValidMove(parseObj)).toBe(true);
 
-    it('isValid() rejects invalid ', () => {
-        // TODO
+        parseObj = parseNotation({notation: 'd2d4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd2d3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd7d5'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd7d8Q'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd7xe8Q'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd5xe6 e.p.'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'd5xe6'}); // you don't have to mark e.p.
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // moves without full info
+        parseObj = parseNotation({notation: 'xe6 e.p.'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'xe8Q'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'de7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'cxe7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'dxe7'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: '6e7'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: '5e7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: '2e4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // invalid moves
+        parseObj = parseNotation({notation: 'd5e6'}); // must be a capture
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd8d7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd1d2'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd8'}); // must be a promotion
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd1'}); // must be a promotion
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'a3f7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'a3a7'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'a3f3'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd3d5'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'd4xe4'});
+        expect(isValidMove(parseObj)).toBe(false);
     });
 });
 

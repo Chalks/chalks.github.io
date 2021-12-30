@@ -204,6 +204,8 @@ export const isValidCheck = ({
     checkmate,
     from,
     to,
+    queensideCastle,
+    kingsideCastle,
     piece,
 }) => {
     // there's no move that MUST result in a check
@@ -213,9 +215,9 @@ export const isValidCheck = ({
     // at least be a discovered check. At least, not that we can tell.
     if (!from) return true;
 
-    // If we don't know where the move is to, there's no way for the notation
-    // to be valid.
-    if (!to) return false;
+    // If we don't know where the move is to, the only way for it to be valid is
+    // if it's a castle
+    if (!to && (!queensideCastle || !kingsideCastle)) return false;
 
     if (piece === KING) {
         // king moves can't cause a discovered check if we're moving along
@@ -285,16 +287,13 @@ export const isValidCapture = ({
 export const isValidMove = ({
     from,
     to,
-    enPassant,
     promotion,
     capture,
+    queensideCastle,
+    kingsideCastle,
     piece,
 }) => {
-    // if we don't know where the piece came from, it's always valid. This is only
-    // true because we don't know the color of the piece. We ignore en passant,
-    // promotions, and captures in this case because they're handled in other
-    // validation functions above.
-    if (!from) return true;
+    if (queensideCastle || kingsideCastle) return true;
 
     // we must know where it went to
     if (!to) return false;
@@ -307,10 +306,10 @@ export const isValidMove = ({
 
     let fileFrom = null;
     let rankFrom = null;
-    if (from.length === 2) {
+    if (from && from.length === 2) {
         fileFrom = from.charCodeAt(0);
         rankFrom = Number.parseInt(from.charAt(1), 10);
-    } else if (from.length === 1) {
+    } else if (from && from.length === 1) {
         if (Number.isNaN(Number.parseInt(from, 10))) {
             fileFrom = from.charCodeAt(0);
         } else {
@@ -318,21 +317,19 @@ export const isValidMove = ({
         }
     }
 
-    const fileDist = fileFrom
-        ? Math.abs(fileFrom - fileTo)
-        : -10;
-
-    const rankDist = rankFrom
-        ? Math.abs(rankFrom - rankTo)
-        : -10;
+    const fileDist = fileFrom ? Math.abs(fileFrom - fileTo) : -10;
+    const rankDist = rankFrom ? Math.abs(rankFrom - rankTo) : -10;
 
     switch (piece) {
         case KING:
             return fileDist <= 1 && rankDist <= 1;
+
         case QUEEN:
             return rankDist < 1 || fileDist < 1 || fileDist === rankDist;
+
         case ROOK:
             return rankDist < 1 || fileDist < 1;
+
         case BISHOP:
             if (fileFrom && rankFrom) {
                 return fileDist === rankDist;
@@ -340,7 +337,11 @@ export const isValidMove = ({
             if (fileFrom) {
                 return fileDist > 0;
             }
-            return rankDist > 0;
+            if (rankFrom) {
+                return rankDist > 0;
+            }
+            return true; // we don't know where it's from, so is valid
+
         case KNIGHT:
             if (fileFrom && rankFrom) {
                 return (fileDist === 1 && rankDist === 2)
@@ -349,9 +350,47 @@ export const isValidMove = ({
             if (fileFrom) {
                 return fileDist === 1 || fileDist === 2;
             }
-            return rankDist === 1 || rankDist === 2;
+            if (rankFrom) {
+                return rankDist === 1 || rankDist === 2;
+            }
+            return true; // we don't know where it's from, so is valid
+
         case PAWN:
-            break;
+            // pawns can't move from the first or 8th rank
+            if (rankFrom === 1 || rankFrom === 8) {
+                return false;
+            }
+
+            // pawns can't move more than one space left or right
+            if (fileDist > 1) {
+                return false;
+            }
+
+            // fileDist of 1 if only possible if they also have exactly a rankDist of 1
+            if (fileDist === 1 && (rankDist !== 1 && rankDist !== -10)) {
+                return false;
+            }
+
+            // if we tried to capture it must actually be a capture
+            if (fileDist === 1 && !capture) {
+                return false;
+            }
+
+            // they can sometimes move up to 2 spaces...
+            if (rankDist > 2) {
+                return false;
+            }
+
+            // ...but only if from the starting rank
+            if (rankDist === 2 && (rankFrom !== 2 && rankFrom !== 7 && rankFrom !== -10)) {
+                return false;
+            }
+
+            // if we get to the end we must have a promotion
+            if ((rankTo === 8 || rankTo === 1) && promotion === null) {
+                return false;
+            }
+
         // no default
     }
 
@@ -422,21 +461,13 @@ export const parseNotation = ({
     };
 };
 
-/*
- * How validation works:
- *
- * 1. is the 'draw' parsing valid?
- * 2. TODO
- * 3. is the 'check' parsing valid?
- * 4. we can skip castle checking because we're guaranteed that it's always valid (tested)
- * 5. is the 'promotion' parsing valid?
- */
 export const isValidParsedNotation = (parseObj) => isValidDraw(parseObj)
     && isValidEnPassant(parseObj)
     && isValidCheck(parseObj)
     && isValidPromotion(parseObj)
     && isValidCapture(parseObj)
-    && isValidMove(parseObj);
+    && isValidMove(parseObj)
+    && parseObj.notationAfterParsing === '';
 
 export const isValidNotation = ({
     notation,
