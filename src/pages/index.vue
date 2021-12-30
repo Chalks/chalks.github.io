@@ -14,7 +14,7 @@ export default {
 };
 </script>
 <template>
-    <div class="prose mx-auto prose-red">
+    <div class="prose mx-auto my-12 prose-red">
         <h1>Hi, I'm Jonathan Walters</h1>
 
         <p>I build teams that deliver fantastic product. When I'm not running a dev team I'm building frontend. This website is built entirely without any backend architecture using:</p>

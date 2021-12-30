@@ -11,6 +11,11 @@
             <a href="https://youtube.com/feed/subscriptions" target="_blank" class="pillar-word">YOUTUBE.COM</a>
             <a href="https://old.reddit.com" target="_blank" class="pillar-word">REDDIT.COM</a>
             <a href="https://facebook.com" target="_blank" class="pillar-word">FACEBOOK.COM</a>
+
+            <h2 class="pillar-word">i made this</h2>
+            <a href="https://github.com/Chalks/jdw.me" target="_blank" class="pillar-word">JDW.ME</a>
+            <a href="https://formcake.com" target="_blank" class="pillar-word">FORMCAKE.COM</a>
+            <NuxtLink to="/fun/notation" class="pillar-word">NOTATION.VALIDATOR</NuxtLink>
         </div>
     </div>
 </template>
