@@ -173,12 +173,15 @@ export const isValidDraw = ({offeredDraw, checkmate}) => {
 };
 
 export const isValidEnPassant = ({
+    enPassant,
     queensideCastle,
     kingsideCastle,
     to,
     piece,
     capture,
 }) => {
+    if (!enPassant) return true;
+
     // castles aren't en passant
     if (queensideCastle || kingsideCastle) return false;
 
@@ -243,6 +246,8 @@ export const isValidPromotion = ({
     piece,
     promotion,
 }) => {
+    if (!promotion) return true;
+
     // you can't promote to a pawn
     if (promotion === PAWN) return false;
 

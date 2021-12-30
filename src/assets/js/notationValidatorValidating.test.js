@@ -36,7 +36,10 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
     });
 
     it('isValidEnPassant() validates en passant', () => {
-        let parseObj = parseNotation({notation: 'xe6 e.p.'});
+        let parseObj = parseNotation({notation: 'e4'});
+        expect(isValidEnPassant(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'xe6 e.p.'});
         expect(isValidEnPassant(parseObj)).toBe(true);
 
         parseObj = parseNotation({notation: 'd5xe6 e.p.'});
@@ -332,6 +335,9 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
         expect(isValidMove(parseObj)).toBe(true);
 
         parseObj = parseNotation({notation: 'Ne4c3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Ne2xf4'});
         expect(isValidMove(parseObj)).toBe(true);
 
         // illegal moves
