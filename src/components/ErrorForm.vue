@@ -1,5 +1,27 @@
 <script>
 export default {
+    props: {
+        requireEmail: {
+            type: Boolean,
+            default: false,
+        },
+
+        subject: {
+            type: String,
+            default: 'Generic error form',
+        },
+
+        messagePlaceholder: {
+            type: String,
+            default: 'Describe what happened',
+        },
+
+        submitText: {
+            type: String,
+            default: 'Report Error',
+        },
+    },
+
     data() {
         return {
             email: '',
@@ -23,10 +45,6 @@ export default {
         onSubmit() {
             this.$refs.errorForm.submit();
         },
-
-        focus() {
-            this.$refs.emailField.focus();
-        },
     },
 };
 </script>
@@ -34,16 +52,15 @@ export default {
 <template>
     <form
         ref="errorForm"
-        class="prose mx-auto"
         action="https://api.formcake.com/api/form/a5866167-1e7d-4aed-9898-2436a78b44df/submission"
         method="post"
     >
-        <h3>Whoops, something broke</h3>
-        <p>Let me know what happened please!</p>
-
         <input type="hidden" name="honey" />
 
+        <input type="hidden" name="subject" :value="subject" />
+
         <input
+            v-if="requireEmail"
             ref="emailField"
             v-model="email"
             type="text"
@@ -54,7 +71,7 @@ export default {
         <input
             v-model="message"
             name="message"
-            placeholder="Describe what happened!"
+            :placeholder="messagePlaceholder"
         />
 
         <button
@@ -63,7 +80,7 @@ export default {
             data-callback="recaptchaJank"
             data-action="submit"
         >
-            Report Error
+            {{ submitText }}
         </button>
     </form>
 </template>
