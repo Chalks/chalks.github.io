@@ -43,8 +43,21 @@ export default {
             <strong>P</strong> to indicate a pawn, even though that's not
             technically correct (e.g. <strong>e4</strong> is preferred over
             <strong>Pe4</strong>). Note that this is case sensitive and space
-            sensitive.
+            sensitive (e.g. <strong>ke4+(=)</strong> is invalid but
+            <strong>Ke4+ (=)</strong> is valid).
         </p>
+
+        <h3>Validate Notation:</h3>
+        <input
+            ref="notationField"
+            v-model="notation"
+            type="text"
+            placeholder="Notation (e.g. Nxd3)"
+        />
+        <p>Is valid: <strong>{{ currentIsValid }}</strong></p>
+        <pre>"parsed": {{ currentParse }}</pre>
+
+        <hr />
 
         <p>
             If you need help finding a notation to validate, you can check out all
@@ -58,18 +71,6 @@ export default {
             <li>When is a draw offer (e.g. <strong>d4 (=)</strong>) not valid?</li>
             <li>Where can a pawn never move from?</li>
         </ul>
-
-        <hr />
-
-        <p><strong>Validate Notation:</strong></p>
-        <input
-            ref="notationField"
-            v-model="notation"
-            type="text"
-            placeholder="Notation (e.g. Nxd3)"
-        />
-        <p>Is valid: <strong>{{ currentIsValid }}</strong></p>
-        <pre>"parsed": {{ currentParse }}</pre>
 
         <hr />
 
