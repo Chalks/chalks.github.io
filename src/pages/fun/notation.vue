@@ -31,7 +31,7 @@ export default {
 
 <template>
     <div class="prose prose-red container mx-auto my-12 text-justify">
-        <h3>Validate a chess move</h3>
+        <h1>Validate a Chess Move</h1>
 
         <p>
             This checks for valid algebraic notation. I mostly adhered to

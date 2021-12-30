@@ -167,7 +167,7 @@ export default {
     <div class="prose prose-red container mx-auto my-12 text-justify">
         <span v-if="canGenerate" @click="holyHell">holy hell</span>
         <pre v-if="canGenerate">{{ allValidNotations.join(', ') }}</pre>
-        <h3>Every. Possible. Chess. Move.</h3>
+        <h1>Every. Possible. Chess. Move.</h1>
         <p>
             <NuxtLink to="/fun/notation/">Validate a move</NuxtLink>
             <a href="https://imgur.com/a/sjUFI5e">Analysis</a>
