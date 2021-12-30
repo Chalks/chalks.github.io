@@ -313,25 +313,40 @@ export const isValidMove = ({
         }
     }
 
+    const fileDist = fileFrom
+        ? Math.abs(fileFrom - fileTo)
+        : -10;
+
+    const rankDist = rankFrom
+        ? Math.abs(rankFrom - rankTo)
+        : -10;
+
     switch (piece) {
+        case KING:
+            return fileDist <= 1 && rankDist <= 1;
+        case QUEEN:
+            return rankDist < 1 || fileDist < 1 || fileDist === rankDist;
         case ROOK:
-            return !fileFrom || !rankFrom || rankFrom === rankTo || fileFrom === fileTo;
+            return rankDist < 1 || fileDist < 1;
         case BISHOP:
             if (fileFrom && rankFrom) {
-                // if we know where the bishop came from, the destination must be
-                // the same distance away in both rank and file.
-                return Math.abs(fileFrom - fileTo) === Math.abs(rankFrom - rankTo);
+                return fileDist === rankDist;
             }
             if (fileFrom) {
-                // if we only know what file the bishop came from then there exists
-                // a space that the bishop could have come from to get to the destination
-                // UNLESS that space is in the same file
-                return fileFrom !== fileTo;
+                return fileDist > 0;
             }
-            if (rankFrom) {
-                // same logic as files
-                return rankFrom !== fileTo;
+            return rankDist > 0;
+        case KNIGHT:
+            if (fileFrom && rankFrom) {
+                return (fileDist === 1 && rankDist === 2)
+                    || (fileDist === 2 && rankDist === 1);
             }
+            if (fileFrom) {
+                return fileDist === 1 || fileDist === 2;
+            }
+            return rankDist === 1 || rankDist === 2;
+        case PAWN:
+            break;
         // no default
     }
 

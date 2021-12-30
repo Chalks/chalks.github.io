@@ -186,9 +186,84 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
         expect(isValidMove(parseObj)).toBe(false);
     });
 
+    it('isValidMove() validates kings', () => {
+        // valid moves
+        let parseObj = parseNotation({notation: 'Kd4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Kd3d4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Kd3e2'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // invalid moves
+        parseObj = parseNotation({notation: 'Kd3e8'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Kd3d8'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Kd3h3'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        // partially known froms that are valid
+        parseObj = parseNotation({notation: 'Kdd3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Kde3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Kdc3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'K3b2'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'K3e3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'K3a4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // partially known froms that are invalid
+        parseObj = parseNotation({notation: 'Kdf3'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'K3f5'});
+        expect(isValidMove(parseObj)).toBe(false);
+    });
+
+    it('isValidMove() validates queens', () => {
+        // valid moves
+        // diagonal
+        let parseObj = parseNotation({notation: 'Qd4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Qb2d4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // horizontal
+        parseObj = parseNotation({notation: 'Qb2d2'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // invalid moves
+        parseObj = parseNotation({notation: 'Qb2c4'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Qb2c5'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Qb2f5'});
+        expect(isValidMove(parseObj)).toBe(false);
+    });
+
     it('isValidMove() validates rooks', () => {
         // rooks can move along ranks/files
-        let parseObj = parseNotation({notation: 'Ra1a8'});
+        let parseObj = parseNotation({notation: 'Rd4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Ra1a8'});
         expect(isValidMove(parseObj)).toBe(true);
 
         parseObj = parseNotation({notation: 'Ra1h1'});
@@ -207,8 +282,67 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
     });
 
     it('isValidMove() validates bishops', () => {
-        let parseObj = parseNotation({notation: 'Ba1h8'});
+        // valid moves
+        let parseObj = parseNotation({notation: 'Bd4'});
         expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Ba1h8'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Bh1a8'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Bd3f1'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Bg7f8'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // illegal moves
+        parseObj = parseNotation({notation: 'Bb5d2'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Bb2d2'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        // not fully known moves, always valid as long as not same rank/file
+        parseObj = parseNotation({notation: 'Baf8'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'B7f8'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // illegal not-fully-known moves
+        parseObj = parseNotation({notation: 'Baa8'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'B7f7'});
+        expect(isValidMove(parseObj)).toBe(false);
+    });
+
+    it('isValidMove() validates knights', () => {
+        // valid moves
+        let parseObj = parseNotation({notation: 'Nd4'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Nd4f5'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Ne4d2'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        parseObj = parseNotation({notation: 'Ne4c3'});
+        expect(isValidMove(parseObj)).toBe(true);
+
+        // illegal moves
+        parseObj = parseNotation({notation: 'Ne4f3'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Ne4e4'});
+        expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Ne4g6'});
+        expect(isValidMove(parseObj)).toBe(false);
     });
 
     it('isValid() validates ', () => {
