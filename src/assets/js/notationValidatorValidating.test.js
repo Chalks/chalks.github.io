@@ -496,6 +496,9 @@ describe('assets/js/notationValidator.js test validation helpers', () => {
 
         parseObj = parseNotation({notation: 'd4xe4'});
         expect(isValidMove(parseObj)).toBe(false);
+
+        parseObj = parseNotation({notation: 'Pa2xb3+ e.p. (=)'});
+        expect(isValidMove(parseObj)).toBe(false);
     });
 });
 

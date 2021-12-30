@@ -288,6 +288,7 @@ export const isValidMove = ({
     from,
     to,
     promotion,
+    enPassant,
     capture,
     queensideCastle,
     kingsideCastle,
@@ -389,6 +390,21 @@ export const isValidMove = ({
             // if we get to the end we must have a promotion
             if ((rankTo === 8 || rankTo === 1) && promotion === null) {
                 return false;
+            }
+
+            // if it's marked as en passant, it must meet criteria
+            if (enPassant) {
+                if (rankTo !== 3 && rankTo !== 6) {
+                    return false;
+                }
+
+                if (rankFrom && rankFrom !== 4 && rankTo === 3) {
+                    return false;
+                }
+
+                if (rankFrom && rankFrom !== 5 && rankTo === 6) {
+                    return false;
+                }
             }
 
         // no default
