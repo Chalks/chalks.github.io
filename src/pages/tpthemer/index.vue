@@ -16,6 +16,7 @@ export default {
             ...constants,
             loading: true,
             rawEntities: [],
+            defaultBrush: null,
             tileBrush: null,
         };
     },
@@ -23,6 +24,7 @@ export default {
     computed: {
         imageData() {
             return this.rawEntities.reduce((acc, entity) => {
+                const {id} = entity;
                 const {
                     name,
                     author,
@@ -31,7 +33,12 @@ export default {
                 } = entity.data;
 
                 if (acc[type]) {
-                    acc[type].push({name, author, url: image.url});
+                    acc[type].push({
+                        id,
+                        name,
+                        author,
+                        url: image.url,
+                    });
                 }
 
                 return acc;
@@ -49,23 +56,29 @@ export default {
         },
     },
 
-    mounted() {
-        this.loadImages();
+    async mounted() {
+        this.loading = true;
+
+        await this.loadImages();
+        this.setDefaults();
+
+        this.loading = false;
     },
 
     methods: {
         async loadImages() {
-            this.loading = true;
-
             await new Promise((resolve) => {
                 // simulate page load
                 setTimeout(() => {
                     this.rawEntities = response.entities;
                     resolve();
-                }, 500);
+                }, 1000);
             });
+        },
 
-            this.loading = false;
+        setDefaults() {
+            this.defaultBrush = this.imageByNameType({name: 'default', type: 'tiles'});
+            this.tileBrush = this.defaultBrush;
         },
 
         imageByNameType({name, type}) {
@@ -90,21 +103,24 @@ export default {
         <div class="palette tiles-palette">
             <div
                 v-for="image in imageData.tiles"
-                :key="JSON.stringify(image)"
-                class="brush"
+                :key="image.id"
+                :class="image.id === tileBrush.id ? 'brush selected' : 'brush'"
+                @click="tileBrush = image"
             >
                 <p class="name">{{ image.name }}</p>
-                <p class="author">{{ image.author }}</p>
-                <img
-                    :src="image.url"
-                />
-                <a class="reset" href="#">reset</a>
+                <div class="relative">
+                    <img
+                        :src="image.url"
+                    />
+                    <p class="author">{{ image.author }}</p>
+                </div>
             </div>
         </div>
         <Canvas
-            :x="TILES_X"
-            :y="TILES_Y"
-            :initial-image="imageByNameType({name: 'default', type: 'tiles'})"
+            :width="TILES_X"
+            :height="TILES_Y"
+            :initial-image="defaultBrush"
+            :brush="tileBrush"
         />
 
         <div class="pillar mb-4">
@@ -124,13 +140,32 @@ export default {
     }
 
     .brush {
+        @apply opacity-50 cursor-pointer relative mr-2 transition-opacity;
+
+        &.selected, &:hover {
+            @apply opacity-100;
+        }
+
+        &:last-child {
+            @apply m-0;
+        }
+
         max-width: 128px;
-        max-height: 88px;
+
+        .name, .author {
+            @apply text-ellipsis whitespace-nowrap overflow-hidden text-xs;
+        }
 
         .name {
+            @apply font-bold;
         }
 
         .author {
+            @apply absolute right-0 bottom-0 bg-white opacity-50 transition-opacity;
+
+            &:hover {
+                @apply opacity-100;
+            }
         }
 
         img {
