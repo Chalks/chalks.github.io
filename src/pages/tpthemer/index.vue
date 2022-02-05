@@ -1,15 +1,21 @@
 <script>
 import InterestForm from '~/components/InterestForm.vue';
+import {response} from './images-response.js';
 
 export default {
     components: {
         InterestForm,
+    },
+
+    mounted() {
+        console.log('here with: ', response);
     },
 };
 </script>
 
 <template>
     <div class="flex flex-col items-center">
+        <img src="/tagpro/default-tiles.png" />
         <div class="pillar mb-4">
             <h1 class="pillar-word">Hi</h1>
             <p class="pillar-word">I love ya Tagpro bbs</p>
