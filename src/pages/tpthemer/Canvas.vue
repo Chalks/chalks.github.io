@@ -20,11 +20,6 @@ export default {
             type: Number,
             default: 40,
         },
-
-        brush: {
-            type: Object,
-            default: null,
-        },
     },
 
     data() {
@@ -33,6 +28,7 @@ export default {
             y: 0,
             over: false,
             down: false,
+            brush: null,
         };
     },
 
@@ -98,6 +94,10 @@ export default {
             this.clear(finalX, finalY, finalWidth, finalHeight);
 
             this.ctx.drawImage(finalImage.img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
+        },
+
+        setBrush(brush) {
+            this.brush = brush;
         },
 
         onMove(e) {
