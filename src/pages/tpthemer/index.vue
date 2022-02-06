@@ -91,6 +91,36 @@ export default {
             return this.imageData[type]
                 .find(({name: imageName}) => name.toLowerCase() === imageName.toLowerCase());
         },
+
+        paintAll(image) {
+            this.$refs.tileCanvas.paintImage({
+                image,
+                x: 0,
+                y: 0,
+                width: 640,
+                height: 440,
+            });
+        },
+
+        paintWalls(image) {
+            this.$refs.tileCanvas.paintImage({
+                image,
+                x: 0,
+                y: 0,
+                width: 480,
+                height: 440,
+            });
+        },
+
+        paintPups(image) {
+            this.$refs.tileCanvas.paintImage({
+                image,
+                x: 480,
+                y: 160,
+                width: 40,
+                height: 200,
+            });
+        },
     },
 };
 </script>
@@ -114,9 +144,16 @@ export default {
                     />
                     <p class="author">{{ image.author }}</p>
                 </div>
+
+                <div class="flex space-x-2 text-xs">
+                    <a href="#" @click.prevent="() => paintAll(image)">all</a>
+                    <a href="#" @click.prevent="() => paintWalls(image)">walls</a>
+                    <a href="#" @click.prevent="() => paintPups(image)">pups</a>
+                </div>
             </div>
         </div>
         <Canvas
+            ref="tileCanvas"
             :width="TILES_X"
             :height="TILES_Y"
             :initial-image="defaultBrush"
@@ -136,11 +173,11 @@ export default {
 
 <style>
     .palette {
-        @apply flex overflow-auto;
+        @apply flex overflow-auto my-4;
     }
 
     .brush {
-        @apply opacity-50 cursor-pointer relative mr-2 transition-opacity;
+        @apply opacity-50 cursor-pointer relative mr-4 transition-opacity;
 
         &.selected, &:hover {
             @apply opacity-100;

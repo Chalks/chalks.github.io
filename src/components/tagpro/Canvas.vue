@@ -125,21 +125,45 @@ export default {
             };
         },
 
-        clearCell() {
+        clear(x, y, width, height) {
+            const finalX = x !== undefined ? x : this.x;
+            const finalY = y !== undefined ? y : this.y;
+            const finalWidth = width || this.cellWidth;
+            const finalHeight = height || this.cellHeight;
+
             this.ctx.globalCompositeOperation = 'destination-out';
             this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-            this.ctx.fillRect(this.x, this.y, this.cellWidth, this.cellHeight);
+
+            this.ctx.fillRect(finalX, finalY, finalWidth, finalHeight);
+
             this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
             this.ctx.globalCompositeOperation = 'source-over';
         },
 
         paint() {
-            if (!this.brushImage || !this.over) return false;
+            if (!this.brushImage) return false;
 
-            this.clearCell();
+            this.clear();
             this.ctx.drawImage(this.brushImage, this.x, this.y, this.cellWidth, this.cellHeight, this.x, this.y, this.cellWidth, this.cellHeight);
 
             return true;
+        },
+
+        paintImage({
+            image,
+            x,
+            y,
+            width,
+            height,
+        }) {
+            const img = new Image();
+
+            img.addEventListener('load', () => {
+                this.clear(x, y, width, height);
+                this.ctx.drawImage(img, x, y, width, height, x, y, width, height);
+            });
+
+            img.src = image.url;
         },
 
         onMove(e) {
