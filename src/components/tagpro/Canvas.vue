@@ -38,6 +38,7 @@ export default {
             y: 0,
             over: false,
             down: false,
+            loadedImages: {},
         };
     },
 
@@ -48,10 +49,6 @@ export default {
 
         ctx() {
             return this.el.getContext('2d');
-        },
-
-        boundingClientRect() {
-            return this.el.getBoundingClientRect();
         },
 
         name() {
@@ -70,15 +67,6 @@ export default {
             return this.initialImage
                 ? this.initialImage.url
                 : null;
-        },
-
-        brushImage() {
-            if (!this.brush) return null;
-
-            const img = new Image();
-            img.src = this.brush.url;
-
-            return img;
         },
     },
 
@@ -117,7 +105,7 @@ export default {
         },
 
         getMousePosition(e) {
-            const {left, top} = this.boundingClientRect;
+            const {left, top} = this.el.getBoundingClientRect();
 
             return {
                 x: e.clientX - left,
@@ -126,44 +114,36 @@ export default {
         },
 
         clear(x, y, width, height) {
-            const finalX = x !== undefined ? x : this.x;
-            const finalY = y !== undefined ? y : this.y;
-            const finalWidth = width || this.cellWidth;
-            const finalHeight = height || this.cellHeight;
-
             this.ctx.globalCompositeOperation = 'destination-out';
             this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 
-            this.ctx.fillRect(finalX, finalY, finalWidth, finalHeight);
+            this.ctx.fillRect(x, y, width, height);
 
             this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
             this.ctx.globalCompositeOperation = 'source-over';
         },
 
-        paint() {
-            if (!this.brushImage) return false;
+        paint(image, x, y, width, height) {
+            const finalImage = image || this.brush;
+            const finalX = x !== undefined ? x : this.x;
+            const finalY = y !== undefined ? y : this.y;
+            const finalWidth = width || this.cellWidth;
+            const finalHeight = height || this.cellHeight;
 
-            this.clear();
-            this.ctx.drawImage(this.brushImage, this.x, this.y, this.cellWidth, this.cellHeight, this.x, this.y, this.cellWidth, this.cellHeight);
+            this.clear(finalX, finalY, finalWidth, finalHeight);
 
-            return true;
-        },
+            if (this.loadedImages[finalImage.id]) {
+                this.ctx.drawImage(this.loadedImages[finalImage.id], finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
+            } else {
+                const img = new Image();
 
-        paintImage({
-            image,
-            x,
-            y,
-            width,
-            height,
-        }) {
-            const img = new Image();
+                img.addEventListener('load', () => {
+                    this.ctx.drawImage(img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
+                    this.loadedImages[finalImage.id] = img;
+                });
 
-            img.addEventListener('load', () => {
-                this.clear(x, y, width, height);
-                this.ctx.drawImage(img, x, y, width, height, x, y, width, height);
-            });
-
-            img.src = image.url;
+                img.src = finalImage.url;
+            }
         },
 
         onMove(e) {

@@ -93,33 +93,43 @@ export default {
         },
 
         paintAll(image) {
-            this.$refs.tileCanvas.paintImage({
-                image,
-                x: 0,
-                y: 0,
-                width: 640,
-                height: 440,
-            });
+            this.$refs.tileCanvas.paint(image, 0, 0, 640, 440);
         },
 
         paintWalls(image) {
-            this.$refs.tileCanvas.paintImage({
-                image,
-                x: 0,
-                y: 0,
-                width: 480,
-                height: 440,
-            });
+            this.$refs.tileCanvas.paint(image, 0, 0, 480, 440);
+        },
+
+        paintEnv(image) {
+            this.$refs.tileCanvas.paint(image, 480, 0, 80, 40);
+            this.$refs.tileCanvas.paint(image, 480, 40, 40, 80);
+        },
+
+        paintBalls(image) {
+            this.$refs.tileCanvas.paint(image, 560, 0, 80, 40);
+        },
+
+        paintFlags(image) {
+            this.$refs.tileCanvas.paint(image, 520, 40, 120, 80);
+        },
+
+        paintGates(image) {
+            this.$refs.tileCanvas.paint(image, 480, 120, 160, 40);
+            this.$refs.tileCanvas.paint(image, 520, 240, 40, 40);
         },
 
         paintPups(image) {
-            this.$refs.tileCanvas.paintImage({
-                image,
-                x: 480,
-                y: 160,
-                width: 40,
-                height: 200,
-            });
+            this.$refs.tileCanvas.paint(image, 480, 160, 40, 200);
+        },
+
+        paintTiles(image) {
+            this.$refs.tileCanvas.paint(image, 520, 160, 120, 80);
+        },
+
+        paintOther(image) {
+            this.$refs.tileCanvas.paint(image, 520, 280, 120, 160);
+            this.$refs.tileCanvas.paint(image, 480, 360, 40, 80);
+            this.$refs.tileCanvas.paint(image, 560, 240, 80, 40);
         },
     },
 };
@@ -145,10 +155,16 @@ export default {
                     <p class="author">{{ image.author }}</p>
                 </div>
 
-                <div class="flex space-x-2 text-xs">
-                    <a href="#" @click.prevent="() => paintAll(image)">all</a>
-                    <a href="#" @click.prevent="() => paintWalls(image)">walls</a>
-                    <a href="#" @click.prevent="() => paintPups(image)">pups</a>
+                <div class="tp-controls">
+                    <a class="pillar-word" @click.prevent="() => paintAll(image)">all</a>
+                    <a class="pillar-word" @click.prevent="() => paintWalls(image)">walls</a>
+                    <a class="pillar-word" @click.prevent="() => paintEnv(image)">env</a>
+                    <a class="pillar-word" @click.prevent="() => paintBalls(image)">balls</a>
+                    <a class="pillar-word" @click.prevent="() => paintFlags(image)">flags</a>
+                    <a class="pillar-word" @click.prevent="() => paintGates(image)">gates</a>
+                    <a class="pillar-word" @click.prevent="() => paintPups(image)">pups</a>
+                    <a class="pillar-word" @click.prevent="() => paintTiles(image)">tiles</a>
+                    <a class="pillar-word" @click.prevent="() => paintOther(image)">other</a>
                 </div>
             </div>
         </div>
@@ -187,7 +203,7 @@ export default {
             @apply m-0;
         }
 
-        max-width: 128px;
+        max-width: 144px;
 
         .name, .author {
             @apply text-ellipsis whitespace-nowrap overflow-hidden text-xs;
@@ -206,11 +222,28 @@ export default {
         }
 
         img {
-            max-width: 128px;
-            max-height: 88px;
+            max-width: 144px;
+            max-height: 99px;
         }
 
         .reset {
+        }
+    }
+
+    .tp-controls {
+        @apply flex mt-px flex-wrap items-start space-x-2 text-xs;
+        max-width: 144px;
+
+        a {
+            @apply border border-white text-center transition-colors;
+
+            width: 48px;
+            margin: 0 !important;
+            padding: 2px 0 0 0;
+
+            line-height: 18px;
+            font-size: 11px;
+            letter-spacing: 1px;
         }
     }
 </style>
