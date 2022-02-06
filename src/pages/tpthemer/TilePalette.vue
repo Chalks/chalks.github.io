@@ -37,6 +37,8 @@ export default {
 
     methods: {
         init() {
+            this.chooseBrush(this.defaultBrush);
+
             if (this.defaultBrush) {
                 this.paintAll(this.defaultBrush);
             }
@@ -94,6 +96,10 @@ export default {
             this.$refs.tileCanvas.setBrush(brush);
             this.tileBrush = brush;
         },
+
+        onChange(e) {
+            this.$emit('change', e);
+        },
     },
 };
 </script>
@@ -125,10 +131,15 @@ export default {
             </div>
         </div>
 
-        <Canvas
-            ref="tileCanvas"
-            :width="TILES_X"
-            :height="TILES_Y"
-        />
+        <div>
+            <Canvas
+                ref="tileCanvas"
+                :width="TILES_X"
+                :height="TILES_Y"
+                :cell-width="CELL_X"
+                :cell-height="CELL_Y"
+                @change="onChange"
+            />
+        </div>
     </div>
 </template>

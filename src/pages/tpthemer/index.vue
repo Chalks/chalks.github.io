@@ -10,6 +10,17 @@ export default {
     data() {
         return {
             brushes: {},
+            exportObj: [
+                [], // 0 tiles
+                [], // 1 speedpad
+                [], // 2 speedpad red
+                [], // 3 speedpad blue
+                [], // 4 portal
+                [], // 5 portal red
+                [], // 6 portal blue
+                [], // 7 splats
+                [], // 8 gravity well
+            ],
         };
     },
 
@@ -35,6 +46,14 @@ export default {
                 .filter((key) => this.brushes[key].type === 'tiles')
                 .map((key) => this.brushes[key])
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+
+        exportString() {
+            if (process.client) {
+                return JSON.stringify(this.exportObj);
+            }
+
+            return '';
         },
     },
 
@@ -86,6 +105,10 @@ export default {
         afterImagesLoaded() {
             this.$refs.tilePalette.init();
         },
+
+        onTileChange(e) {
+            this.$set(this.exportObj, 0, e);
+        },
     },
 };
 </script>
@@ -97,9 +120,13 @@ export default {
         </div>
 
         <div v-show="!loading">
+            <div class="my-4">
+                {{ exportString }}
+            </div>
             <TilePalette
                 ref="tilePalette"
                 :brushes="tileBrushes"
+                @change="onTileChange"
             />
         </div>
     </div>

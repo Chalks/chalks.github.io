@@ -29,6 +29,7 @@ export default {
             over: false,
             down: false,
             brush: null,
+            cellRecord: null,
         };
     },
 
@@ -39,6 +40,16 @@ export default {
 
         ctx() {
             return this.el.getContext('2d');
+        },
+
+        cellCount() {
+            const cellX = this.width / this.cellWidth;
+            const cellY = this.height / this.cellHeight;
+            return cellX * cellY;
+        },
+
+        cellsPerColumn() {
+            return this.height / this.cellHeight;
         },
     },
 
@@ -54,6 +65,10 @@ export default {
                 this.paint();
             }
         },
+
+        cellRecord() {
+            this.$emit('change', this.getCompressedRecord());
+        },
     },
 
     mounted() {
@@ -63,6 +78,8 @@ export default {
     methods: {
         setup() {
             this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            this.cellRecord = new Array(this.cellCount);
+            this.cellRecord.fill(-1);
         },
 
         getMousePosition(e) {
@@ -91,9 +108,43 @@ export default {
             const finalWidth = width || this.cellWidth;
             const finalHeight = height || this.cellHeight;
 
+            this.recordCells(finalImage, finalX, finalY, finalWidth, finalHeight);
+
             this.clear(finalX, finalY, finalWidth, finalHeight);
 
             this.ctx.drawImage(finalImage.img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
+        },
+
+        recordCells(image, x, y, width, height) {
+            const startX = x / this.cellWidth;
+            const endX = startX + (width / this.cellWidth);
+            const startY = y / this.cellHeight;
+            const endY = startY + (height / this.cellHeight);
+
+            for (let i = startX; i < endX; i += 1) {
+                for (let j = startY; j < endY; j += 1) {
+                    const loc = (i * this.cellsPerColumn) + j;
+
+                    if (this.cellRecord[loc] !== image.id) {
+                        this.$set(this.cellRecord, loc, image.id);
+                    }
+                }
+            }
+        },
+
+        getCompressedRecord() {
+            let compressed = [];
+            let lastCount = -1;
+
+            for (let i = 0; i < this.cellCount; i += 1) {
+                const curr = this.cellRecord[i];
+                if ((i + 1) === this.cellCount || this.cellRecord[i + 1] !== curr) {
+                    compressed = compressed.concat([curr, i - lastCount]);
+                    lastCount = i;
+                }
+            }
+
+            return compressed;
         },
 
         setBrush(brush) {
