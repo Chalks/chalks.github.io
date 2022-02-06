@@ -14,16 +14,52 @@ export default {
     data() {
         return {
             ...constants,
-            loading: true,
-            rawEntities: [],
-            defaultBrush: null,
             tileBrush: null,
+            brushes: {},
         };
     },
 
     computed: {
-        imageData() {
-            return this.rawEntities.reduce((acc, entity) => {
+        brushKeys() {
+            return Object.keys(this.brushes);
+        },
+
+        loadingImages() {
+            if (this.brushKeys.length === 0) return true;
+
+            return this.brushKeys.some((key) => this.brushes[key].loaded === false);
+        },
+
+        loading() {
+            if (this.loadingImages) return true;
+            if (this.tileBrush === null) return true;
+
+            return false;
+        },
+
+        tileBrushes() {
+            return this.brushKeys
+                .filter((key) => this.brushes[key].type === 'tiles')
+                .map((key) => this.brushes[key])
+                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+    },
+
+    watch: {
+        loadingImages(loading) {
+            if (loading === false) {
+                this.afterImagesLoaded();
+            }
+        },
+    },
+
+    async mounted() {
+        this.loadImages();
+    },
+
+    methods: {
+        loadImages() {
+            response.entities.forEach((entity) => {
                 const {id} = entity;
                 const {
                     name,
@@ -32,158 +68,126 @@ export default {
                     image,
                 } = entity.data;
 
-                if (acc[type]) {
-                    acc[type].push({
-                        id,
-                        name,
-                        author,
-                        url: image.url,
+                const img = new Image();
+
+                this.$set(this.brushes, id, {
+                    id,
+                    loaded: false,
+                    name,
+                    author,
+                    type,
+                    img,
+                });
+
+                img.addEventListener('load', () => {
+                    this.$set(this.brushes, id, {
+                        ...this.brushes[id],
+                        loaded: true,
                     });
-                }
 
-                return acc;
-            }, {
-                tiles: [],
-                splats: [],
-                gravitywell: [],
-                speedpad: [],
-                speedpadred: [],
-                speedpadblue: [],
-                portal: [],
-                portalred: [],
-                portalblue: [],
-            });
-        },
-    },
+                    const el = document.getElementById(`preview-${id}`);
 
-    async mounted() {
-        this.loading = true;
+                    if (el) {
+                        el.appendChild(img);
+                    }
+                });
 
-        await this.loadImages();
-        this.setDefaults();
-
-        this.loading = false;
-    },
-
-    methods: {
-        async loadImages() {
-            await new Promise((resolve) => {
-                // simulate page load
-                setTimeout(() => {
-                    this.rawEntities = response.entities;
-                    resolve();
-                }, 1000);
+                img.src = image.url;
             });
         },
 
-        setDefaults() {
-            this.defaultBrush = this.imageByNameType({name: 'default', type: 'tiles'});
-            this.tileBrush = this.defaultBrush;
+        afterImagesLoaded() {
+            this.tileBrush = this.tileBrushByName('default');
+            this.paintAll(this.tileBrush);
         },
 
-        imageByNameType({name, type}) {
-            if (!this.imageData[type]) {
-                // eslint-disable-next-line no-console
-                console.error('Typo!');
-                return {};
-            }
-
-            return this.imageData[type]
+        tileBrushByName(name) {
+            return this.tileBrushes
                 .find(({name: imageName}) => name.toLowerCase() === imageName.toLowerCase());
         },
 
-        paintAll(image) {
-            this.$refs.tileCanvas.paint(image, 0, 0, 640, 440);
+        paintAll(brush) {
+            this.$refs.tileCanvas.paint(brush, 0, 0, 640, 440);
         },
 
-        paintWalls(image) {
-            this.$refs.tileCanvas.paint(image, 0, 0, 480, 440);
+        paintWalls(brush) {
+            this.$refs.tileCanvas.paint(brush, 0, 0, 480, 440);
         },
 
-        paintEnv(image) {
-            this.$refs.tileCanvas.paint(image, 480, 0, 80, 40);
-            this.$refs.tileCanvas.paint(image, 480, 40, 40, 80);
+        paintEnv(brush) {
+            this.$refs.tileCanvas.paint(brush, 480, 0, 80, 40);
+            this.$refs.tileCanvas.paint(brush, 480, 40, 40, 80);
         },
 
-        paintBalls(image) {
-            this.$refs.tileCanvas.paint(image, 560, 0, 80, 40);
+        paintBalls(brush) {
+            this.$refs.tileCanvas.paint(brush, 560, 0, 80, 40);
         },
 
-        paintFlags(image) {
-            this.$refs.tileCanvas.paint(image, 520, 40, 120, 80);
+        paintFlags(brush) {
+            this.$refs.tileCanvas.paint(brush, 520, 40, 120, 80);
         },
 
-        paintGates(image) {
-            this.$refs.tileCanvas.paint(image, 480, 120, 160, 40);
-            this.$refs.tileCanvas.paint(image, 520, 240, 40, 40);
+        paintGates(brush) {
+            this.$refs.tileCanvas.paint(brush, 480, 120, 160, 40);
+            this.$refs.tileCanvas.paint(brush, 520, 240, 40, 40);
         },
 
-        paintPups(image) {
-            this.$refs.tileCanvas.paint(image, 480, 160, 40, 200);
+        paintPups(brush) {
+            this.$refs.tileCanvas.paint(brush, 480, 160, 40, 200);
         },
 
-        paintTiles(image) {
-            this.$refs.tileCanvas.paint(image, 520, 160, 120, 80);
+        paintTiles(brush) {
+            this.$refs.tileCanvas.paint(brush, 520, 160, 120, 80);
         },
 
-        paintOther(image) {
-            this.$refs.tileCanvas.paint(image, 520, 280, 120, 160);
-            this.$refs.tileCanvas.paint(image, 480, 360, 40, 80);
-            this.$refs.tileCanvas.paint(image, 560, 240, 80, 40);
+        paintOther(brush) {
+            this.$refs.tileCanvas.paint(brush, 520, 280, 120, 160);
+            this.$refs.tileCanvas.paint(brush, 480, 360, 40, 80);
+            this.$refs.tileCanvas.paint(brush, 560, 240, 80, 40);
         },
     },
 };
 </script>
 
 <template>
-    <div v-if="loading">
-        Loading ...
-    </div>
-    <div v-else class="flex flex-col container mx-auto">
-        <div class="palette tiles-palette">
-            <div
-                v-for="image in imageData.tiles"
-                :key="image.id"
-                :class="image.id === tileBrush.id ? 'brush selected' : 'brush'"
-                @click="tileBrush = image"
-            >
-                <p class="name">{{ image.name }}</p>
-                <div class="relative">
-                    <img
-                        :src="image.url"
-                    />
-                    <p class="author">{{ image.author }}</p>
-                </div>
+    <div class="flex flex-col container mx-auto">
+        <div v-if="loading || tileBrush === null">
+            Loading ...
+        </div>
 
-                <div class="tp-controls">
-                    <a class="pillar-word" @click.prevent="() => paintAll(image)">all</a>
-                    <a class="pillar-word" @click.prevent="() => paintWalls(image)">walls</a>
-                    <a class="pillar-word" @click.prevent="() => paintEnv(image)">env</a>
-                    <a class="pillar-word" @click.prevent="() => paintBalls(image)">balls</a>
-                    <a class="pillar-word" @click.prevent="() => paintFlags(image)">flags</a>
-                    <a class="pillar-word" @click.prevent="() => paintGates(image)">gates</a>
-                    <a class="pillar-word" @click.prevent="() => paintPups(image)">pups</a>
-                    <a class="pillar-word" @click.prevent="() => paintTiles(image)">tiles</a>
-                    <a class="pillar-word" @click.prevent="() => paintOther(image)">other</a>
+        <div v-show="!loading">
+            <div class="palette tiles-palette">
+                <div
+                    v-for="brush in tileBrushes"
+                    :key="brush.id"
+                    :class="tileBrush && brush.id === tileBrush.id ? 'brush selected' : 'brush'"
+                    @click="tileBrush = brush"
+                >
+                    <p class="name">{{ brush.name }}</p>
+                    <div :id="`preview-${brush.id}`" class="relative">
+                        <p class="author">{{ brush.author }}</p>
+                    </div>
+
+                    <div class="tp-controls">
+                        <a class="pillar-word" @click.stop.prevent="() => paintAll(brush)">all</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintWalls(brush)">walls</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintEnv(brush)">env</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintBalls(brush)">balls</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintFlags(brush)">flags</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintGates(brush)">gates</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintPups(brush)">pups</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintTiles(brush)">tiles</a>
+                        <a class="pillar-word" @click.stop.prevent="() => paintOther(brush)">other</a>
+                    </div>
                 </div>
             </div>
+            <Canvas
+                ref="tileCanvas"
+                :width="TILES_X"
+                :height="TILES_Y"
+                :brush="tileBrush"
+            />
         </div>
-        <Canvas
-            ref="tileCanvas"
-            :width="TILES_X"
-            :height="TILES_Y"
-            :initial-image="defaultBrush"
-            :brush="tileBrush"
-        />
-
-        <div class="pillar mb-4">
-            <h1 class="pillar-word">Hi</h1>
-            <p class="pillar-word">I love ya Tagpro bbs</p>
-            <h2 class="pillar-word">I'm working on the Tagpro Themer</h2>
-            <p class="pillar-word">Let me know you want it!</p>
-        </div>
-
-        <InterestForm interest="the Tagpro Themer" />
     </div>
 </template>
 

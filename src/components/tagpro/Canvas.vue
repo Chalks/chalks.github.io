@@ -21,11 +21,6 @@ export default {
             default: 40,
         },
 
-        initialImage: {
-            type: Object,
-            default: null,
-        },
-
         brush: {
             type: Object,
             default: null,
@@ -38,7 +33,6 @@ export default {
             y: 0,
             over: false,
             down: false,
-            loadedImages: {},
         };
     },
 
@@ -49,24 +43,6 @@ export default {
 
         ctx() {
             return this.el.getContext('2d');
-        },
-
-        name() {
-            return this.initialImage
-                ? this.initialImage.name
-                : 'Untitled';
-        },
-
-        author() {
-            return this.initialImage
-                ? this.initialImage.author
-                : '';
-        },
-
-        initialSourceUrl() {
-            return this.initialImage
-                ? this.initialImage.url
-                : null;
         },
     },
 
@@ -86,22 +62,11 @@ export default {
 
     mounted() {
         this.setup();
-        this.drawInitialImage();
     },
 
     methods: {
         setup() {
             this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
-        },
-
-        drawInitialImage() {
-            if (!this.initialSourceUrl) return;
-
-            const img = new Image();
-            img.addEventListener('load', () => {
-                this.ctx.drawImage(img, 0, 0);
-            });
-            img.src = this.initialSourceUrl;
         },
 
         getMousePosition(e) {
@@ -132,18 +97,7 @@ export default {
 
             this.clear(finalX, finalY, finalWidth, finalHeight);
 
-            if (this.loadedImages[finalImage.id]) {
-                this.ctx.drawImage(this.loadedImages[finalImage.id], finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
-            } else {
-                const img = new Image();
-
-                img.addEventListener('load', () => {
-                    this.ctx.drawImage(img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
-                    this.loadedImages[finalImage.id] = img;
-                });
-
-                img.src = finalImage.url;
-            }
+            this.ctx.drawImage(finalImage.img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
         },
 
         onMove(e) {
@@ -188,8 +142,8 @@ export default {
         :width="width"
         :height="height"
         :style="{
-            maxWidth: `${width}px`,
-            maxHeight: `${height}px`,
+            width: `${width}px`,
+            height: `${height}px`,
         }"
         @click="onClick"
         @mousemove="onMove"
