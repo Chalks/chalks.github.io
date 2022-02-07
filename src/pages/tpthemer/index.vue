@@ -1,10 +1,13 @@
 <script>
 import LZUTF8 from 'lzutf8';
 import {response} from './images-response.js';
-import TilePalette from './TilePalette';
+
+import TilePalette from './TilePalette.vue';
+import SpeedpadPalette from './SpeedpadPalette.vue';
 
 export default {
     components: {
+        SpeedpadPalette,
         TilePalette,
     },
 
@@ -48,6 +51,13 @@ export default {
         tileBrushes() {
             return this.brushKeys
                 .filter((key) => this.brushes[key].type === 'tiles')
+                .map((key) => this.brushes[key])
+                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+
+        speedpadBrushes() {
+            return this.brushKeys
+                .filter((key) => this.brushes[key].type === 'speedpad')
                 .map((key) => this.brushes[key])
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
@@ -104,6 +114,7 @@ export default {
 
         afterImagesLoaded() {
             this.$refs.tilePalette.init();
+            this.$refs.speedpadPalette.init();
             this.importFromString();
         },
 
@@ -114,6 +125,7 @@ export default {
 
             if (decoded && decoded.length === 9) {
                 this.$refs.tilePalette.paintImport(decoded[0]);
+                this.$refs.speedpadPalette.paintImport(decoded[1]);
             }
         },
 
@@ -153,6 +165,10 @@ export default {
         onTileChange(e) {
             this.$set(this.exportArr, 0, e);
         },
+
+        onSpeedpadChange(e) {
+            this.$set(this.exportArr, 1, e);
+        },
     },
 };
 </script>
@@ -169,6 +185,11 @@ export default {
                 ref="tilePalette"
                 :brushes="tileBrushes"
                 @change="onTileChange"
+            />
+            <SpeedpadPalette
+                ref="speedpadPalette"
+                :brushes="speedpadBrushes"
+                @change="onSpeedpadChange"
             />
         </div>
     </div>
