@@ -1,4 +1,5 @@
 <script>
+import LZUTF8 from 'lzutf8';
 import {response} from './images-response.js';
 import TilePalette from './TilePalette';
 
@@ -49,11 +50,11 @@ export default {
         },
 
         exportString() {
-            if (process.client) {
-                return JSON.stringify(this.exportObj);
-            }
+            return LZUTF8.compress(JSON.stringify(this.exportObj), {outputEncoding: 'Base64'});
+        },
 
-            return '';
+        decoded() {
+            return JSON.parse(LZUTF8.decompress(this.exportString, {inputEncoding: 'Base64'}));
         },
     },
 
@@ -122,6 +123,9 @@ export default {
         <div v-show="!loading">
             <div class="my-4">
                 {{ exportString }}
+            </div>
+            <div class="my-4">
+                {{ decoded }}
             </div>
             <TilePalette
                 ref="tilePalette"

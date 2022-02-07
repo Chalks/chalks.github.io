@@ -133,6 +133,8 @@ export default {
         },
 
         getCompressedRecord() {
+            // might be able to just do this:
+            // return this.cellRecord;
             let compressed = [];
             let lastCount = -1;
 

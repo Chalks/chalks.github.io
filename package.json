@@ -25,6 +25,7 @@
   },
   "homepage": "https://jdw.me",
   "dependencies": {
+    "lzutf8": "^0.6.0",
     "nuxt": "^2.15.8"
   },
   "devDependencies": {
