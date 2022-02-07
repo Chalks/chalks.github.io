@@ -52,6 +52,10 @@ export default {
             });
         },
 
+        paintImport(cellRecord) {
+            this.$refs.tileCanvas.paintImport(this.brushes, cellRecord);
+        },
+
         paintAll(brush) {
             this.$refs.tileCanvas.paint(brush, 0, 0, 640, 440);
         },
@@ -118,15 +122,15 @@ export default {
                 </div>
 
                 <div class="tp-controls">
-                    <a class="pillar-word" @click.stop.prevent="() => paintAll(brush)">all</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintWalls(brush)">walls</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintEnv(brush)">env</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintBalls(brush)">balls</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintFlags(brush)">flags</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintGates(brush)">gates</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintPups(brush)">pups</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintTiles(brush)">tiles</a>
-                    <a class="pillar-word" @click.stop.prevent="() => paintOther(brush)">other</a>
+                    <a class="pillar-word" @click.prevent="() => paintAll(brush)">all</a>
+                    <a class="pillar-word" @click.prevent="() => paintWalls(brush)">walls</a>
+                    <a class="pillar-word" @click.prevent="() => paintEnv(brush)">env</a>
+                    <a class="pillar-word" @click.prevent="() => paintBalls(brush)">balls</a>
+                    <a class="pillar-word" @click.prevent="() => paintFlags(brush)">flags</a>
+                    <a class="pillar-word" @click.prevent="() => paintGates(brush)">gates</a>
+                    <a class="pillar-word" @click.prevent="() => paintPups(brush)">pups</a>
+                    <a class="pillar-word" @click.prevent="() => paintTiles(brush)">tiles</a>
+                    <a class="pillar-word" @click.prevent="() => paintOther(brush)">other</a>
                 </div>
             </div>
         </div>

@@ -115,6 +115,22 @@ export default {
             this.ctx.drawImage(finalImage.img, finalX, finalY, finalWidth, finalHeight, finalX, finalY, finalWidth, finalHeight);
         },
 
+        paintImport(images, compressedCellRecord) {
+            // this is the lazy way. Good way would be to calculate squares, but
+            // who has time for that
+            this.expandRecord(compressedCellRecord).forEach((record, index) => {
+                const x = Math.floor(index / this.cellsPerColumn) * this.cellWidth;
+                const y = (index % this.cellsPerColumn) * this.cellHeight;
+                const image = images.find(({id}) => id === record);
+
+                if (image) {
+                    this.paint(image, x, y, this.cellWidth, this.cellHeight);
+                } else {
+                    this.clear(x, y, this.cellWidth, this.cellHeight);
+                }
+            });
+        },
+
         recordCells(image, x, y, width, height) {
             const startX = x / this.cellWidth;
             const endX = startX + (width / this.cellWidth);
@@ -147,6 +163,20 @@ export default {
             }
 
             return compressed;
+        },
+
+        expandRecord(compressedRecord) {
+            const record = new Array(this.cellCount);
+            let total = 0;
+
+            for (let i = 0; i < compressedRecord.length; i += 2) {
+                const id = compressedRecord[i];
+                const count = compressedRecord[i + 1];
+                record.fill(id, total, total + count);
+                total += count;
+            }
+
+            return record;
         },
 
         setBrush(brush) {

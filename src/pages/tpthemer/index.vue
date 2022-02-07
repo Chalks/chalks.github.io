@@ -11,7 +11,7 @@ export default {
     data() {
         return {
             brushes: {},
-            exportObj: [
+            exportArr: [
                 [], // 0 tiles
                 [], // 1 speedpad
                 [], // 2 speedpad red
@@ -22,6 +22,9 @@ export default {
                 [], // 7 splats
                 [], // 8 gravity well
             ],
+            importStr: this.$route.hash
+                ? this.$route.hash.substr(1)
+                : null,
         };
     },
 
@@ -50,11 +53,7 @@ export default {
         },
 
         exportString() {
-            return LZUTF8.compress(JSON.stringify(this.exportObj), {outputEncoding: 'Base64'});
-        },
-
-        decoded() {
-            return JSON.parse(LZUTF8.decompress(this.exportString, {inputEncoding: 'Base64'}));
+            return this.encode();
         },
     },
 
@@ -105,10 +104,54 @@ export default {
 
         afterImagesLoaded() {
             this.$refs.tilePalette.init();
+            this.importFromString();
+        },
+
+        importFromString() {
+            if (!this.importStr) return;
+
+            const decoded = this.decode(this.importStr);
+
+            if (decoded && decoded.length === 9) {
+                this.$refs.tilePalette.paintImport(decoded[0]);
+            }
+        },
+
+        encode() {
+            let str = '';
+            str += `${this.exportArr[0].join(',')}`; // tiles
+            str += `.${this.exportArr[1].join(',')}`; // speedpad
+            str += `.${this.exportArr[2].join(',')}`; // speedpad red
+            str += `.${this.exportArr[3].join(',')}`; // speedpad blue
+            str += `.${this.exportArr[4].join(',')}`; // portal
+            str += `.${this.exportArr[5].join(',')}`; // portal red
+            str += `.${this.exportArr[6].join(',')}`; // portal blue
+            str += `.${this.exportArr[7].join(',')}`; // splats
+            str += `.${this.exportArr[8].join(',')}`; // gravity well
+
+            return LZUTF8.compress(str, {outputEncoding: 'Base64'});
+        },
+
+        decode(str) {
+            const decompressed = LZUTF8.decompress(str.trim(), {inputEncoding: 'Base64'});
+            const split = decompressed.split('.');
+            if (split.length !== 9) return false;
+
+            return [
+                split[0].split(',').map((x) => Number.parseInt(x, 10)),
+                split[1].split(',').map((x) => Number.parseInt(x, 10)),
+                split[2].split(',').map((x) => Number.parseInt(x, 10)),
+                split[3].split(',').map((x) => Number.parseInt(x, 10)),
+                split[4].split(',').map((x) => Number.parseInt(x, 10)),
+                split[5].split(',').map((x) => Number.parseInt(x, 10)),
+                split[6].split(',').map((x) => Number.parseInt(x, 10)),
+                split[7].split(',').map((x) => Number.parseInt(x, 10)),
+                split[8].split(',').map((x) => Number.parseInt(x, 10)),
+            ];
         },
 
         onTileChange(e) {
-            this.$set(this.exportObj, 0, e);
+            this.$set(this.exportArr, 0, e);
         },
     },
 };
@@ -121,12 +164,7 @@ export default {
         </div>
 
         <div v-show="!loading">
-            <div class="my-4">
-                {{ exportString }}
-            </div>
-            <div class="my-4">
-                {{ decoded }}
-            </div>
+            <a :href="`/tpthemer#${exportString}`">Link to this theme mix</a>
             <TilePalette
                 ref="tilePalette"
                 :brushes="tileBrushes"
@@ -173,9 +211,6 @@ export default {
         img {
             max-width: 144px;
             max-height: 99px;
-        }
-
-        .reset {
         }
     }
 
