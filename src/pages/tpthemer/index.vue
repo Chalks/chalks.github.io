@@ -181,12 +181,16 @@ export default {
         </div>
 
         <div v-show="!loading">
-            <a :href="`/tpthemer#${exportString}`">Link to this theme mix</a>
+            <div>
+                <a :href="`/tpthemer#${exportString}`">Link to this theme mix</a>
+            </div>
+
             <TilePalette
                 ref="tilePalette"
                 :brushes="tileBrushes"
                 @change="onTileChange"
             />
+
             <SpeedpadPalette
                 ref="speedpadPalette"
                 :brushes="speedpadBrushes"
@@ -199,57 +203,61 @@ export default {
 <style>
     .palette {
         @apply flex overflow-auto my-4;
-    }
 
-    .brush {
-        @apply opacity-50 cursor-pointer relative mr-4 transition-opacity;
+        .brush {
+            @apply opacity-50 cursor-pointer relative mr-4 transition-opacity;
 
-        &.selected, &:hover {
-            @apply opacity-100;
-        }
-
-        &:last-child {
-            @apply m-0;
-        }
-
-        max-width: 144px;
-
-        .name, .author {
-            @apply text-ellipsis whitespace-nowrap overflow-hidden text-xs;
-        }
-
-        .name {
-            @apply font-bold;
-        }
-
-        .author {
-            @apply absolute right-0 bottom-0 bg-white opacity-50 transition-opacity;
-
-            &:hover {
+            &.selected, &:hover {
                 @apply opacity-100;
+            }
+
+            &:last-child {
+                @apply m-0;
+            }
+
+            max-width: 144px;
+
+            .name, .author {
+                @apply text-ellipsis whitespace-nowrap overflow-hidden text-xs;
+            }
+
+            .name {
+                @apply font-bold;
+            }
+
+            .author {
+                @apply absolute right-0 bottom-0 bg-white opacity-50 transition-opacity;
+
+                &:hover {
+                    @apply opacity-100;
+                }
+            }
+
+            img {
+                max-width: 144px;
+                max-height: 99px;
             }
         }
 
-        img {
+        .tp-controls {
+            @apply flex mt-px flex-wrap items-start space-x-2 text-xs;
             max-width: 144px;
-            max-height: 99px;
+
+            a {
+                @apply border border-white text-center transition-colors;
+
+                width: 48px;
+                margin: 0 !important;
+                padding: 2px 0 0 0;
+
+                line-height: 18px;
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
         }
     }
 
-    .tp-controls {
-        @apply flex mt-px flex-wrap items-start space-x-2 text-xs;
-        max-width: 144px;
-
-        a {
-            @apply border border-white text-center transition-colors;
-
-            width: 48px;
-            margin: 0 !important;
-            padding: 2px 0 0 0;
-
-            line-height: 18px;
-            font-size: 11px;
-            letter-spacing: 1px;
-        }
+    .canvas {
+        @apply flex justify-center;
     }
 </style>

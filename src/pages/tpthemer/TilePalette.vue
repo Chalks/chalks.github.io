@@ -135,7 +135,7 @@ export default {
             </div>
         </div>
 
-        <div>
+        <div class="canvas">
             <Canvas
                 ref="tileCanvas"
                 :width="TILES_X"

@@ -91,7 +91,7 @@ export default {
             </div>
         </div>
 
-        <div>
+        <div class="canvas">
             <Canvas
                 ref="speedpadCanvas"
                 :width="SPEEDPAD_X"
