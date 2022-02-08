@@ -81,13 +81,14 @@ export default {
 
     methods: {
         loadImages() {
+            console.log('response:', response);
             response.entities.forEach((entity) => {
                 const {id} = entity;
                 const {
                     name,
                     author,
                     type,
-                    image,
+                    filename,
                 } = entity.data;
 
                 const img = new Image();
@@ -108,7 +109,7 @@ export default {
                     });
                 });
 
-                img.src = image.url;
+                img.src = `/tagpro/${filename}`;
             });
         },
 
