@@ -108,8 +108,8 @@ export default {
 };
 </script>
 <template>
-    <div>
-        <div class="palette tiles-palette">
+    <div class="palette-container">
+        <div class="palette">
             <div
                 v-for="brush in brushes"
                 :key="brush.id"

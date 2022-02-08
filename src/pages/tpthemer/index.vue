@@ -48,6 +48,20 @@ export default {
             return false;
         },
 
+        brushesLoading() {
+            // TODO this isn't quite right, probably can do in one pass
+            const loadingBrushes = {};
+            this.brushKeys.forEach((key) => {
+                const {name} = this.brushes[key];
+                loadingBrushes[name] = this.brushes[key].loaded;
+            });
+
+            return Object.entries(loadingBrushes)
+                .filter(([, loaded]) => loaded === false)
+                .map(([name]) => name)
+                .sort((a, b) => a.localeCompare(b));
+        },
+
         tileBrushes() {
             return this.brushKeys
                 .filter((key) => this.brushes[key].type === 'tiles')
@@ -81,7 +95,6 @@ export default {
 
     methods: {
         loadImages() {
-            console.log('response:', response);
             response.entities.forEach((entity) => {
                 const {id} = entity;
                 const {
@@ -103,10 +116,14 @@ export default {
                 });
 
                 img.addEventListener('load', () => {
-                    this.$set(this.brushes, id, {
-                        ...this.brushes[id],
-                        loaded: true,
-                    });
+                    const randTime = Math.floor(Math.random() * 5000);
+                    // TODO remove random timeout
+                    setTimeout(() => {
+                        this.$set(this.brushes, id, {
+                            ...this.brushes[id],
+                            loaded: true,
+                        });
+                    }, randTime);
                 });
 
                 img.src = `/tagpro/${filename}`;
@@ -177,7 +194,7 @@ export default {
 <template>
     <div class="flex flex-col container mx-auto">
         <div v-if="loading">
-            Loading ...
+            <p v-for="name in brushesLoading" :key="name">{{ name }}</p>
         </div>
 
         <div v-show="!loading">
@@ -201,18 +218,18 @@ export default {
 </template>
 
 <style>
+    .palette-container {
+        @apply flex flex-col;
+    }
+
     .palette {
         @apply flex overflow-auto my-4;
 
         .brush {
-            @apply opacity-50 cursor-pointer relative mr-4 transition-opacity;
+            @apply opacity-50 cursor-pointer relative mx-2 transition-opacity;
 
             &.selected, &:hover {
                 @apply opacity-100;
-            }
-
-            &:last-child {
-                @apply m-0;
             }
 
             max-width: 144px;
