@@ -108,6 +108,8 @@ export default {
             const finalWidth = width || this.cellWidth;
             const finalHeight = height || this.cellHeight;
 
+            if (!finalImage || !finalImage.img) return;
+
             this.recordCells(finalImage, finalX, finalY, finalWidth, finalHeight);
 
             this.clear(finalX, finalY, finalWidth, finalHeight);

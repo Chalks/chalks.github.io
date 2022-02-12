@@ -31,9 +31,9 @@ export default {
                         id: brush.id, // inaccurate but good enough
                         author: brush.author,
                         name: brush.name,
-                        speedpad: null,
-                        speedpadred: null,
-                        speedpadblue: null,
+                        portal: null,
+                        portalred: null,
+                        portalblue: null,
                     });
                     lastName = brush.name;
                 }
@@ -74,12 +74,12 @@ export default {
         },
 
         paintImport(type, cellRecord) {
-            if (type === this.SPEEDPAD) {
-                this.$refs.speedpadCanvas.paintImport(this.brushes, cellRecord);
-            } else if (type === this.SPEEDPAD_RED) {
-                this.$refs.speedpadredCanvas.paintImport(this.brushes, cellRecord);
-            } else if (type === this.SPEEDPAD_BLUE) {
-                this.$refs.speedpadblueCanvas.paintImport(this.brushes, cellRecord);
+            if (type === this.PORTAL) {
+                this.$refs.portalCanvas.paintImport(this.brushes, cellRecord);
+            } else if (type === this.PORTAL_RED) {
+                this.$refs.portalredCanvas.paintImport(this.brushes, cellRecord);
+            } else if (type === this.PORTAL_BLUE) {
+                this.$refs.portalblueCanvas.paintImport(this.brushes, cellRecord);
             }
         },
 
@@ -90,37 +90,37 @@ export default {
         },
 
         paintNeutral(combo) {
-            this.$refs.speedpadCanvas
-                .paint(combo.speedpad, 0, 0, this.SPEEDPAD_X, this.SPEEDPAD_Y);
+            this.$refs.portalCanvas
+                .paint(combo.portal, 0, 0, this.PORTAL_X, this.PORTAL_Y);
         },
 
         paintRed(combo) {
-            this.$refs.speedpadredCanvas
-                .paint(combo.speedpadred, 0, 0, this.SPEEDPAD_X, this.SPEEDPAD_Y);
+            this.$refs.portalredCanvas
+                .paint(combo.portalred, 0, 0, this.PORTAL_X, this.PORTAL_Y);
         },
 
         paintBlue(combo) {
-            this.$refs.speedpadblueCanvas
-                .paint(combo.speedpadblue, 0, 0, this.SPEEDPAD_X, this.SPEEDPAD_Y);
+            this.$refs.portalblueCanvas
+                .paint(combo.portalblue, 0, 0, this.PORTAL_X, this.PORTAL_Y);
         },
 
         chooseCombo(combo) {
-            this.$refs.speedpadCanvas.setBrush(combo.speedpad);
-            this.$refs.speedpadredCanvas.setBrush(combo.speedpadred);
-            this.$refs.speedpadblueCanvas.setBrush(combo.speedpadblue);
+            this.$refs.portalCanvas.setBrush(combo.portal);
+            this.$refs.portalredCanvas.setBrush(combo.portalred);
+            this.$refs.portalblueCanvas.setBrush(combo.portalblue);
             this.comboBrush = combo;
         },
 
         onChangeNeutral(e) {
-            this.$emit('change', this.SPEEDPAD, e);
+            this.$emit('change', this.PORTAL, e);
         },
 
         onChangeRed(e) {
-            this.$emit('change', this.SPEEDPAD_RED, e);
+            this.$emit('change', this.PORTAL_RED, e);
         },
 
         onChangeBlue(e) {
-            this.$emit('change', this.SPEEDPAD_BLUE, e);
+            this.$emit('change', this.PORTAL_BLUE, e);
         },
     },
 };
@@ -138,54 +138,54 @@ export default {
 
                 <div class="relative">
                     <div
-                        v-if="cb.speedpad"
-                        :id="`preview-${cb.speedpad.id}`"
+                        v-if="cb.portal"
+                        :id="`preview-${cb.portal.id}`"
                         class="mb-px"
                     />
 
                     <div
-                        v-if="cb.speedpadred"
-                        :id="`preview-${cb.speedpadred.id}`"
+                        v-if="cb.portalred"
+                        :id="`preview-${cb.portalred.id}`"
                         class="mb-px"
                     />
 
                     <div
-                        v-if="cb.speedpadblue"
-                        :id="`preview-${cb.speedpadblue.id}`"
+                        v-if="cb.portalblue"
+                        :id="`preview-${cb.portalblue.id}`"
                         class="mb-px"
                     />
                     <p class="author">{{ cb.author }}</p>
                 </div>
 
                 <div class="tp-controls">
-                    <a v-if="cb.speedpad" class="pillar-word" @click.prevent="() => paintNeutral(cb)">neut</a>
-                    <a v-if="cb.speedpadred" class="pillar-word" @click.prevent="() => paintRed(cb)">red</a>
-                    <a v-if="cb.speedpadblue" class="pillar-word" @click.prevent="() => paintBlue(cb)">blue</a>
+                    <a v-if="cb.portal" class="pillar-word" @click.prevent="() => paintNeutral(cb)">neut</a>
+                    <a v-if="cb.portalred" class="pillar-word" @click.prevent="() => paintRed(cb)">red</a>
+                    <a v-if="cb.portalblue" class="pillar-word" @click.prevent="() => paintBlue(cb)">blue</a>
                 </div>
             </div>
         </div>
 
         <div class="canvas flex flex-col items-center">
             <Canvas
-                ref="speedpadCanvas"
-                :width="SPEEDPAD_X"
-                :height="SPEEDPAD_Y"
+                ref="portalCanvas"
+                :width="PORTAL_X"
+                :height="PORTAL_Y"
                 :cell-width="CELL_X"
                 :cell-height="CELL_Y"
                 @change="onChangeNeutral"
             />
             <Canvas
-                ref="speedpadredCanvas"
-                :width="SPEEDPAD_X"
-                :height="SPEEDPAD_Y"
+                ref="portalredCanvas"
+                :width="PORTAL_X"
+                :height="PORTAL_Y"
                 :cell-width="CELL_X"
                 :cell-height="CELL_Y"
                 @change="onChangeRed"
             />
             <Canvas
-                ref="speedpadblueCanvas"
-                :width="SPEEDPAD_X"
-                :height="SPEEDPAD_Y"
+                ref="portalblueCanvas"
+                :width="PORTAL_X"
+                :height="PORTAL_Y"
                 :cell-width="CELL_X"
                 :cell-height="CELL_Y"
                 @change="onChangeBlue"

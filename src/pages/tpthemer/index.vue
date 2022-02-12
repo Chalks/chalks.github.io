@@ -3,11 +3,13 @@ import LZUTF8 from 'lzutf8';
 import {response} from './images-response.js';
 import constants from './constants.js';
 
-import TilePalette from './TilePalette.vue';
+import PortalPalette from './PortalPalette.vue';
 import SpeedpadPalette from './SpeedpadPalette.vue';
+import TilePalette from './TilePalette.vue';
 
 export default {
     components: {
+        PortalPalette,
         SpeedpadPalette,
         TilePalette,
     },
@@ -66,16 +68,25 @@ export default {
 
         tileBrushes() {
             return this.brushKeys
-                .filter((key) => this.brushes[key].type === 'tiles')
+                .filter((key) => this.brushes[key].type === this.TILES)
                 .map((key) => this.brushes[key])
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
 
         speedBrushes() {
             return this.brushKeys
-                .filter((key) => this.brushes[key].type === 'speedpad'
-                    || this.brushes[key].type === 'speedpadred'
-                    || this.brushes[key].type === 'speedpadblue')
+                .filter((key) => this.brushes[key].type === this.SPEEDPAD
+                    || this.brushes[key].type === this.SPEEDPAD_RED
+                    || this.brushes[key].type === this.SPEEDPAD_BLUE)
+                .map((key) => this.brushes[key])
+                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+
+        portalBrushes() {
+            return this.brushKeys
+                .filter((key) => this.brushes[key].type === this.PORTAL
+                    || this.brushes[key].type === this.PORTAL_RED
+                    || this.brushes[key].type === this.PORTAL_BLUE)
                 .map((key) => this.brushes[key])
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
@@ -137,6 +148,7 @@ export default {
         afterImagesLoaded() {
             this.$refs.tilePalette.init();
             this.$refs.speedpadPalette.init();
+            this.$refs.portalPalette.init();
             this.importFromString();
         },
 
@@ -150,6 +162,9 @@ export default {
                 this.$refs.speedpadPalette.paintImport(this.SPEEDPAD, decoded[1]);
                 this.$refs.speedpadPalette.paintImport(this.SPEEDPAD_RED, decoded[2]);
                 this.$refs.speedpadPalette.paintImport(this.SPEEDPAD_BLUE, decoded[3]);
+                this.$refs.portalPalette.paintImport(this.PORTAL, decoded[4]);
+                this.$refs.portalPalette.paintImport(this.PORTAL_RED, decoded[5]);
+                this.$refs.portalPalette.paintImport(this.PORTAL_BLUE, decoded[6]);
             }
         },
 
@@ -199,6 +214,16 @@ export default {
                 this.$set(this.exportArr, 3, value);
             }
         },
+
+        onPortalChange(type, value) {
+            if (type === this.PORTAL) {
+                this.$set(this.exportArr, 4, value);
+            } else if (type === this.PORTAL_RED) {
+                this.$set(this.exportArr, 5, value);
+            } else if (type === this.PORTAL_BLUE) {
+                this.$set(this.exportArr, 6, value);
+            }
+        },
     },
 };
 </script>
@@ -224,6 +249,12 @@ export default {
                 ref="speedpadPalette"
                 :brushes="speedBrushes"
                 @change="onSpeedpadChange"
+            />
+
+            <PortalPalette
+                ref="portalPalette"
+                :brushes="portalBrushes"
+                @change="onPortalChange"
             />
         </div>
     </div>

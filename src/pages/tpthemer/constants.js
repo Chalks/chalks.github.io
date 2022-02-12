@@ -8,7 +8,7 @@ const SPEEDPAD_X = 200;
 const SPEEDPAD_Y = 40;
 
 const PORTAL_X = 200;
-const PORTAL_Y = 200;
+const PORTAL_Y = 40;
 
 const SPLATS_X = 840;
 const SPLATS_Y = 240;
