@@ -1,6 +1,7 @@
 <script>
 import LZUTF8 from 'lzutf8';
 import {response} from './images-response.js';
+import constants from './constants.js';
 
 import TilePalette from './TilePalette.vue';
 import SpeedpadPalette from './SpeedpadPalette.vue';
@@ -13,6 +14,7 @@ export default {
 
     data() {
         return {
+            ...constants,
             brushes: {},
             exportArr: [
                 [], // 0 tiles
@@ -69,9 +71,11 @@ export default {
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
 
-        speedpadBrushes() {
+        speedBrushes() {
             return this.brushKeys
-                .filter((key) => this.brushes[key].type === 'speedpad')
+                .filter((key) => this.brushes[key].type === 'speedpad'
+                    || this.brushes[key].type === 'speedpadred'
+                    || this.brushes[key].type === 'speedpadblue')
                 .map((key) => this.brushes[key])
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
@@ -116,7 +120,7 @@ export default {
                 });
 
                 img.addEventListener('load', () => {
-                    const randTime = Math.floor(Math.random() * 5000);
+                    const randTime = Math.floor(Math.random() * 1000);
                     // TODO remove random timeout
                     setTimeout(() => {
                         this.$set(this.brushes, id, {
@@ -143,7 +147,9 @@ export default {
 
             if (decoded && decoded.length === 9) {
                 this.$refs.tilePalette.paintImport(decoded[0]);
-                this.$refs.speedpadPalette.paintImport(decoded[1]);
+                this.$refs.speedpadPalette.paintImport(this.SPEEDPAD, decoded[1]);
+                this.$refs.speedpadPalette.paintImport(this.SPEEDPAD_RED, decoded[2]);
+                this.$refs.speedpadPalette.paintImport(this.SPEEDPAD_BLUE, decoded[3]);
             }
         },
 
@@ -184,8 +190,14 @@ export default {
             this.$set(this.exportArr, 0, e);
         },
 
-        onSpeedpadChange(e) {
-            this.$set(this.exportArr, 1, e);
+        onSpeedpadChange(type, value) {
+            if (type === this.SPEEDPAD) {
+                this.$set(this.exportArr, 1, value);
+            } else if (type === this.SPEEDPAD_RED) {
+                this.$set(this.exportArr, 2, value);
+            } else if (type === this.SPEEDPAD_BLUE) {
+                this.$set(this.exportArr, 3, value);
+            }
         },
     },
 };
@@ -210,7 +222,7 @@ export default {
 
             <SpeedpadPalette
                 ref="speedpadPalette"
-                :brushes="speedpadBrushes"
+                :brushes="speedBrushes"
                 @change="onSpeedpadChange"
             />
         </div>
