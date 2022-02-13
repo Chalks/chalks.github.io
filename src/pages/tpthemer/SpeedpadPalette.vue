@@ -127,6 +127,7 @@ export default {
 </script>
 <template>
     <div class="palette-container">
+        <h1 class="pillar-word">SPEEDPAD</h1>
         <div class="palette">
             <div
                 v-for="cb in comboBrushes"

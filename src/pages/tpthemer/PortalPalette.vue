@@ -127,6 +127,7 @@ export default {
 </script>
 <template>
     <div class="palette-container">
+        <h1 class="pillar-word">PORTALS</h1>
         <div class="palette">
             <div
                 v-for="cb in comboBrushes"

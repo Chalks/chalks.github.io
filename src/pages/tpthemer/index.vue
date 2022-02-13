@@ -172,6 +172,13 @@ export default {
             this.importFromString();
         },
 
+        reset() {
+            this.importStr = this.$route.hash
+                ? this.$route.hash.substr(1)
+                : null;
+            this.afterImagesLoaded();
+        },
+
         importFromString() {
             if (!this.importStr) return;
 
@@ -259,16 +266,18 @@ export default {
 </script>
 
 <template>
-    <div class="flex flex-col container mx-auto">
+    <div class="themer">
+        <div v-show="!loading" class="menu">
+            <a :href="`/tpthemer#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
+            <a :href="`/tpthemer#${exportString}`" class="pillar-word">UPLOAD TO IMGUR</a>
+            <a href="#reset" class="pillar-word" @click.prevent="reset">RESET</a>
+        </div>
+
         <div v-if="loading">
             <p v-for="name in brushesLoading" :key="name">{{ name }}</p>
         </div>
 
         <div v-show="!loading">
-            <div>
-                <a :href="`/tpthemer#${exportString}`">Link to this theme mix</a>
-            </div>
-
             <TilePalette
                 ref="tilePalette"
                 :brushes="tileBrushes"
@@ -299,12 +308,43 @@ export default {
                 @change="onGravityChange"
             />
         </div>
+
+        <div v-show="!loading">
+            feedback
+        </div>
     </div>
 </template>
 
 <style>
+    .themer {
+        @apply flex flex-col mx-auto relative;
+        width: 840px;
+        margin-top: calc(33px + 1rem);
+
+        a {
+            @apply text-center transition-colors;
+
+            margin: 0 !important;
+            padding: 2px 16px 0 16px;
+
+            line-height: 31px;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+    }
+
+    .menu {
+        @apply flex z-50;
+        position: fixed;
+        top: 0;
+        width: 840px;
+        a { @apply mx-1 !important; }
+        a:first-child { @apply ml-0 !important; }
+        a:last-child { @apply mr-0 !important; }
+    }
+
     .palette-container {
-        @apply flex flex-col;
+        @apply flex flex-col mb-12;
     }
 
     .palette {
@@ -312,6 +352,14 @@ export default {
 
         .brush {
             @apply opacity-50 cursor-pointer relative mx-2 transition-opacity;
+
+            &:first-child {
+                @apply ml-0;
+            }
+
+            &:last-child {
+                @apply mr-0;
+            }
 
             &.selected, &:hover {
                 @apply opacity-100;
@@ -346,12 +394,10 @@ export default {
             max-width: 144px;
 
             a {
-                @apply border border-white text-center transition-colors;
-
-                width: 48px;
+                @apply border border-white;
                 margin: 0 !important;
+                width: 48px;
                 padding: 2px 0 0 0;
-
                 line-height: 18px;
                 font-size: 11px;
                 letter-spacing: 1px;

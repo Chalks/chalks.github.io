@@ -109,6 +109,7 @@ export default {
 </script>
 <template>
     <div class="palette-container">
+        <h1 class="pillar-word">TILES</h1>
         <div class="palette">
             <div
                 v-for="brush in brushes"
