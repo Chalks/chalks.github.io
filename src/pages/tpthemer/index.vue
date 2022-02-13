@@ -5,12 +5,14 @@ import constants from './constants.js';
 
 import PortalPalette from './PortalPalette.vue';
 import SpeedpadPalette from './SpeedpadPalette.vue';
+import SplatPalette from './SplatPalette.vue';
 import TilePalette from './TilePalette.vue';
 
 export default {
     components: {
         PortalPalette,
         SpeedpadPalette,
+        SplatPalette,
         TilePalette,
     },
 
@@ -91,6 +93,13 @@ export default {
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
 
+        splatBrushes() {
+            return this.brushKeys
+                .filter((key) => this.brushes[key].type === this.SPLATS)
+                .map((key) => this.brushes[key])
+                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+
         exportString() {
             return this.encode();
         },
@@ -149,6 +158,7 @@ export default {
             this.$refs.tilePalette.init();
             this.$refs.speedpadPalette.init();
             this.$refs.portalPalette.init();
+            this.$refs.splatPalette.init();
             this.importFromString();
         },
 
@@ -165,6 +175,7 @@ export default {
                 this.$refs.portalPalette.paintImport(this.PORTAL, decoded[4]);
                 this.$refs.portalPalette.paintImport(this.PORTAL_RED, decoded[5]);
                 this.$refs.portalPalette.paintImport(this.PORTAL_BLUE, decoded[6]);
+                this.$refs.splatPalette.paintImport(decoded[7]);
             }
         },
 
@@ -224,6 +235,10 @@ export default {
                 this.$set(this.exportArr, 6, value);
             }
         },
+
+        onSplatChange(e) {
+            this.$set(this.exportArr, 7, e);
+        },
     },
 };
 </script>
@@ -255,6 +270,12 @@ export default {
                 ref="portalPalette"
                 :brushes="portalBrushes"
                 @change="onPortalChange"
+            />
+
+            <SplatPalette
+                ref="splatPalette"
+                :brushes="splatBrushes"
+                @change="onSplatChange"
             />
         </div>
     </div>
