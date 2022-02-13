@@ -3,6 +3,7 @@ import LZUTF8 from 'lzutf8';
 import {response} from './images-response.js';
 import constants from './constants.js';
 
+import GravityPalette from './GravityPalette.vue';
 import PortalPalette from './PortalPalette.vue';
 import SpeedpadPalette from './SpeedpadPalette.vue';
 import SplatPalette from './SplatPalette.vue';
@@ -10,6 +11,7 @@ import TilePalette from './TilePalette.vue';
 
 export default {
     components: {
+        GravityPalette,
         PortalPalette,
         SpeedpadPalette,
         SplatPalette,
@@ -100,6 +102,13 @@ export default {
                 .sort(({name: a}, {name: b}) => a.localeCompare(b));
         },
 
+        gravityBrushes() {
+            return this.brushKeys
+                .filter((key) => this.brushes[key].type === this.GRAVITY_WELL)
+                .map((key) => this.brushes[key])
+                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+        },
+
         exportString() {
             return this.encode();
         },
@@ -159,6 +168,7 @@ export default {
             this.$refs.speedpadPalette.init();
             this.$refs.portalPalette.init();
             this.$refs.splatPalette.init();
+            this.$refs.gravityPalette.init();
             this.importFromString();
         },
 
@@ -176,6 +186,7 @@ export default {
                 this.$refs.portalPalette.paintImport(this.PORTAL_RED, decoded[5]);
                 this.$refs.portalPalette.paintImport(this.PORTAL_BLUE, decoded[6]);
                 this.$refs.splatPalette.paintImport(decoded[7]);
+                this.$refs.gravityPalette.paintImport(decoded[8]);
             }
         },
 
@@ -239,6 +250,10 @@ export default {
         onSplatChange(e) {
             this.$set(this.exportArr, 7, e);
         },
+
+        onGravityChange(e) {
+            this.$set(this.exportArr, 8, e);
+        },
     },
 };
 </script>
@@ -277,6 +292,12 @@ export default {
                 :brushes="splatBrushes"
                 @change="onSplatChange"
             />
+
+            <GravityPalette
+                ref="gravityPalette"
+                :brushes="gravityBrushes"
+                @change="onGravityChange"
+            />
         </div>
     </div>
 </template>
@@ -296,7 +317,7 @@ export default {
                 @apply opacity-100;
             }
 
-            max-width: 144px;
+            width: 144px;
 
             .name, .author {
                 @apply text-ellipsis whitespace-nowrap overflow-hidden text-xs;
