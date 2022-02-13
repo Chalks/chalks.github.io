@@ -74,7 +74,7 @@ export default {
             return this.brushKeys
                 .filter((key) => this.brushes[key].type === this.TILES)
                 .map((key) => this.brushes[key])
-                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+                .sort(this.brushSort);
         },
 
         speedBrushes() {
@@ -83,7 +83,7 @@ export default {
                     || this.brushes[key].type === this.SPEEDPAD_RED
                     || this.brushes[key].type === this.SPEEDPAD_BLUE)
                 .map((key) => this.brushes[key])
-                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+                .sort(this.brushSort);
         },
 
         portalBrushes() {
@@ -92,21 +92,21 @@ export default {
                     || this.brushes[key].type === this.PORTAL_RED
                     || this.brushes[key].type === this.PORTAL_BLUE)
                 .map((key) => this.brushes[key])
-                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+                .sort(this.brushSort);
         },
 
         splatBrushes() {
             return this.brushKeys
                 .filter((key) => this.brushes[key].type === this.SPLATS)
                 .map((key) => this.brushes[key])
-                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+                .sort(this.brushSort);
         },
 
         gravityBrushes() {
             return this.brushKeys
                 .filter((key) => this.brushes[key].type === this.GRAVITY_WELL)
                 .map((key) => this.brushes[key])
-                .sort(({name: a}, {name: b}) => a.localeCompare(b));
+                .sort(this.brushSort);
         },
 
         exportString() {
@@ -127,6 +127,12 @@ export default {
     },
 
     methods: {
+        brushSort({name: a}, {name: b}) {
+            if (a.toLowerCase() === 'default') return -1;
+            if (b.toLowerCase() === 'default') return 1;
+            return a.localeCompare(b);
+        },
+
         loadImages() {
             response.entities.forEach((entity) => {
                 const {id} = entity;
@@ -266,18 +272,30 @@ export default {
 </script>
 
 <template>
-    <div class="themer">
-        <div v-show="!loading" class="menu">
-            <a :href="`/tpthemer#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
-            <a :href="`/tpthemer#${exportString}`" class="pillar-word">UPLOAD TO IMGUR</a>
-            <a href="#reset" class="pillar-word" @click.prevent="reset">RESET</a>
-        </div>
-
-        <div v-if="loading">
+    <div>
+        <div v-if="loading" class="animate-pulse prose text-center mx-auto">
+            <p>Loading ...</p>
             <p v-for="name in brushesLoading" :key="name">{{ name }}</p>
         </div>
 
-        <div v-show="!loading">
+        <div v-show="!loading" class="themer">
+            <div class="menu">
+                <a :href="`/tpthemer#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
+                <a :href="`/tpthemer#${exportString}`" class="pillar-word">UPLOAD TO IMGUR</a>
+                <a href="#reset" class="pillar-word" @click.prevent="reset">RESET</a>
+            </div>
+
+            <div class="prose max-w-none my-8">
+                <p>NEW and IMPROVED(?) <a href="https://tagpro.gg">TAGPRO</a> Themer!</p>
+                <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
+                <p>There are some things that still need to be done:</p>
+                <ul>
+                    <li>Ingest texture packs that aren't published on tagpro.gg (you can help! there's a form here!)</li>
+                    <li>Allow users to use textures that haven't been published here</li>
+                    <li>Automatically ingest new texture packs instead of the manual process</li>
+                </ul>
+            </div>
+
             <TilePalette
                 ref="tilePalette"
                 :brushes="tileBrushes"
@@ -307,10 +325,10 @@ export default {
                 :brushes="gravityBrushes"
                 @change="onGravityChange"
             />
-        </div>
 
-        <div v-show="!loading">
-            feedback
+            <div>
+                feedback
+            </div>
         </div>
     </div>
 </template>
@@ -319,7 +337,14 @@ export default {
     .themer {
         @apply flex flex-col mx-auto relative;
         width: 840px;
-        margin-top: calc(33px + 1rem);
+        margin-top: 31px;
+    }
+
+    .menu {
+        @apply flex z-50;
+        position: fixed;
+        top: 0;
+        width: 840px;
 
         a {
             @apply text-center transition-colors;
@@ -331,13 +356,7 @@ export default {
             font-size: 20px;
             letter-spacing: 2px;
         }
-    }
 
-    .menu {
-        @apply flex z-50;
-        position: fixed;
-        top: 0;
-        width: 840px;
         a { @apply mx-1 !important; }
         a:first-child { @apply ml-0 !important; }
         a:last-child { @apply mr-0 !important; }
@@ -394,7 +413,7 @@ export default {
             max-width: 144px;
 
             a {
-                @apply border border-white;
+                @apply border border-white text-center transition-colors;
                 margin: 0 !important;
                 width: 48px;
                 padding: 2px 0 0 0;
