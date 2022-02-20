@@ -9,6 +9,8 @@ import SpeedpadPalette from './SpeedpadPalette.vue';
 import SplatPalette from './SplatPalette.vue';
 import TilePalette from './TilePalette.vue';
 
+import IngestForm from './IngestForm.vue';
+
 export default {
     components: {
         GravityPalette,
@@ -16,6 +18,7 @@ export default {
         SpeedpadPalette,
         SplatPalette,
         TilePalette,
+        IngestForm,
     },
 
     data() {
@@ -33,7 +36,7 @@ export default {
                 [], // 7 splats
                 [], // 8 gravity well
             ],
-            importStr: this.$route.hash
+            importString: this.$route.hash
                 ? this.$route.hash.substr(1)
                 : null,
         };
@@ -124,9 +127,29 @@ export default {
 
     async mounted() {
         this.loadImages();
+        window.addEventListener('beforeunload', this.beforeUnload);
+    },
+
+    beforeDestroy() {
+        window.removeEventListener('beforeunload', this.beforeUnload);
     },
 
     methods: {
+        beforeUnload(e) {
+            const defaultHash = 'NDUwNjEsMTc2LsQKMiw1xQgzxwg0xwg1xwg2xwg3xwg4LDE0xQk5LDE=';
+            const currHash = this.$route.hash
+                ? this.$route.hash.substr(1)
+                : null;
+
+            const isDefault = this.exportString === defaultHash;
+            const isLoaded = this.exportString === currHash;
+
+            if (this.exportString && !isDefault && !isLoaded) {
+                e.preventDefault();
+                e.returnValue = 'Are you sure?';
+            }
+        },
+
         brushSort({name: a}, {name: b}) {
             if (a.toLowerCase() === 'default') return -1;
             if (b.toLowerCase() === 'default') return 1;
@@ -155,8 +178,8 @@ export default {
                 });
 
                 img.addEventListener('load', () => {
-                    const randTime = Math.floor(Math.random() * 1000);
-                    // TODO remove random timeout
+                    const randTime = Math.floor(Math.random() * 10);
+                    // The random timeout just makes the loading progress look nicer
                     setTimeout(() => {
                         this.$set(this.brushes, id, {
                             ...this.brushes[id],
@@ -179,16 +202,16 @@ export default {
         },
 
         reset() {
-            this.importStr = this.$route.hash
+            this.importString = this.$route.hash
                 ? this.$route.hash.substr(1)
                 : null;
             this.afterImagesLoaded();
         },
 
         importFromString() {
-            if (!this.importStr) return;
+            if (!this.importString) return;
 
-            const decoded = this.decode(this.importStr);
+            const decoded = this.decode(this.importString);
 
             if (decoded && decoded.length === 9) {
                 this.$refs.tilePalette.paintImport(decoded[0]);
@@ -267,6 +290,10 @@ export default {
         onGravityChange(e) {
             this.$set(this.exportArr, 8, e);
         },
+
+        scrollToPostfix() {
+            document.getElementById('postfix').scrollIntoView({behavior: 'smooth'});
+        },
     },
 };
 </script>
@@ -286,14 +313,8 @@ export default {
             </div>
 
             <div class="prose max-w-none my-8">
-                <p>NEW and IMPROVED(?) <a href="https://tagpro.gg">TAGPRO</a> Themer!</p>
-                <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
-                <p>There are some things that still need to be done:</p>
-                <ul>
-                    <li>Ingest texture packs that aren't published on tagpro.gg (you can help! there's a form here!)</li>
-                    <li>Allow users to use textures that haven't been published here</li>
-                    <li>Automatically ingest new texture packs instead of the manual process</li>
-                </ul>
+                <p>Chalksy's <a href="https://tagpro.gg">TAGPRO</a> Themer!</p>
+                <p>About, TODO, and Ingest <a href="#" @click.prevent="scrollToPostfix">at the bottom of this page</a></p>
             </div>
 
             <TilePalette
@@ -326,8 +347,24 @@ export default {
                 @change="onGravityChange"
             />
 
-            <div>
-                feedback
+            <div id="postfix" class="prose max-w-none my-8">
+                <hr>
+
+                <h1 class="pillar-word">ABOUT</h1>
+                <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
+                <hr>
+
+                <h1 class="pillar-word">TODO</h1>
+                <ul class="my-5">
+                    <li>Ingest texture packs that aren't published on tagpro.gg (see 'INGEST' below!)</li>
+                    <li>Allow users to use local textures that haven't been published here</li>
+                    <li>Automatically ingest new texture packs instead of the manual process</li>
+                    <li>Track and publish the packs uploaded to imgur to prevent duplicates</li>
+                </ul>
+                <hr>
+
+                <h1 class="pillar-word">INGEST</h1>
+                <IngestForm />
             </div>
         </div>
     </div>
@@ -426,5 +463,11 @@ export default {
 
     .canvas {
         @apply flex justify-center;
+    }
+
+    #postfix {
+        .pillar-word {
+            @apply bg-yellow-500;
+        }
     }
 </style>
