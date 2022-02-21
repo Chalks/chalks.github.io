@@ -26,6 +26,7 @@ export default {
             <a href="https://github.com/Chalks/jdw.me" target="_blank" class="pillar-word">JDW.ME</a>
             <a href="https://formcake.com" target="_blank" class="pillar-word">FORMCAKE.COM</a>
             <NuxtLink to="/fun/notation" class="pillar-word">NOTATION.VALIDATOR</NuxtLink>
+            <NuxtLink to="/tpthemer" class="pillar-word">TAGPRO.THEMER</NuxtLink>
         </div>
     </div>
 </template>

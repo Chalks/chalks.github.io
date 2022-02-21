@@ -45,6 +45,10 @@ export default {
         };
     },
 
+    head: {
+        title: 'Tagpro Themer',
+    },
+
     computed: {
         brushKeys() {
             return Object.keys(this.brushes);
