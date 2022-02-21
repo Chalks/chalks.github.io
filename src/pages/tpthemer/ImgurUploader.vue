@@ -62,6 +62,7 @@ export default {
     watch: {
         open(isOpen) {
             if (isOpen) {
+                this.reset();
                 this.startUpload();
                 document.body.classList.add('overflow-hidden');
             } else {
@@ -74,6 +75,20 @@ export default {
         close() {
             this.uploading = false;
             this.$emit('update:open', false);
+        },
+
+        reset() {
+            this.uploading = false;
+            this.images = {};
+            this.albumId = null;
+            this.albumDeleteHash = null;
+            this.errorMessage = '';
+            this.headers = null;
+        },
+
+        cancel() {
+            this.reset();
+            this.close();
         },
 
         error(message) {
@@ -120,6 +135,8 @@ export default {
         },
 
         uploadImages() {
+            if (!this.uploading) return;
+
             Promise.all([
                 this.uploadImage(this.TILES, this.tilePaletteRef, 'Tiles'),
                 this.uploadImage(this.SPLATS, this.splatPaletteRef, 'Splats'),
@@ -136,6 +153,8 @@ export default {
         },
 
         arrangeAlbumImages() {
+            if (!this.uploading) return null;
+
             const body = new FormData();
 
             if (this.images[this.TILES]) {
@@ -217,27 +236,116 @@ export default {
 </script>
 <template>
     <div v-show="open" class="fixed inset-0 z-50 bg-gray-50 overflow-auto">
-        <div class="prose mx-auto">
-            <ol>
-                <li v-if="uploading" class="animate-pulse">Album: Creating</li>
-                <li v-else class="animate-pulse">Album: {{ albumLink }}</li>
+        <div class="upload-panel mx-auto">
+            <div class="prose max-w-none">
+                <ul class="py-5">
+                    <li v-if="uploading" class="animate-pulse">Album: Creating</li>
+                    <li v-else>
+                        Album:
+                        <a :href="albumLink" target="_blank">
+                            {{ albumLink }}
+                        </a>
+                    </li>
 
-                <li v-if="images[TILES]">
-                    Tiles:
-                    <a :href="images[TILES].link" target="_blank">
-                        {{ images[TILES].link }}
-                    </a>
-                </li>
-                <li v-else class="animate-pulse">Tiles: Uploading</li>
+                    <li v-if="!images[TILES]" class="animate-pulse">Tiles: Uploading</li>
+                    <li v-else>
+                        Tiles:
+                        <a :href="images[TILES].link" target="_blank">
+                            {{ images[TILES].link }}
+                        </a>
+                    </li>
 
-                <li v-if="images[SPLATS]">
-                    Splats:
-                    <a :href="images[SPLATS].link" target="_blank">
-                        {{ images[SPLATS].link }}
-                    </a>
-                </li>
-                <li v-else class="animate-pulse">Splats: Uploading</li>
-            </ol>
+                    <li v-if="!images[SPEEDPAD]" class="animate-pulse">Speedpad: Uploading</li>
+                    <li v-else>
+                        Speedpad:
+                        <a :href="images[SPEEDPAD].link" target="_blank">
+                            {{ images[SPEEDPAD].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[SPEEDPAD_RED]" class="animate-pulse">Speedpad Red: Uploading</li>
+                    <li v-else>
+                        Speedpad Red:
+                        <a :href="images[SPEEDPAD_RED].link" target="_blank">
+                            {{ images[SPEEDPAD_RED].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[SPEEDPAD_BLUE]" class="animate-pulse">Speedpad Blue: Uploading</li>
+                    <li v-else>
+                        Speedpad Blue:
+                        <a :href="images[SPEEDPAD_BLUE].link" target="_blank">
+                            {{ images[SPEEDPAD_BLUE].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[PORTAL]" class="animate-pulse">Portal: Uploading</li>
+                    <li v-else>
+                        Portal:
+                        <a :href="images[PORTAL].link" target="_blank">
+                            {{ images[PORTAL].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[PORTAL_RED]" class="animate-pulse">Portal Red: Uploading</li>
+                    <li v-else>
+                        Portal Red:
+                        <a :href="images[PORTAL_RED].link" target="_blank">
+                            {{ images[PORTAL_RED].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[PORTAL_BLUE]" class="animate-pulse">Portal Blue: Uploading</li>
+                    <li v-else>
+                        Portal Blue:
+                        <a :href="images[PORTAL_BLUE].link" target="_blank">
+                            {{ images[PORTAL_BLUE].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[SPLATS]" class="animate-pulse">Splats: Uploading</li>
+                    <li v-else>
+                        Splats:
+                        <a :href="images[SPLATS].link" target="_blank">
+                            {{ images[SPLATS].link }}
+                        </a>
+                    </li>
+
+                    <li v-if="!images[GRAVITY_WELL]" class="animate-pulse">Gravity Well: Uploading</li>
+                    <li v-else>
+                        Gravity Well:
+                        <a :href="images[GRAVITY_WELL].link" target="_blank">
+                            {{ images[GRAVITY_WELL].link }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu">
+                <a
+                    v-if="uploading"
+                    href="#"
+                    class="pillar-word flex-grow text-center"
+                    @click.prevent="cancel"
+                >
+                    CANCEL
+                </a>
+                <a
+                    v-else
+                    href="#"
+                    class="pillar-word flex-grow text-center"
+                    @click.prevent="cancel"
+                >
+                    DONE
+                </a>
+            </div>
         </div>
     </div>
 </template>
+
+<style>
+    .upload-panel {
+        width: 840px;
+        margin-top: 31px;
+    }
+</style>
