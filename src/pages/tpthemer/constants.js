@@ -26,6 +26,10 @@ const PORTAL_BLUE = 'portalblue';
 const SPLATS = 'splats';
 const GRAVITY_WELL = 'gravitywell';
 
+const IMGUR_CLIENT_ID = '8a59567fddbfdab';
+const IMGUR_ALBUM_CREATE = 'https://api.imgur.com/3/album';
+const IMGUR_IMAGE_CREATE = 'https://api.imgur.com/3/image';
+
 export default {
     CELL_X,
     CELL_Y,
@@ -48,4 +52,7 @@ export default {
     PORTAL_BLUE,
     SPLATS,
     GRAVITY_WELL,
+    IMGUR_CLIENT_ID,
+    IMGUR_ALBUM_CREATE,
+    IMGUR_IMAGE_CREATE,
 };

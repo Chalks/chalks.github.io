@@ -104,6 +104,10 @@ export default {
         onChange(e) {
             this.$emit('change', e);
         },
+
+        toData() {
+            return this.$refs.tileCanvas.toData();
+        },
     },
 };
 </script>

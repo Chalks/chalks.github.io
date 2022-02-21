@@ -217,6 +217,10 @@ export default {
         onUp() {
             this.down = false;
         },
+
+        toData() {
+            return this.$refs.el.toDataURL();
+        },
     },
 };
 </script>

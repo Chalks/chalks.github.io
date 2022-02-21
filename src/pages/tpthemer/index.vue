@@ -9,6 +9,7 @@ import SpeedpadPalette from './SpeedpadPalette.vue';
 import SplatPalette from './SplatPalette.vue';
 import TilePalette from './TilePalette.vue';
 
+import ImgurUploader from './ImgurUploader.vue';
 import IngestForm from './IngestForm.vue';
 
 export default {
@@ -18,6 +19,7 @@ export default {
         SpeedpadPalette,
         SplatPalette,
         TilePalette,
+        ImgurUploader,
         IngestForm,
     },
 
@@ -39,6 +41,7 @@ export default {
             importString: this.$route.hash
                 ? this.$route.hash.substr(1)
                 : null,
+            uploadOpen: false,
         };
     },
 
@@ -294,12 +297,23 @@ export default {
         scrollToPostfix() {
             document.getElementById('postfix').scrollIntoView({behavior: 'smooth'});
         },
+
+        upload() {
+            this.uploadOpen = !this.uploadOpen;
+            console.log('clicked upload tile palette data is: ', this.$refs.tilePalette.toData());
+        },
     },
 };
 </script>
 
 <template>
     <div>
+        <ImgurUploader
+            :open.sync="uploadOpen"
+            :export-string="exportString"
+            tile-palette-ref="tilePalette"
+        />
+
         <div v-if="loading" class="animate-pulse prose text-center mx-auto">
             <p>Loading ...</p>
             <p v-for="name in brushesLoading" :key="name">{{ name }}</p>
@@ -308,8 +322,8 @@ export default {
         <div v-show="!loading" class="themer">
             <div class="menu">
                 <a :href="`/tpthemer#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
-                <a :href="`/tpthemer#${exportString}`" class="pillar-word">UPLOAD TO IMGUR</a>
-                <a href="#reset" class="pillar-word" @click.prevent="reset">RESET</a>
+                <a href="#" class="pillar-word" @click.prevent="upload">UPLOAD TO IMGUR</a>
+                <a href="#" class="pillar-word" @click.prevent="reset">RESET</a>
             </div>
 
             <div class="prose max-w-none my-8">
@@ -378,7 +392,7 @@ export default {
     }
 
     .menu {
-        @apply flex z-50;
+        @apply flex z-30;
         position: fixed;
         top: 0;
         width: 840px;
