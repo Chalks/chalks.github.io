@@ -139,12 +139,11 @@ export default {
 
     methods: {
         beforeUnload(e) {
-            const defaultHash = 'NDUwNjEsMTc2LsQKMiw1xQgzxwg0xwg1xwg2xwg3xwg4LDE0xQk5LDE=';
             const currHash = this.$route.hash
                 ? this.$route.hash.substr(1)
                 : null;
 
-            const isDefault = this.exportString === defaultHash;
+            const isDefault = this.exportString === this.DEFAULT_EXPORT_STRING;
             const isLoaded = this.exportString === currHash;
 
             if (this.exportString && !isDefault && !isLoaded) {
@@ -181,14 +180,14 @@ export default {
                 });
 
                 img.addEventListener('load', () => {
-                    // const randTime = Math.floor(Math.random() * 10);
                     // The random timeout just makes the loading progress look nicer
-                    // setTimeout(() => {
+                    const randTime = Math.floor(Math.random() * 10);
+                    setTimeout(() => {
                         this.$set(this.brushes, id, {
                             ...this.brushes[id],
                             loaded: true,
                         });
-                    // }, randTime);
+                    }, randTime);
                 });
 
                 img.src = `/tagpro/${filename}`;
@@ -208,6 +207,11 @@ export default {
             this.importString = this.$route.hash
                 ? this.$route.hash.substr(1)
                 : null;
+            this.afterImagesLoaded();
+        },
+
+        defaultReset() {
+            this.importString = this.DEFAULT_EXPORT_STRING;
             this.afterImagesLoaded();
         },
 
@@ -327,6 +331,7 @@ export default {
                 <a :href="`#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
                 <a :href="`#${exportString}`" class="pillar-word" @click="upload">UPLOAD TO IMGUR</a>
                 <a href="#" class="pillar-word" @click.prevent="reset">RESET</a>
+                <a :href="`#${DEFAULT_EXPORT_STRING}`" class="pillar-word" @click.prevent="defaultReset">DEFAULTS</a>
             </div>
 
             <div class="prose max-w-none my-8">
@@ -365,11 +370,11 @@ export default {
             />
 
             <div id="postfix" class="prose max-w-none my-8">
-                <hr>
+                <hr />
 
                 <h1 class="pillar-word">ABOUT</h1>
                 <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
-                <hr>
+                <hr />
 
                 <h1 class="pillar-word">TODO</h1>
                 <ul class="my-5">
@@ -378,7 +383,7 @@ export default {
                     <li>Automatically ingest new texture packs instead of the manual process</li>
                     <li>Track and publish the packs uploaded to imgur to prevent duplicates</li>
                 </ul>
-                <hr>
+                <hr />
 
                 <h1 class="pillar-word">INGEST</h1>
                 <IngestForm />

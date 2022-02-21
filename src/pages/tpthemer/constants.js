@@ -35,6 +35,22 @@ const FORMCAKE_IMGUR_FORM_ID = '3b84d3ef-f9fa-4339-9cf6-a0b7889e1e69';
 const FORMCAKE_FORM_API = 'https://api.formcake.com/api/form';
 const FORMCAKE_SUBMISSION_URI = `${FORMCAKE_FORM_API}/${FORMCAKE_IMGUR_FORM_ID}/submission`;
 
+const DEFAULT_EXPORT_STRING = 'NDUwNjEsMTc2LsQKMiw1xQgzxwg0xwg1xwg2xwg3xwg4LDE0xQk5LDE=';
+const DEFAULT_IMGUR_UPLOAD = {
+    albumId: 'KYKC3BV',
+    images: {
+        tiles: {link: 'https://i.imgur.com/SkR4paZ.png'},
+        speedpad: {link: 'https://i.imgur.com/IUcxNlD.png'},
+        speedpadred: {link: 'https://i.imgur.com/FMW988n.png'},
+        speedpadblue: {link: 'https://i.imgur.com/URLvTb1.png'},
+        portal: {link: 'https://i.imgur.com/7CjeVdy.png'},
+        portalred: {link: 'https://i.imgur.com/7CjeVdy.png'},
+        portalblue: {link: 'https://i.imgur.com/hrgC00o.png'},
+        splats: {link: 'https://i.imgur.com/h22TjTf.png'},
+        gravitywell: {link: 'https://i.imgur.com/bcjMW5e.png'},
+    },
+};
+
 export default {
     CELL_X,
     CELL_Y,
@@ -64,4 +80,6 @@ export default {
     FORMCAKE_IMGUR_FORM_ID,
     FORMCAKE_FORM_API,
     FORMCAKE_SUBMISSION_URI,
+    DEFAULT_EXPORT_STRING,
+    DEFAULT_IMGUR_UPLOAD,
 };

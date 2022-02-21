@@ -78,6 +78,10 @@ export default {
         canSave() {
             return this.albumId && this.albumDeleteHash && this.allImagesValid;
         },
+
+        isDefault() {
+            return this.exportString === this.DEFAULT_EXPORT_STRING;
+        },
     },
 
     watch: {
@@ -122,6 +126,7 @@ export default {
             // WARNING when testing locally, must run with `HOST=0.0.0.0 npm run dev`
             // because Imgur hates localhost for some reason.
             if (this.uploading) return;
+            if (this.defaultLoad()) return;
             if (this.localLoad()) return;
             this.uploading = true;
 
@@ -216,6 +221,16 @@ export default {
                 this.albumId = data.albumId;
                 this.albumDeleteHash = data.albumDeleteHash;
                 this.images = data.images;
+                return true;
+            }
+
+            return false;
+        },
+
+        defaultLoad() {
+            if (this.isDefault) {
+                this.albumId = this.DEFAULT_IMGUR_UPLOAD.albumId;
+                this.images = this.DEFAULT_IMGUR_UPLOAD.images;
                 return true;
             }
 
