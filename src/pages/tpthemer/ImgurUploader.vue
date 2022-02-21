@@ -1,4 +1,5 @@
 <script>
+import md5 from 'md5';
 import constants from './constants.js';
 
 export default {
@@ -57,6 +58,26 @@ export default {
         albumLink() {
             return `${this.IMGUR_ALBUM_URI}/${this.albumId}/edit`;
         },
+
+        hash() {
+            return md5(this.exportString);
+        },
+
+        allImagesValid() {
+            return this.images[this.TILES]?.link
+                && this.images[this.SPLATS]?.link
+                && this.images[this.GRAVITY_WELL]?.link
+                && this.images[this.SPEEDPAD]?.link
+                && this.images[this.SPEEDPAD_RED]?.link
+                && this.images[this.SPEEDPAD_BLUE]?.link
+                && this.images[this.PORTAL]?.link
+                && this.images[this.PORTAL_RED]?.link
+                && this.images[this.PORTAL_BLUE]?.link;
+        },
+
+        canSave() {
+            return this.albumId && this.albumDeleteHash && this.allImagesValid;
+        },
     },
 
     watch: {
@@ -91,14 +112,17 @@ export default {
             this.close();
         },
 
-        error(message) {
-            this.errorMessage = message;
+        forceStart() {
+            this.reset();
+            localStorage.removeItem(this.hash);
+            this.startUpload();
         },
 
         async startUpload() {
             // WARNING when testing locally, must run with `HOST=0.0.0.0 npm run dev`
             // because Imgur hates localhost for some reason.
             if (this.uploading) return;
+            if (this.localLoad()) return;
             this.uploading = true;
 
             // setup headers
@@ -113,7 +137,8 @@ export default {
 
                 this.uploadImages();
             } else {
-                this.error('Album failed to create');
+                this.errorMessage = 'Album failed to create';
+                this.uploading = false;
             }
         },
 
@@ -148,8 +173,53 @@ export default {
                 this.uploadImage(this.PORTAL_RED, this.portalPaletteRef, 'Portal Red'),
                 this.uploadImage(this.PORTAL_BLUE, this.portalPaletteRef, 'Portal Blue'),
             ]).finally(async () => {
-                await this.arrangeAlbumImages();
+                this.formcakeSave();
+                this.localSave();
+                this.arrangeAlbumImages();
             });
+        },
+
+        formcakeSave() {
+            if (this.canSave) {
+                const headers = new Headers();
+                headers.append('Content-Type', 'application/json');
+
+                const body = {
+                    exportString: this.exportString,
+                    albumId: this.albumId,
+                    albumDeleteHash: this.albumDeleteHash,
+                    images: this.images,
+                };
+
+                fetch(this.FORMCAKE_SUBMISSION_URI, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(body),
+                });
+            }
+        },
+
+        localSave() {
+            if (this.canSave) {
+                localStorage.setItem(this.hash, JSON.stringify({
+                    albumId: this.albumId,
+                    albumDeleteHash: this.albumDeleteHash,
+                    images: this.images,
+                }));
+            }
+        },
+
+        localLoad() {
+            const local = localStorage.getItem(this.hash);
+            if (local) {
+                const data = JSON.parse(local);
+                this.albumId = data.albumId;
+                this.albumDeleteHash = data.albumDeleteHash;
+                this.images = data.images;
+                return true;
+            }
+
+            return false;
         },
 
         arrangeAlbumImages() {
@@ -223,12 +293,21 @@ export default {
                 redirect: 'follow',
             }).then(async (response) => {
                 const result = await response.json();
-                this.$set(this.images, key, {
-                    link: result.data.link,
-                    deleteHash: result.data.deletehash,
-                });
+
+                if (result.data.error) {
+                    this.$set(this.images, key, {
+                        error: result.data.error.message,
+                    });
+                } else {
+                    this.$set(this.images, key, {
+                        link: result.data.link,
+                        deleteHash: result.data.deletehash,
+                    });
+                }
             }).catch(() => {
-                this.$set(this.images, key, null);
+                this.$set(this.images, key, {
+                    error: 'Error uploading image, try again later',
+                });
             });
         },
     },
@@ -238,7 +317,8 @@ export default {
     <div v-show="open" class="fixed inset-0 z-50 bg-gray-50 overflow-auto">
         <div class="upload-panel mx-auto">
             <div class="prose max-w-none">
-                <ul class="py-5">
+                <p v-if="errorMessage" class="py-5 text-red-600">{{ errorMessage }}</p>
+                <ul v-else class="py-5">
                     <li v-if="uploading" class="animate-pulse">Album: Creating</li>
                     <li v-else>
                         Album:
@@ -248,6 +328,7 @@ export default {
                     </li>
 
                     <li v-if="!images[TILES]" class="animate-pulse">Tiles: Uploading</li>
+                    <li v-else-if="images[TILES].error" class="text-red-600">{{ images[TILES].error }}</li>
                     <li v-else>
                         Tiles:
                         <a :href="images[TILES].link" target="_blank">
@@ -256,6 +337,7 @@ export default {
                     </li>
 
                     <li v-if="!images[SPEEDPAD]" class="animate-pulse">Speedpad: Uploading</li>
+                    <li v-else-if="images[SPEEDPAD].error" class="text-red-600">{{ images[SPEEDPAD].error }}</li>
                     <li v-else>
                         Speedpad:
                         <a :href="images[SPEEDPAD].link" target="_blank">
@@ -264,6 +346,7 @@ export default {
                     </li>
 
                     <li v-if="!images[SPEEDPAD_RED]" class="animate-pulse">Speedpad Red: Uploading</li>
+                    <li v-else-if="images[SPEEDPAD_RED].error" class="text-red-600">{{ images[SPEEDPAD_RED].error }}</li>
                     <li v-else>
                         Speedpad Red:
                         <a :href="images[SPEEDPAD_RED].link" target="_blank">
@@ -272,6 +355,7 @@ export default {
                     </li>
 
                     <li v-if="!images[SPEEDPAD_BLUE]" class="animate-pulse">Speedpad Blue: Uploading</li>
+                    <li v-else-if="images[SPEEDPAD_BLUE].error" class="text-red-600">{{ images[SPEEDPAD_BLUE].error }}</li>
                     <li v-else>
                         Speedpad Blue:
                         <a :href="images[SPEEDPAD_BLUE].link" target="_blank">
@@ -280,6 +364,7 @@ export default {
                     </li>
 
                     <li v-if="!images[PORTAL]" class="animate-pulse">Portal: Uploading</li>
+                    <li v-else-if="images[PORTAL].error" class="text-red-600">{{ images[PORTAL].error }}</li>
                     <li v-else>
                         Portal:
                         <a :href="images[PORTAL].link" target="_blank">
@@ -288,6 +373,7 @@ export default {
                     </li>
 
                     <li v-if="!images[PORTAL_RED]" class="animate-pulse">Portal Red: Uploading</li>
+                    <li v-else-if="images[PORTAL_RED].error" class="text-red-600">{{ images[PORTAL_RED].error }}</li>
                     <li v-else>
                         Portal Red:
                         <a :href="images[PORTAL_RED].link" target="_blank">
@@ -296,6 +382,7 @@ export default {
                     </li>
 
                     <li v-if="!images[PORTAL_BLUE]" class="animate-pulse">Portal Blue: Uploading</li>
+                    <li v-else-if="images[PORTAL_BLUE].error" class="text-red-600">{{ images[PORTAL_BLUE].error }}</li>
                     <li v-else>
                         Portal Blue:
                         <a :href="images[PORTAL_BLUE].link" target="_blank">
@@ -304,6 +391,7 @@ export default {
                     </li>
 
                     <li v-if="!images[SPLATS]" class="animate-pulse">Splats: Uploading</li>
+                    <li v-else-if="images[SPLATS].error" class="text-red-600">{{ images[SPLATS].error }}</li>
                     <li v-else>
                         Splats:
                         <a :href="images[SPLATS].link" target="_blank">
@@ -312,6 +400,7 @@ export default {
                     </li>
 
                     <li v-if="!images[GRAVITY_WELL]" class="animate-pulse">Gravity Well: Uploading</li>
+                    <li v-else-if="images[GRAVITY_WELL].error" class="text-red-600">{{ images[GRAVITY_WELL].error }}</li>
                     <li v-else>
                         Gravity Well:
                         <a :href="images[GRAVITY_WELL].link" target="_blank">
@@ -319,6 +408,15 @@ export default {
                         </a>
                     </li>
                 </ul>
+
+                <p class="mr-4">
+                    If something broke, you can
+                    <a href="#" @click.prevent="forceStart">force re-upload</a>
+                    but please only do that if something is actually broken. The
+                    Imgur api is fairly strict with free accounts and fewer requests
+                    is better. You can right click and "save image as" on the
+                    textures and upload them manually if you would like.
+                </p>
             </div>
 
             <div class="menu">

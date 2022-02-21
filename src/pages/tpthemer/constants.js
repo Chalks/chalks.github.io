@@ -31,6 +31,10 @@ const IMGUR_ALBUM_URI = 'https://imgur.com/a';
 const IMGUR_ALBUM_API = 'https://api.imgur.com/3/album';
 const IMGUR_IMAGE_API = 'https://api.imgur.com/3/image';
 
+const FORMCAKE_IMGUR_FORM_ID = '3b84d3ef-f9fa-4339-9cf6-a0b7889e1e69';
+const FORMCAKE_FORM_API = 'https://api.formcake.com/api/form';
+const FORMCAKE_SUBMISSION_URI = `${FORMCAKE_FORM_API}/${FORMCAKE_IMGUR_FORM_ID}/submission`;
+
 export default {
     CELL_X,
     CELL_Y,
@@ -57,4 +61,7 @@ export default {
     IMGUR_ALBUM_URI,
     IMGUR_ALBUM_API,
     IMGUR_IMAGE_API,
+    FORMCAKE_IMGUR_FORM_ID,
+    FORMCAKE_FORM_API,
+    FORMCAKE_SUBMISSION_URI,
 };

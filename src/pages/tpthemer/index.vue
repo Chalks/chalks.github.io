@@ -324,8 +324,8 @@ export default {
 
         <div v-show="!loading" class="themer">
             <div class="menu">
-                <a :href="`/tpthemer#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
-                <a href="#" class="pillar-word" @click.prevent="upload">UPLOAD TO IMGUR</a>
+                <a :href="`#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
+                <a :href="`#${exportString}`" class="pillar-word" @click="upload">UPLOAD TO IMGUR</a>
                 <a href="#" class="pillar-word" @click.prevent="reset">RESET</a>
             </div>
 
