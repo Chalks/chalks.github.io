@@ -181,14 +181,14 @@ export default {
                 });
 
                 img.addEventListener('load', () => {
-                    const randTime = Math.floor(Math.random() * 10);
+                    // const randTime = Math.floor(Math.random() * 10);
                     // The random timeout just makes the loading progress look nicer
-                    setTimeout(() => {
+                    // setTimeout(() => {
                         this.$set(this.brushes, id, {
                             ...this.brushes[id],
                             loaded: true,
                         });
-                    }, randTime);
+                    // }, randTime);
                 });
 
                 img.src = `/tagpro/${filename}`;
@@ -300,7 +300,6 @@ export default {
 
         upload() {
             this.uploadOpen = !this.uploadOpen;
-            console.log('clicked upload tile palette data is: ', this.$refs.tilePalette.toData());
         },
     },
 };
@@ -312,6 +311,10 @@ export default {
             :open.sync="uploadOpen"
             :export-string="exportString"
             tile-palette-ref="tilePalette"
+            speedpad-palette-ref="speedpadPalette"
+            portal-palette-ref="portalPalette"
+            splat-palette-ref="splatPalette"
+            gravity-palette-ref="gravityPalette"
         />
 
         <div v-if="loading" class="animate-pulse prose text-center mx-auto">

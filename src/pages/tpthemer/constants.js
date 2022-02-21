@@ -27,8 +27,9 @@ const SPLATS = 'splats';
 const GRAVITY_WELL = 'gravitywell';
 
 const IMGUR_CLIENT_ID = '8a59567fddbfdab';
-const IMGUR_ALBUM_CREATE = 'https://api.imgur.com/3/album';
-const IMGUR_IMAGE_CREATE = 'https://api.imgur.com/3/image';
+const IMGUR_ALBUM_URI = 'https://imgur.com/a';
+const IMGUR_ALBUM_API = 'https://api.imgur.com/3/album';
+const IMGUR_IMAGE_API = 'https://api.imgur.com/3/image';
 
 export default {
     CELL_X,
@@ -53,6 +54,7 @@ export default {
     SPLATS,
     GRAVITY_WELL,
     IMGUR_CLIENT_ID,
-    IMGUR_ALBUM_CREATE,
-    IMGUR_IMAGE_CREATE,
+    IMGUR_ALBUM_URI,
+    IMGUR_ALBUM_API,
+    IMGUR_IMAGE_API,
 };

@@ -122,6 +122,18 @@ export default {
         onChangeBlue(e) {
             this.$emit('change', this.PORTAL_BLUE, e);
         },
+
+        toData(type) {
+            if (type === this.PORTAL_RED) {
+                return this.$refs.portalredCanvas.toData();
+            }
+
+            if (type === this.PORTAL_BLUE) {
+                return this.$refs.portalblueCanvas.toData();
+            }
+
+            return this.$refs.portalCanvas.toData();
+        },
     },
 };
 </script>

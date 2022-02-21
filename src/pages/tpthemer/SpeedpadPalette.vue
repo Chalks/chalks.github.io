@@ -122,6 +122,18 @@ export default {
         onChangeBlue(e) {
             this.$emit('change', this.SPEEDPAD_BLUE, e);
         },
+
+        toData(type) {
+            if (type === this.SPEEDPAD_RED) {
+                return this.$refs.speedpadredCanvas.toData();
+            }
+
+            if (type === this.SPEEDPAD_BLUE) {
+                return this.$refs.speedpadblueCanvas.toData();
+            }
+
+            return this.$refs.speedpadCanvas.toData();
+        },
     },
 };
 </script>
