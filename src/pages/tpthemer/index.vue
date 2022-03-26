@@ -1,16 +1,16 @@
 <script>
 import LZUTF8 from 'lzutf8';
-import {response} from './images-response.js';
-import constants from './constants.js';
+import {response} from '~/components/tagpro/images-response.js';
+import constants from '~/components/tagpro/constants.js';
 
-import GravityPalette from './GravityPalette.vue';
-import PortalPalette from './PortalPalette.vue';
-import SpeedpadPalette from './SpeedpadPalette.vue';
-import SplatPalette from './SplatPalette.vue';
-import TilePalette from './TilePalette.vue';
+import GravityPalette from '~/components/tagpro/GravityPalette.vue';
+import PortalPalette from '~/components/tagpro/PortalPalette.vue';
+import SpeedpadPalette from '~/components/tagpro/SpeedpadPalette.vue';
+import SplatPalette from '~/components/tagpro/SplatPalette.vue';
+import TilePalette from '~/components/tagpro/TilePalette.vue';
 
-import ImgurUploader from './ImgurUploader.vue';
-import IngestForm from './IngestForm.vue';
+import ImgurUploader from '~/components/tagpro/ImgurUploader.vue';
+import IngestForm from '~/components/tagpro/IngestForm.vue';
 
 export default {
     components: {
