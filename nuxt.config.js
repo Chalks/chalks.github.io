@@ -57,6 +57,16 @@ export default () => ({
         ],
     },
 
+    ignore: [
+        process.env.NODE_ENV === 'production' ? 'pages/tpthemer/upload.vue' : '',
+    ],
+
+    publicRuntimeConfig: {
+        formcakeUploadId: process.env.NODE_ENV === 'development'
+            ? process.env.FORMCAKE_UPLOAD_ID
+            : null,
+    },
+
     srcDir: 'src/',
 
     target: 'static',
