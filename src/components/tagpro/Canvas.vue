@@ -30,6 +30,7 @@ export default {
             down: false,
             brush: null,
             cellRecord: null,
+            emptyCellId: 0,
         };
     },
 
@@ -143,7 +144,11 @@ export default {
                 for (let j = startY; j < endY; j += 1) {
                     const loc = (i * this.cellsPerColumn) + j;
 
-                    if (this.cellRecord[loc] !== image.id) {
+                    if (image == null) {
+                        // if there's no image provided, we're recording a deletion
+                        this.$set(this.cellRecord, loc, this.emptyCellId);
+                    } else if (this.cellRecord[loc] !== image.id) {
+                        // if there is an image, we're recording an insertion
                         this.$set(this.cellRecord, loc, image.id);
                     }
                 }
@@ -203,6 +208,13 @@ export default {
             this.paint();
         },
 
+        onDoubleClick(e) {
+            // double click is delete cell
+            this.onMove(e);
+            this.clear(this.x, this.y, this.cellWidth, this.cellHeight);
+            this.recordCells(null, this.x, this.y, this.cellWidth, this.cellHeight);
+        },
+
         onLeave() {
             this.over = false;
             this.down = false;
@@ -235,6 +247,7 @@ export default {
             height: `${height}px`,
         }"
         @click="onClick"
+        @dblclick="onDoubleClick"
         @mousemove="onMove"
         @mouseleave="onLeave"
         @mousedown="onDown"

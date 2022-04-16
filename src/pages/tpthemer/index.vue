@@ -377,7 +377,7 @@ export default {
                 <hr />
 
                 <h1 class="pillar-word">ABOUT</h1>
-                <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
+                <p>Select texture tilesets and mix and match them to your heart's content. New in this version of the themer is quick and easy export. You can directly link to your theme mixup as well. Reset resets you back to the last loaded thing. I dunno, you'll figure it out. Left click to paint with the currently selected texture. Right click and save as an image if you really want to. Double click to delete a cell. Do other things too like go and look at <a href="https://github.com/Chalks/jdw.me/tree/master/src/pages/tpthemer">the source code</a>. Whatever you want. The only limit is yourself<a href="https://zombo.com">.</a></p>
                 <hr />
 
                 <h1 class="pillar-word">TODO</h1>
