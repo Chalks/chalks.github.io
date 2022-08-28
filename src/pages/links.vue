@@ -27,6 +27,9 @@ export default {
             <a href="https://formcake.com" target="_blank" class="pillar-word">FORMCAKE.COM</a>
             <NuxtLink to="/fun/notation" class="pillar-word">NOTATION.VALIDATOR</NuxtLink>
             <NuxtLink to="/tpthemer" class="pillar-word">TAGPRO.THEMER</NuxtLink>
+
+            <h2 class="pillar-word">i like this</h2>
+            <a href="https://absenteism.tumblr.com/">NKONDO</a>
         </div>
     </div>
 </template>
