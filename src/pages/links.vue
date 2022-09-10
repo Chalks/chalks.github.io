@@ -29,7 +29,7 @@ export default {
             <NuxtLink to="/tpthemer" class="pillar-word">TAGPRO.THEMER</NuxtLink>
 
             <h2 class="pillar-word">i like this</h2>
-            <a href="https://absenteism.tumblr.com/">NKONDO</a>
+            <a href="https://absenteism.tumblr.com/" class="pillar-word">NKONDO</a>
         </div>
     </div>
 </template>
