@@ -14,7 +14,7 @@ export default {
             <h1 class="pillar-word">Jonathan Walters</h1>
 
             <h2 class="pillar-word">Work History:</h2>
-            <p class="pillar-word">Stealth Startup 2021-…, Founding Engineer</p>
+            <p class="pillar-word">Parrot AI 2021-…, Founding Engineer</p>
             <p class="pillar-word">Formcake 2021-…, Founder</p>
             <p class="pillar-word">Nokia (Deepfield) 2016-2021, Software Engineering Lead</p>
             <p class="pillar-word">A3 Creative 2015-2016, Lead Developer & Project Manager</p>
