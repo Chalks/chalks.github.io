@@ -31,6 +31,7 @@ export default {
 
             <h2 class="pillar-word">i like this</h2>
             <a href="https://absenteism.tumblr.com/" class="pillar-word">NKONDO</a>
+            <a href="https://killsixbilliondemons.com/" class="pillar-word">K6BD</a>
         </div>
     </div>
 </template>
