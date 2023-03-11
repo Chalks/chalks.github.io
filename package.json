@@ -5,9 +5,11 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue .",
     "test": "jest --verbose",
-    "dev": "nuxt",
+    "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "start": "nuxt start",
     "deploy": "rm -rf dist; npm run generate; npm run deploy:2",
     "deploy:2": "cd dist; git init --initial-branch=main; git remote add origin git@github.com:Chalks/jdw.me.git; npm run deploy:3",
@@ -27,11 +29,11 @@
   "dependencies": {
     "lzutf8": "^0.6.0",
     "md5": "^2.3.0",
-    "nuxt": "^2.15.8"
+    "nuxt": "^3.2.3"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
-    "@nuxt/postcss8": "^1.1.3",
+    "@nuxt/eslint-config": "^0.1.1",
     "@tailwindcss/typography": "^0.5.1",
     "autoprefixer": "^10.4.2",
     "babel-jest": "^27.4.5",
@@ -40,8 +42,6 @@
     "eslint-plugin-jest": "^25.3.2",
     "eslint-plugin-vue": "^8.2.0",
     "jest": "^27.4.5",
-    "postcss": "^8.4.6",
-    "postcss-import": "^14.0.2",
     "tailwindcss": "^3.0.18"
   }
 }

@@ -38,8 +38,8 @@ export default {
                 [], // 7 splats
                 [], // 8 gravity well
             ],
-            importString: this.$route.hash
-                ? this.$route.hash.substr(1)
+            importString: this.$route.query.theme
+                ? this.$route.query.theme
                 : null,
             uploadOpen: false,
         };
@@ -137,18 +137,18 @@ export default {
         window.addEventListener('beforeunload', this.beforeUnload);
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
         window.removeEventListener('beforeunload', this.beforeUnload);
     },
 
     methods: {
         beforeUnload(e) {
-            const currHash = this.$route.hash
-                ? this.$route.hash.substr(1)
+            const currTheme = this.$route.query.theme
+                ? this.$route.query.theme
                 : null;
 
             const isDefault = this.exportString === this.DEFAULT_EXPORT_STRING;
-            const isLoaded = this.exportString === currHash;
+            const isLoaded = this.exportString === currTheme;
 
             if (this.exportString && !isDefault && !isLoaded) {
                 e.preventDefault();
@@ -174,23 +174,23 @@ export default {
 
                 const img = new Image();
 
-                this.$set(this.brushes, id, {
+                this.brushes[id] = {
                     id,
                     loaded: false,
                     name,
                     author,
                     type,
                     img,
-                });
+                };
 
                 img.addEventListener('load', () => {
                     // The random timeout just makes the loading progress look nicer
                     const randTime = Math.floor(Math.random() * 10);
                     setTimeout(() => {
-                        this.$set(this.brushes, id, {
+                        this.brushes[id] = {
                             ...this.brushes[id],
                             loaded: true,
-                        });
+                        };
                     }, randTime);
                 });
 
@@ -208,15 +208,25 @@ export default {
         },
 
         reset() {
-            this.importString = this.$route.hash
-                ? this.$route.hash.substr(1)
+            this.importString = this.$route.query.theme
+                ? this.$route.query.theme
                 : null;
             this.afterImagesLoaded();
+        },
+
+        linkTheme() {
+            this.updateUrl();
         },
 
         defaultReset() {
             this.importString = this.DEFAULT_EXPORT_STRING;
             this.afterImagesLoaded();
+            this.updateUrl();
+        },
+
+        updateUrl() {
+            const router = useRouter();
+            router.replace({path: '/tpthemer', query: {theme: this.exportString}});
         },
 
         importFromString() {
@@ -249,7 +259,8 @@ export default {
             str += `.${this.exportArr[7].join(',')}`; // splats
             str += `.${this.exportArr[8].join(',')}`; // gravity well
 
-            return LZUTF8.compress(str, {outputEncoding: 'Base64'});
+            const ret = LZUTF8.compress(str, {outputEncoding: 'Base64'});
+            return ret;
         },
 
         decode(str) {
@@ -271,35 +282,35 @@ export default {
         },
 
         onTileChange(e) {
-            this.$set(this.exportArr, 0, e);
+            this.exportArr[0] = e;
         },
 
         onSpeedpadChange(type, value) {
             if (type === this.SPEEDPAD) {
-                this.$set(this.exportArr, 1, value);
+                this.exportArr[1] = value;
             } else if (type === this.SPEEDPAD_RED) {
-                this.$set(this.exportArr, 2, value);
+                this.exportArr[2] = value;
             } else if (type === this.SPEEDPAD_BLUE) {
-                this.$set(this.exportArr, 3, value);
+                this.exportArr[3] = value;
             }
         },
 
         onPortalChange(type, value) {
             if (type === this.PORTAL) {
-                this.$set(this.exportArr, 4, value);
+                this.exportArr[4] = value;
             } else if (type === this.PORTAL_RED) {
-                this.$set(this.exportArr, 5, value);
+                this.exportArr[5] = value;
             } else if (type === this.PORTAL_BLUE) {
-                this.$set(this.exportArr, 6, value);
+                this.exportArr[6] = value;
             }
         },
 
         onSplatChange(e) {
-            this.$set(this.exportArr, 7, e);
+            this.exportArr[7] = e;
         },
 
         onGravityChange(e) {
-            this.$set(this.exportArr, 8, e);
+            this.exportArr[8] = e;
         },
 
         scrollToPostfix() {
@@ -307,6 +318,7 @@ export default {
         },
 
         upload() {
+            this.updateUrl();
             this.uploadOpen = !this.uploadOpen;
         },
     },
@@ -316,7 +328,7 @@ export default {
 <template>
     <div>
         <ImgurUploader
-            :open.sync="uploadOpen"
+            v-model:open="uploadOpen"
             :export-string="exportString"
             tile-palette-ref="tilePalette"
             speedpad-palette-ref="speedpadPalette"
@@ -332,10 +344,37 @@ export default {
 
         <div v-show="!loading" class="themer">
             <div class="menu">
-                <a :href="`#${exportString}`" class="flex-grow pillar-word">LINK TO THIS THEME</a>
-                <a :href="`#${exportString}`" class="pillar-word" @click="upload">UPLOAD TO IMGUR</a>
-                <a href="#" class="pillar-word" @click.prevent="reset">RESET</a>
-                <a :href="`#${DEFAULT_EXPORT_STRING}`" class="pillar-word" @click.prevent="defaultReset">DEFAULTS</a>
+                <a
+                    :href="`/tpthemer?theme=${exportString}`"
+                    class="flex-grow pillar-word"
+                    @click.prevent="linkTheme"
+                >
+                    LINK TO THIS THEME
+                </a>
+
+                <a
+                    :href="`/tpthemer?theme=${exportString}`"
+                    class="pillar-word"
+                    @click.prevent="upload"
+                >
+                    UPLOAD TO IMGUR
+                </a>
+
+                <a
+                    href="#"
+                    class="pillar-word"
+                    @click.prevent="reset"
+                >
+                    RESET
+                </a>
+
+                <a
+                    :href="`/tpthemer?theme=${DEFAULT_EXPORT_STRING}`"
+                    class="pillar-word"
+                    @click.prevent="defaultReset"
+                >
+                    DEFAULTS
+                </a>
             </div>
 
             <div class="prose max-w-none my-8">

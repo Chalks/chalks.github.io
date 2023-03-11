@@ -22,6 +22,8 @@ export default {
         },
     },
 
+    emits: ['change'],
+
     data() {
         return {
             x: 0,
@@ -65,10 +67,6 @@ export default {
             if (this.down) {
                 this.paint();
             }
-        },
-
-        cellRecord() {
-            this.$emit('change', this.getCompressedRecord());
         },
     },
 
@@ -146,13 +144,15 @@ export default {
 
                     if (image == null) {
                         // if there's no image provided, we're recording a deletion
-                        this.$set(this.cellRecord, loc, this.emptyCellId);
+                        this.cellRecord[loc] = this.emptyCellId;
                     } else if (this.cellRecord[loc] !== image.id) {
                         // if there is an image, we're recording an insertion
-                        this.$set(this.cellRecord, loc, image.id);
+                        this.cellRecord[loc] = image.id;
                     }
                 }
             }
+
+            this.$emit('change', this.getCompressedRecord());
         },
 
         getCompressedRecord() {

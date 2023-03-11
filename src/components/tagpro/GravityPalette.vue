@@ -1,10 +1,10 @@
 <script>
-import Canvas from './Canvas.vue';
+import TpCanvas from './TpCanvas.vue';
 import constants from './constants.js';
 
 export default {
     components: {
-        Canvas,
+        TpCanvas,
     },
 
     props: {
@@ -13,6 +13,8 @@ export default {
             default: () => [],
         },
     },
+
+    emits: ['change'],
 
     data() {
         return {
@@ -93,7 +95,7 @@ export default {
         </div>
 
         <div class="canvas">
-            <Canvas
+            <TpCanvas
                 ref="gravityCanvas"
                 :width="GRAVITY_X"
                 :height="GRAVITY_Y"

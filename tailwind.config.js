@@ -5,6 +5,7 @@ module.exports = {
         './src/pages/**/*.vue',
         // './plugins/**/*.{js,ts}',
         // './nuxt.config.{js,ts}',
+        './src/app.vue',
     ],
 
     darkMode: 'class',

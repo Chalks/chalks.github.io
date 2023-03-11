@@ -11,8 +11,8 @@ module.exports = {
         requireConfigFile: false,
     },
     extends: [
+        '@nuxt/eslint-config',
         'airbnb-base',
-        'plugin:vue/recommended',
     ],
     ignorePatterns: ['dist/'],
     plugins: [

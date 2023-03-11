@@ -1,10 +1,10 @@
 <script>
-import Canvas from './Canvas.vue';
+import TpCanvas from './TpCanvas.vue';
 import constants from './constants.js';
 
 export default {
     components: {
-        Canvas,
+        TpCanvas,
     },
 
     props: {
@@ -13,6 +13,8 @@ export default {
             default: () => [],
         },
     },
+
+    emits: ['change'],
 
     data() {
         return {
@@ -179,7 +181,7 @@ export default {
         </div>
 
         <div class="canvas flex flex-col items-center">
-            <Canvas
+            <TpCanvas
                 ref="portalCanvas"
                 :width="PORTAL_X"
                 :height="PORTAL_Y"
@@ -187,7 +189,7 @@ export default {
                 :cell-height="CELL_Y"
                 @change="onChangeNeutral"
             />
-            <Canvas
+            <TpCanvas
                 ref="portalredCanvas"
                 :width="PORTAL_X"
                 :height="PORTAL_Y"
@@ -195,7 +197,7 @@ export default {
                 :cell-height="CELL_Y"
                 @change="onChangeRed"
             />
-            <Canvas
+            <TpCanvas
                 ref="portalblueCanvas"
                 :width="PORTAL_X"
                 :height="PORTAL_Y"

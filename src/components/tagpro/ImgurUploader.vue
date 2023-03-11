@@ -38,8 +38,11 @@ export default {
             type: String,
             default: '',
         },
-
     },
+
+    emits: [
+        'update:open',
+    ],
 
     data() {
         return {
@@ -123,7 +126,7 @@ export default {
         },
 
         async startUpload() {
-            // WARNING when testing locally, must run with `HOST=0.0.0.0 npm run dev`
+            // WARNING when testing locally, must run with `HOST=127.0.0.1 npm run dev`
             // because Imgur hates localhost for some reason.
             if (this.uploading) return;
             if (this.defaultLoad()) return;
@@ -150,7 +153,7 @@ export default {
         async createAlbum() {
             const body = new FormData();
             body.append('title', 'Remixed Tagpro Theme');
-            body.append('description', `Created with https://jdw.me/tpthemer for https://tagpro.gg\nRemix this theme yourself at:\n\nhttps://jdw.me/tpthemer#${this.exportString}`);
+            body.append('description', `Created with https://jdw.me/tpthemer for https://tagpro.gg\nRemix this theme yourself at:\n\nhttps://jdw.me/tpthemer?theme=${this.exportString}`);
 
             const requestOptions = {
                 method: 'POST',
@@ -310,19 +313,19 @@ export default {
                 const result = await response.json();
 
                 if (result.data.error) {
-                    this.$set(this.images, key, {
+                    this.images[key] = {
                         error: result.data.error.message,
-                    });
+                    };
                 } else {
-                    this.$set(this.images, key, {
+                    this.images[key] = {
                         link: result.data.link,
                         deleteHash: result.data.deletehash,
-                    });
+                    };
                 }
             }).catch(() => {
-                this.$set(this.images, key, {
+                this.images[key] = {
                     error: 'Error uploading image, try again later',
-                });
+                };
             });
         },
     },

@@ -1,23 +1,23 @@
 <script>
-import Footer from '~/components/Footer.vue';
-import Header from '~/components/Header.vue';
+import AppFooter from '~/components/AppFooter.vue';
+import AppHeader from '~/components/AppHeader.vue';
 
 export default {
     components: {
-        Footer,
-        Header,
+        AppFooter,
+        AppHeader,
     },
 };
 </script>
 
 <template>
     <div class="flex flex-col min-h-screen">
-        <Header />
+        <AppHeader />
 
         <div class="content flex-grow overflow-auto">
-            <nuxt />
+            <NuxtPage />
         </div>
 
-        <Footer />
+        <AppFooter />
     </div>
 </template>
