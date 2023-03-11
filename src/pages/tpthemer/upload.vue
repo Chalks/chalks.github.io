@@ -1,8 +1,10 @@
 <script>
+const FORMCAKE_UPLOAD_ID = 'a0f4891e-8ef4-4779-990f-f9d170130b2d';
+
 export default {
     computed: {
         action() {
-            return `https://api.formcake.com/api/form/${this.$config.formcakeUploadId}/submission`;
+            return `https://api.formcake.com/api/form/${FORMCAKE_UPLOAD_ID}/submission`;
         },
     },
 };
@@ -10,6 +12,7 @@ export default {
 
 <template>
     <div class="themer">
+        <h1>This is for local development only</h1>
         <form id="my-form-id" method="post" :action="action">
             <input type="text" name="filename" placeholder="Filename" value="" />
             <input type="text" name="name" placeholder="Theme Name" value="" />

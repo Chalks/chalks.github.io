@@ -62,9 +62,9 @@ export default () => ({
     ],
 
     publicRuntimeConfig: {
-        formcakeUploadId: process.env.NODE_ENV === 'development'
-            ? process.env.FORMCAKE_UPLOAD_ID
-            : null,
+        jwtApi: process.env.NODE_ENV === 'development'
+            ? 'http://localhost:3000'
+            : 'https://seahorse-app-w4qv4.ondigitalocean.app',
     },
 
     srcDir: 'src/',
