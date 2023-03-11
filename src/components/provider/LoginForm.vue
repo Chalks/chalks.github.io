@@ -1,5 +1,7 @@
 <script>
 export default {
+    emits: ['success', 'error'],
+
     data() {
         return {
             email: '',
@@ -7,25 +9,21 @@ export default {
         };
     },
 
-    head: {
-    },
-
-    mounted() {
-    },
-
     methods: {
         onSubmit() {
-            console.log('will post to:', this.$config.jwtApi);
-            // this.$refs.loginForm.submit();
-            /*
-                if (res && res.data.token) {
-                    document.cookie = `fcut=${res.data.token}; path=/; domain=${process.env.DOMAIN};`;
-
-                    const {query} = url.parse(window.location.href, true);
-                    window.location.href = query.next && !query.next.includes('/logout')
-                        ? query.next
-                        : '/forms';
-            */
+            const url = `${this.$config.jwtApi}/auth/login`;
+            $fetch(url, {
+                method: 'post',
+                body: JSON.stringify({
+                    email: this.email,
+                    password: this.password,
+                }),
+            }).then(({token}) => {
+                this.$emit('success', token);
+            }).catch((error) => {
+                this.focus();
+                this.$emit('error', error);
+            });
         },
 
         focus() {

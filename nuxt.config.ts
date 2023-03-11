@@ -65,10 +65,12 @@ export default defineNuxtConfig({
         process.env.NODE_ENV === 'production' ? 'pages/tpthemer/upload.vue' : '',
     ],
 
-    publicRuntimeConfig: {
-        jwtApi: process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3000'
-            : 'https://seahorse-app-w4qv4.ondigitalocean.app',
+    runtimeConfig: {
+        public: {
+            jwtApi: process.env.NODE_ENV === 'development'
+                ? 'http://localhost:3001'
+                : 'https://seahorse-app-w4qv4.ondigitalocean.app',
+        },
     },
 
     srcDir: 'src/',
