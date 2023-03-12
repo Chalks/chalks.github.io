@@ -15,8 +15,8 @@ export default {
             console.error(e);
         },
 
-        handleSuccess(token) {
-            console.log('here with token: ', token);
+        handleSuccess({token, user}) {
+            console.log('here with token: ', token, user);
             // this.$refs.loginForm.submit();
             /*
                 if (res && res.data.token) {

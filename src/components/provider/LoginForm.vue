@@ -18,8 +18,8 @@ export default {
                     email: this.email,
                     password: this.password,
                 }),
-            }).then(({token}) => {
-                this.$emit('success', token);
+            }).then(({token, user}) => {
+                this.$emit('success', {token, user});
             }).catch((error) => {
                 this.focus();
                 this.$emit('error', error);
@@ -41,9 +41,11 @@ export default {
         method="post"
         @submit.prevent="onSubmit"
     >
-        <h3>Contact Me</h3>
+        <h3>Login</h3>
 
+        <label for="login-email">Email</label>
         <input
+            id="login-email"
             ref="emailField"
             v-model="email"
             type="text"
@@ -51,7 +53,9 @@ export default {
             placeholder="Email"
         />
 
+        <label for="login-password">Password</label>
         <input
+            id="login-password"
             v-model="password"
             type="password"
             name="password"

@@ -7,8 +7,12 @@
         @apply bg-gray-50 text-gray-900;
     }
 
+    label {
+        @apply text-xs font-bold m-0 cursor-pointer uppercase;
+    }
+
     input, textarea, button {
-        @apply p-2 border border-blue-700 rounded block m-0 w-full my-2;
+        @apply p-2 border border-blue-700 rounded block m-0 w-full mb-4;
     }
 
     input[type="submit"], button.submit {
