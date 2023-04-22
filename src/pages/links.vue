@@ -30,8 +30,8 @@ export default {
             <NuxtLink to="/tpthemer" class="pillar-word">TAGPRO.THEMER</NuxtLink>
 
             <h2 class="pillar-word">i like this</h2>
-            <a href="https://absenteism.tumblr.com/" class="pillar-word">NKONDO</a>
-            <a href="https://killsixbilliondemons.com/" class="pillar-word">K6BD</a>
+            <a href="https://absenteism.tumblr.com/" target="_blank" class="pillar-word">NKONDO</a>
+            <a href="https://killsixbilliondemons.com/" target="_blank" class="pillar-word">K6BD</a>
         </div>
     </div>
 </template>
