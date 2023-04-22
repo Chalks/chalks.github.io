@@ -6,6 +6,13 @@ module.exports = {
         'node': true,
         'jest/globals': true,
     },
+    globals: {
+        defineNuxtConfig: 'readonly',
+        ref: 'readonly',
+        computed: 'readonly',
+        useHead: 'readonly',
+        onMounted: 'readonly',
+    },
     parserOptions: {
         parser: '@babel/eslint-parser',
         requireConfigFile: false,
@@ -37,6 +44,7 @@ module.exports = {
         'quote-props': ['error', 'consistent-as-needed'],
         'key-spacing': ['error', {mode: 'strict'}],
         'max-len': 0,
+        'prefer-destructuring': 0,
         'vue/singleline-html-element-content-newline': 0,
         'vue/max-attributes-per-line': ['error', {singleline: 4}],
         'no-multiple-empty-lines': ['error', {max: 2}],

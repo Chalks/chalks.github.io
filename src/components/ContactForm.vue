@@ -1,34 +1,22 @@
-<script>
-export default {
-    data() {
-        return {
-            email: '',
-            message: '',
-        };
-    },
+<script setup>
+useHead({
+    script: [{
+        src: 'https://www.google.com/recaptcha/api.js',
+    }],
+});
 
-    head: {
-        script: [
-            {
-                src: 'https://www.google.com/recaptcha/api.js',
-            },
-        ],
-    },
+const contactForm = ref(null);
+const emailField = ref(null);
+const email = ref('');
+const message = ref('');
 
-    mounted() {
-        window.recaptchaJank = this.onSubmit;
-    },
+const onSubmit = () => { contactForm.value.submit(); };
+const focus = () => { emailField.value.focus(); };
 
-    methods: {
-        onSubmit() {
-            this.$refs.contactForm.submit();
-        },
-
-        focus() {
-            this.$refs.emailField.focus();
-        },
-    },
-};
+onMounted(() => {
+    window.recaptchaJank = onSubmit;
+    focus();
+});
 </script>
 
 <template>

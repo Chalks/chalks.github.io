@@ -1,4 +1,10 @@
+import {resolve} from 'path';
+
 export default defineNuxtConfig({
+    alias: {
+        store: resolve(__dirname, './src/store'),
+    },
+
     devServer: {
         host: '127.0.0.1',
     },
@@ -13,10 +19,9 @@ export default defineNuxtConfig({
 
     css: ['~/assets/css/tailwind.css'],
 
-    /*
-    modules: ['@nuxt/postcss8'],
-
-    */
+    modules: [
+        '@pinia/nuxt',
+    ],
 
     app: {
         head: {

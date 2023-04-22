@@ -1,11 +1,5 @@
-<script>
-export default {
-    computed: {
-        year() {
-            return new Date().getFullYear();
-        },
-    },
-};
+<script setup>
+const year = ref(new Date().getFullYear());
 </script>
 
 <template>
