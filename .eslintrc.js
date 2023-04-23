@@ -8,6 +8,11 @@ module.exports = {
     },
     globals: {
         defineNuxtConfig: 'readonly',
+        useRuntimeConfig: 'readonly',
+        defineNuxtRouteMiddleware: 'readonly',
+        navigateTo: 'readonly',
+        useFetch: 'readonly',
+        $fetch: 'readonly',
         ref: 'readonly',
         computed: 'readonly',
         useHead: 'readonly',

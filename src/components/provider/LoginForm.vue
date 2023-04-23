@@ -1,35 +1,34 @@
-<script>
-export default {
-    emits: ['success', 'error'],
+<script setup>
+import {useProviderStore} from 'store/provider.js';
 
-    data() {
-        return {
-            email: '',
-            password: '',
-        };
-    },
+const email = ref('');
+const password = ref('');
+const emailField = ref(null);
 
-    methods: {
-        onSubmit() {
-            const url = `${this.$config.jwtApi}/auth/login`;
-            $fetch(url, {
-                method: 'post',
-                body: JSON.stringify({
-                    email: this.email,
-                    password: this.password,
-                }),
-            }).then(({token, user}) => {
-                this.$emit('success', {token, user});
-            }).catch((error) => {
-                this.focus();
-                this.$emit('error', error);
-            });
-        },
+const focus = () => emailField.value.focus();
 
-        focus() {
-            this.$refs.emailField.focus();
-        },
-    },
+defineExpose({focus});
+
+const emit = defineEmits(['success', 'error']);
+
+const onSubmit = async () => {
+    try {
+        const url = `${useRuntimeConfig().jwtApi}/auth/login`;
+        const {token, user} = await $fetch(url, {
+            method: 'post',
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value,
+            }),
+            pick: ['token', 'user'],
+        });
+
+        useProviderStore().setUserWithToken({user, token});
+        emit('success', {token, user});
+    } catch (e) {
+        focus();
+        emit('error', e);
+    }
 };
 </script>
 

@@ -1,39 +1,35 @@
-<script>
+<script setup>
+import {useProviderStore} from 'store/provider.js';
 import LoginForm from '~/components/provider/LoginForm.vue';
 
-export default {
-    components: {
-        LoginForm,
-    },
+const loginForm = ref(null);
 
-    methods: {
-        focusContact() {
-            this.$refs.loginForm.focus();
-        },
+const expired = useProviderStore().isTokenExpired;
 
-        handleError(e) {
-            console.error(e);
-        },
+onMounted(() => {
+    loginForm.value.focus();
+});
 
-        handleSuccess({token, user}) {
-            console.log('here with token: ', token, user);
-            // this.$refs.loginForm.submit();
-            /*
-                if (res && res.data.token) {
-                    document.cookie = `fcut=${res.data.token}; path=/; domain=${process.env.DOMAIN};`;
+const handleError = (e) => console.error(e);
 
-                    const {query} = url.parse(window.location.href, true);
-                    window.location.href = query.next && !query.next.includes('/logout')
-                        ? query.next
-                        : '/forms';
-            */
-        },
-    },
+const handleSuccess = ({token, user: u}) => {
+    console.log('here with token: ', token, u);
+    // this.$refs.loginForm.submit();
+    /*
+        if (res && res.data.token) {
+            document.cookie = `fcut=${res.data.token}; path=/; domain=${process.env.DOMAIN};`;
+
+            const {query} = url.parse(window.location.href, true);
+            window.location.href = query.next && !query.next.includes('/logout')
+                ? query.next
+                : '/forms';
+    */
 };
 </script>
 <template>
     <div class="prose mx-auto my-12 prose-red">
         <h1>JWT Provider</h1>
+        <h3>{{ expired }}</h3>
         <LoginForm ref="loginForm" @error="handleError" @success="handleSuccess" />
     </div>
 </template>
