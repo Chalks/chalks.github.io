@@ -72,6 +72,7 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
+            authCookieName: 'auth',
             jwtApi: process.env.NODE_ENV === 'development'
                 ? 'http://localhost:3001'
                 : 'https://seahorse-app-w4qv4.ondigitalocean.app',

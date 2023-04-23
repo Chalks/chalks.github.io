@@ -8,8 +8,10 @@ module.exports = {
     },
     globals: {
         defineNuxtConfig: 'readonly',
+        definePageMeta: 'readonly',
         useRuntimeConfig: 'readonly',
         defineNuxtRouteMiddleware: 'readonly',
+        useCookie: 'readonly',
         navigateTo: 'readonly',
         useFetch: 'readonly',
         $fetch: 'readonly',
@@ -53,6 +55,7 @@ module.exports = {
         'vue/singleline-html-element-content-newline': 0,
         'vue/max-attributes-per-line': ['error', {singleline: 4}],
         'no-multiple-empty-lines': ['error', {max: 2}],
+        'no-console': ['error', {allow: ['warn', 'error']}],
         'vue/multi-word-component-names': 0,
         'vue/html-self-closing': ['error', {
             html: {

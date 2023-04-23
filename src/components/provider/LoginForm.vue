@@ -20,7 +20,6 @@ const onSubmit = async () => {
                 email: email.value,
                 password: password.value,
             }),
-            pick: ['token', 'user'],
         });
 
         useProviderStore().setUserWithToken({user, token});

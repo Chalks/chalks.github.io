@@ -1,35 +1,41 @@
 <script setup>
-import {useProviderStore} from 'store/provider.js';
 import LoginForm from '~/components/provider/LoginForm.vue';
 
 const loginForm = ref(null);
-
-const expired = useProviderStore().isTokenExpired;
 
 onMounted(() => {
     loginForm.value.focus();
 });
 
-const handleError = (e) => console.error(e);
+const errorMessages = ref([]);
 
-const handleSuccess = ({token, user: u}) => {
-    console.log('here with token: ', token, u);
-    // this.$refs.loginForm.submit();
-    /*
-        if (res && res.data.token) {
-            document.cookie = `fcut=${res.data.token}; path=/; domain=${process.env.DOMAIN};`;
+const handleError = (e) => {
+    if (e.data && e.data.errors) {
+        errorMessages.value = e.data.errors.map(({msg}) => msg);
+    } else if (e.data && e.data.message) {
+        errorMessages.value = [e.data.message];
+    } else {
+        errorMessages.value = ['Unknown error, try again'];
+    }
+    console.error(e);
+};
 
-            const {query} = url.parse(window.location.href, true);
-            window.location.href = query.next && !query.next.includes('/logout')
-                ? query.next
-                : '/forms';
-    */
+const handleSuccess = () => {
+    navigateTo('/provider/dashboard');
+    errorMessages.value = [];
 };
 </script>
+
 <template>
     <div class="prose mx-auto my-12 prose-red">
         <h1>JWT Provider</h1>
-        <h3>{{ expired }}</h3>
+        <p
+            v-for="(errorMessage, index) in errorMessages"
+            :key="`${index}-err`"
+            class="text-red-600"
+        >
+            {{ errorMessage }}
+        </p>
         <LoginForm ref="loginForm" @error="handleError" @success="handleSuccess" />
     </div>
 </template>
