@@ -13,7 +13,7 @@ const emit = defineEmits(['success', 'error']);
 
 const onSubmit = async () => {
     try {
-        const url = `${useRuntimeConfig().public.jwtApi}/auth/login`;
+        const url = `${useRuntimeConfig().public.jwtApi}/auth/register`;
         const {token, user} = await $fetch(url, {
             method: 'post',
             body: JSON.stringify({
@@ -38,11 +38,11 @@ const onSubmit = async () => {
         method="post"
         @submit.prevent="onSubmit"
     >
-        <h3>Login</h3>
+        <h3>Register</h3>
 
-        <label for="login-email">Email</label>
+        <label for="register-email">Email</label>
         <input
-            id="login-email"
+            id="register-email"
             ref="emailField"
             v-model="email"
             type="text"
@@ -50,9 +50,9 @@ const onSubmit = async () => {
             placeholder="Email"
         />
 
-        <label for="login-password">Password</label>
+        <label for="register-password">Password</label>
         <input
-            id="login-password"
+            id="register-password"
             v-model="password"
             type="password"
             name="password"
@@ -61,14 +61,7 @@ const onSubmit = async () => {
 
         <input
             type="submit"
-            value="Login"
-            class="login-submit"
+            value="Register"
         />
     </form>
 </template>
-
-<style scoped>
-    .login-submit {
-        @apply border-green-700 bg-green-600 text-white hover:bg-green-700;
-    }
-</style>

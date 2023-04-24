@@ -41,6 +41,28 @@ export const useProviderStore = defineStore('providerStore', () => {
         }
     }
 
+    async function logout() {
+        if (tokenState.value) {
+            const url = `${useRuntimeConfig().public.jwtApi}/auth/logout`;
+            try {
+                await useFetch(url, {
+                    method: 'get',
+                    headers: {
+                        Authorization: `Bearer ${tokenState.value}`,
+                    },
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        userState.value = null;
+        tokenState.value = null;
+        tokenExpiryState.value = 0;
+        const authCookie = useCookie(useRuntimeConfig().public.authCookieName);
+        authCookie.value = null;
+    }
+
     return {
         authorized,
         user,
@@ -48,5 +70,6 @@ export const useProviderStore = defineStore('providerStore', () => {
         tokenExpiry,
         isTokenExpired,
         setUserWithToken,
+        logout,
     };
 });
