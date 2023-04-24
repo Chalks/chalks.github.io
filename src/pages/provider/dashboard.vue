@@ -15,7 +15,7 @@ definePageMeta({
 
 <template>
     <div class="prose mx-auto my-12 prose-blue px-4">
-        dashboard
-        <span @click="logout">logout</span>
+        <h1>Projects</h1>
+        <button class="submit" @click="logout">logout</button>
     </div>
 </template>
