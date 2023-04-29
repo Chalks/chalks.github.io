@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     css: [
         '~/assets/css/tailwind.css',
         '~/assets/css/iconify.css',
+        '~/assets/css/toastify.css',
     ],
 
     modules: [

@@ -1,4 +1,5 @@
 <script setup>
+import {toast} from 'vue3-toastify';
 import Toolbar from '~/components/provider/Toolbar.vue';
 import InvalidateTokenForm from '~/components/provider/InvalidateTokenForm.vue';
 
@@ -8,10 +9,11 @@ definePageMeta({
 });
 
 const handleInvalidateSuccess = () => {
-    console.log('success');
+    toast.info('Successfully invalidated tokens');
 };
 
 const handleInvalidateError = (e) => {
+    toast.error('There was an error, please refresh and try again');
     console.error(e);
 };
 </script>
@@ -22,7 +24,6 @@ const handleInvalidateError = (e) => {
     <h3>Invalidate Tokens</h3>
     <p>All tokens will be invalidated and your current session will get a new token. This effectively forces you to be logged out of all other devices.</p>
     <InvalidateTokenForm @success="handleInvalidateSuccess" @error="handleInvalidateError" />
-
 
     <h3>Change Password</h3>
     <p>Change password</p>

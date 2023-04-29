@@ -1,0 +1,7 @@
+.Toastify button {
+    width: auto;
+}
+
+:root {
+    --toastify-color-info: theme(colors.blue.500) !important;
+}
