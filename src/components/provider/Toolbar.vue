@@ -50,10 +50,10 @@ const logout = async () => {
 
 <template>
     <div class="flex space-x-4 items-center">
-        <a
+        <NuxtLink
             v-for="icon in pageIcons"
             :key="icon.page"
-            :href="`/provider/${icon.page.toLowerCase()}`"
+            :to="`/provider/${icon.page.toLowerCase()}`"
             :title="icon.page"
             :class="{
                 'flex': true,
@@ -67,7 +67,7 @@ const logout = async () => {
             <p v-if="icon.page === currentPage" class="ml-2 my-0 p-0">
                 {{ currentPage }}
             </p>
-        </a>
+        </NuxtLink>
 
         <a
             title="logout"

@@ -71,6 +71,8 @@ export default defineNuxtConfig({
 
     ignore: [
         process.env.NODE_ENV === 'production' ? 'pages/tpthemer/upload.vue' : '',
+        'pages/provider/projects.vue',
+        'pages/provider/settings.vue',
     ],
 
     runtimeConfig: {
@@ -84,7 +86,7 @@ export default defineNuxtConfig({
 
     srcDir: 'src/',
 
-    target: 'static',
+    ssr: false,
 
     telemetry: false,
 });

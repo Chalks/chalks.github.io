@@ -8,7 +8,9 @@ import AppHeader from '~/components/AppHeader.vue';
         <AppHeader />
 
         <div class="content flex-grow overflow-auto">
-            <NuxtPage />
+            <NuxtLayout>
+                <NuxtPage />
+            </NuxtLayout>
         </div>
 
         <AppFooter />

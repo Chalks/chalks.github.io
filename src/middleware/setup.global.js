@@ -5,7 +5,9 @@ export default defineNuxtRouteMiddleware(async () => {
 
     if (!providerStore.user) {
         // if we don't have a user in state, try to get the user with cookies
-        const authCookie = useCookie(useRuntimeConfig().public.authCookieName);
+        const authCookie = useCookie(useRuntimeConfig().public.authCookieName, {
+            sameSite: true,
+        });
 
         if (authCookie.value) {
             // if we have a cookie value (the JWT) then get the user info
