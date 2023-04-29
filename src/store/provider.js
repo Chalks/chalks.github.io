@@ -37,7 +37,7 @@ export const useProviderStore = defineStore('providerStore', () => {
 
             tokenExpiry.value = 0;
 
-            const authCookie = useCookie(useRuntimeConfig().public.authCookieName);
+            const authCookie = useCookie(useRuntimeConfig().public.authCookieName, {sameSite: true});
             authCookie.value = null;
         }
     }
@@ -66,7 +66,7 @@ export const useProviderStore = defineStore('providerStore', () => {
         userState.value = null;
         tokenState.value = null;
         tokenExpiryState.value = 0;
-        const authCookie = useCookie(useRuntimeConfig().public.authCookieName);
+        const authCookie = useCookie(useRuntimeConfig().public.authCookieName, {sameSite: true});
         authCookie.value = null;
     }
 
