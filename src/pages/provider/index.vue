@@ -9,7 +9,7 @@ const providerStore = useProviderStore();
 
 onMounted(() => {
     if (providerStore.authorized) {
-        navigateTo('/provider/dashboard');
+        navigateTo('/provider/projects');
     } else {
         loaded.value = true;
         loginForm.value.focus();
@@ -42,7 +42,7 @@ const handleLoginError = (e) => {
 };
 
 const handleSuccess = () => {
-    navigateTo('/provider/dashboard');
+    navigateTo('/provider/projects');
     loginErrors.value = [];
     registerErrors.value = [];
 };

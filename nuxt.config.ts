@@ -17,7 +17,10 @@ export default defineNuxtConfig({
         },
     },
 
-    css: ['~/assets/css/tailwind.css'],
+    css: [
+        '~/assets/css/tailwind.css',
+        '~/assets/css/iconify.css',
+    ],
 
     modules: [
         '@pinia/nuxt',
