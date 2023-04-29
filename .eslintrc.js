@@ -28,6 +28,7 @@ module.exports = {
     extends: [
         '@nuxt/eslint-config',
         'airbnb-base',
+        'plugin:vue/vue3-recommended',
     ],
     ignorePatterns: ['dist/'],
     plugins: [
@@ -55,6 +56,7 @@ module.exports = {
         'prefer-destructuring': 0,
         'vue/singleline-html-element-content-newline': 0,
         'vue/max-attributes-per-line': ['error', {singleline: 4}],
+        'vue/no-multiple-template-root': 0,
         'no-multiple-empty-lines': ['error', {max: 2}],
         'no-console': ['error', {allow: ['warn', 'error']}],
         'vue/multi-word-component-names': 0,

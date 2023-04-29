@@ -11,6 +11,7 @@ export const useProviderStore = defineStore('providerStore', () => {
     const tokenExpiry = computed(() => tokenExpiryState.value);
     const isTokenExpired = computed(() => new Date().getTime() > tokenExpiryState.value * 1000);
     const authorized = computed(() => userState.value && !isTokenExpired.value);
+    const authHeaderValue = computed(() => `Bearer ${tokenState.value}`);
 
     function setUserWithToken({user: u, token: t}) {
         userState.value = u;
@@ -41,6 +42,12 @@ export const useProviderStore = defineStore('providerStore', () => {
         }
     }
 
+    function setToken(t) {
+        if (authorized.value) {
+            setUserWithToken({user: userState.value, token: t});
+        }
+    }
+
     async function logout() {
         if (tokenState.value) {
             const url = `${useRuntimeConfig().public.jwtApi}/auth/logout`;
@@ -48,7 +55,7 @@ export const useProviderStore = defineStore('providerStore', () => {
                 await useFetch(url, {
                     method: 'get',
                     headers: {
-                        Authorization: `Bearer ${tokenState.value}`,
+                        Authorization: authHeaderValue.value,
                     },
                 });
             } catch (e) {
@@ -65,11 +72,13 @@ export const useProviderStore = defineStore('providerStore', () => {
 
     return {
         authorized,
+        authHeaderValue,
         user,
         token,
         tokenExpiry,
         isTokenExpired,
         setUserWithToken,
+        setToken,
         logout,
     };
 });

@@ -8,14 +8,11 @@ const SETTINGS = 'Settings';
 const props = defineProps({
     isProjects: {type: Boolean, default: false},
     isSettings: {type: Boolean, default: false},
-    isThree: {type: Boolean, default: false},
 });
 
 const pageIcons = ref([
     {page: PROJECTS, order: 1, name: 'icon-park-outline:more-app'},
     {page: SETTINGS, order: 2, name: 'material-symbols:settings-account-box'},
-    {page: 'foo', order: 3, name: 'material-symbols:counter-3-outline-rounded'},
-    {page: 'bar', order: 4, name: 'material-symbols:counter-4-outline'},
 ]);
 
 const currentPage = ref('');
@@ -27,19 +24,6 @@ if (props.isProjects) {
 if (props.isSettings) {
     currentPage.value = SETTINGS;
 }
-
-if (props.isThree) {
-    currentPage.value = 'foo';
-}
-
-/*
- * if I want to sort the current page to the start:
- * pageIcons.value.sort(({page: pageA, order: a}, {page: pageB, order: b}) => {
- *     if (pageA === currentPage.value) return -1;
- *     if (pageB === currentPage.value) return 1;
- *     return a - b;
- * });
-*/
 
 const providerStore = useProviderStore();
 const logout = async () => {
@@ -64,17 +48,20 @@ const logout = async () => {
             <Icon
                 :icon="icon.name"
             />
-            <p v-if="icon.page === currentPage" class="ml-2 my-0 p-0">
-                {{ currentPage }}
+            <p class="ml-2 my-0 p-0">
+                {{ icon.page }}
             </p>
         </NuxtLink>
 
         <a
             title="logout"
-            class="cursor-pointer"
+            class="cursor-pointer flex items-center"
             @click="logout"
         >
             <Icon icon="solar:logout-outline" />
+            <p class="ml-2 my-0 p-0">
+                Logout
+            </p>
         </a>
     </div>
 </template>
