@@ -8,7 +8,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(
         Vue3Toasity,
         {
-            autoClose: 30000,
+            autoClose: 3000,
             limit: 5,
             position: toast.POSITION.BOTTOM_LEFT,
             transition: toast.TRANSITIONS.FLIP,
