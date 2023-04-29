@@ -1,5 +1,6 @@
 <script setup>
 import {useProviderStore} from 'store/provider.js';
+import getMessagesFromError from '~/assets/js/provider/getMessagesFromError.js';
 import LoginForm from '~/components/provider/LoginForm.vue';
 import RegisterForm from '~/components/provider/RegisterForm.vue';
 
@@ -18,18 +19,6 @@ onMounted(() => {
 
 const loginErrors = ref([]);
 const registerErrors = ref([]);
-
-const getMessagesFromError = (e) => {
-    if (e.data && e.data.errors) {
-        return e.data.errors.map(({msg}) => msg);
-    }
-
-    if (e.data && e.data.message) {
-        return [e.data.message];
-    }
-
-    return ['Unknown error, try again'];
-};
 
 const handleRegisterError = (e) => {
     registerErrors.value = getMessagesFromError(e);

@@ -4,4 +4,5 @@
 
 :root {
     --toastify-color-info: theme(colors.blue.500) !important;
+    --toastify-color-error: theme(colors.red.500) !important;
 }

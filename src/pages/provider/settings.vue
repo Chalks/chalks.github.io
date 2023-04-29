@@ -1,7 +1,9 @@
 <script setup>
 import {toast} from 'vue3-toastify';
+import getMessagesFromError from '~/assets/js/provider/getMessagesFromError.js';
 import Toolbar from '~/components/provider/Toolbar.vue';
 import InvalidateTokenForm from '~/components/provider/InvalidateTokenForm.vue';
+import ChangePasswordForm from '~/components/provider/ChangePasswordForm.vue';
 
 definePageMeta({
     middleware: ['auth'],
@@ -16,6 +18,15 @@ const handleInvalidateError = (e) => {
     toast.error('There was an error, please refresh and try again');
     console.error(e);
 };
+
+const handleChangeSuccess = () => {
+    toast.info('Successfully changed password');
+};
+
+const handleChangeError = (e) => {
+    toast.error(getMessagesFromError(e).join(', '));
+    console.error(e);
+};
 </script>
 
 <template>
@@ -26,5 +37,5 @@ const handleInvalidateError = (e) => {
     <InvalidateTokenForm @success="handleInvalidateSuccess" @error="handleInvalidateError" />
 
     <h3>Change Password</h3>
-    <p>Change password</p>
+    <ChangePasswordForm @success="handleChangeSuccess" @error="handleChangeError" />
 </template>
