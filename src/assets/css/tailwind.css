@@ -23,6 +23,10 @@
         }
     }
 
+    input:disabled {
+        @apply border-gray-300 cursor-not-allowed bg-gray-200 hover:bg-gray-200;
+    }
+
     .muted {
         @apply text-gray-400 text-xs;
     }

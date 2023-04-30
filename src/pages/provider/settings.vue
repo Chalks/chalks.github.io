@@ -1,5 +1,6 @@
 <script setup>
 import {toast} from 'vue3-toastify';
+import {useProviderStore} from 'store/provider.js';
 import getMessagesFromError from '~/assets/js/provider/getMessagesFromError.js';
 import Toolbar from '~/components/provider/Toolbar.vue';
 import InvalidateTokenForm from '~/components/provider/InvalidateTokenForm.vue';
@@ -9,6 +10,8 @@ definePageMeta({
     middleware: ['auth'],
     layout: 'provider',
 });
+
+const providerStore = useProviderStore();
 
 const handleInvalidateSuccess = () => {
     toast.info('Successfully invalidated tokens');
@@ -38,4 +41,7 @@ const handleChangeError = (e) => {
 
     <h3>Change Password</h3>
     <ChangePasswordForm @success="handleChangeSuccess" @error="handleChangeError" />
+
+    <h3>Plan</h3>
+    <pre>{{ providerStore.plan }}</pre>
 </template>

@@ -1,7 +1,9 @@
 import {useProviderStore} from 'store/provider.js';
+import {useProviderProjectsStore} from 'store/providerProjects.js';
 
 export default defineNuxtRouteMiddleware(async () => {
     const providerStore = useProviderStore();
+    const providerProjectsStore = useProviderProjectsStore();
 
     if (!providerStore.user) {
         // if we don't have a user in state, try to get the user with cookies
@@ -34,6 +36,10 @@ export default defineNuxtRouteMiddleware(async () => {
                 authCookie.value = null;
             }
         }
+    }
+
+    if (providerStore.authorized) {
+        providerProjectsStore.init();
     }
 });
 

@@ -2,20 +2,20 @@ import {defineStore} from 'pinia';
 
 // eslint-disable-next-line import/prefer-default-export
 export const useProviderStore = defineStore('providerStore', () => {
-    const userState = ref(null);
-    const tokenState = ref(null);
-    const tokenExpiryState = ref(0);
+    const user = ref(null);
+    const token = ref(null);
+    const tokenExpiry = ref(0);
 
-    const user = computed(() => userState.value);
-    const token = computed(() => tokenState.value);
-    const tokenExpiry = computed(() => tokenExpiryState.value);
-    const isTokenExpired = computed(() => new Date().getTime() > tokenExpiryState.value * 1000);
-    const authorized = computed(() => userState.value && !isTokenExpired.value);
-    const authHeaderValue = computed(() => `Bearer ${tokenState.value}`);
+    const isTokenExpired = computed(() => new Date().getTime() > tokenExpiry.value * 1000);
+    const authorized = computed(() => user.value && !isTokenExpired.value);
+    const authHeaderValue = computed(() => `Bearer ${token.value}`);
+    const plan = computed(() => user.value?.plan ?? {});
+    const limitProjects = computed(() => plan.value?.limitProjects ?? 0);
+    const limitUsersPerProject = computed(() => plan.value?.limitUsersPerProject ?? 0);
 
     function setUserWithToken({user: u, token: t}) {
-        userState.value = u;
-        tokenState.value = t;
+        user.value = u;
+        token.value = t;
 
         try {
             const atob = process.client
@@ -24,7 +24,7 @@ export const useProviderStore = defineStore('providerStore', () => {
 
             // read the jwt payload expiration
             const payload = JSON.parse(atob(t.split('.')[1]));
-            tokenExpiryState.value = payload.exp;
+            tokenExpiry.value = payload.exp;
 
             // set the cookie for the token to stay logged in
             const authCookie = useCookie(useRuntimeConfig().public.authCookieName, {
@@ -44,12 +44,12 @@ export const useProviderStore = defineStore('providerStore', () => {
 
     function setToken(t) {
         if (authorized.value) {
-            setUserWithToken({user: userState.value, token: t});
+            setUserWithToken({user: user.value, token: t});
         }
     }
 
     async function logout() {
-        if (tokenState.value) {
+        if (token.value) {
             const url = `${useRuntimeConfig().public.jwtApi}/auth/logout`;
             try {
                 await useFetch(url, {
@@ -63,9 +63,9 @@ export const useProviderStore = defineStore('providerStore', () => {
             }
         }
 
-        userState.value = null;
-        tokenState.value = null;
-        tokenExpiryState.value = 0;
+        user.value = null;
+        token.value = null;
+        tokenExpiry.value = 0;
         const authCookie = useCookie(useRuntimeConfig().public.authCookieName, {sameSite: true});
         authCookie.value = null;
     }
@@ -74,11 +74,14 @@ export const useProviderStore = defineStore('providerStore', () => {
         authorized,
         authHeaderValue,
         user,
+        plan,
         token,
         tokenExpiry,
         isTokenExpired,
         setUserWithToken,
         setToken,
         logout,
+        limitProjects,
+        limitUsersPerProject,
     };
 });
