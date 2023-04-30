@@ -7,7 +7,7 @@ import {useProviderProjectsStore} from 'store/providerProjects.js';
 import getMessagesFromError from '~/assets/js/provider/getMessagesFromError.js';
 import Toolbar from '~/components/provider/Toolbar.vue';
 import CreateProjectForm from '~/components/provider/CreateProjectForm.vue';
-import DeleteFormButton from '~/components/provider/DeleteFormButton.vue';
+import ProjectListView from '~/components/provider/ProjectListView.vue';
 
 const providerStore = useProviderStore();
 const providerProjectsStore = useProviderProjectsStore();
@@ -30,16 +30,19 @@ const handleCreateProjectError = (e) => {
 <template>
     <Toolbar class="mb-4" is-projects />
     <h1>Projects</h1>
-    <pre>{{ providerProjectsStore.projects }}</pre>
 
     <div
+        v-if="providerProjectsStore.projects.length === 0"
+        class="border border-gray-300 bg-gray-100 rounded shadow-lg p-4 text-center"
+    >
+        <p class="text-gray-600 italic">Create a project to get started</p>
+    </div>
+    <ProjectListView
         v-for="project in providerProjectsStore.projects"
         :key="project.id"
-        class="flex justify-between items-center"
-    >
-        <p>{{ project.name }}</p>
-        <DeleteFormButton :id="project.id" />
-    </div>
+        :project="project"
+        class="my-2"
+    />
 
     <h3>Create Project</h3>
     <p>
