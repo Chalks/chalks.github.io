@@ -7,9 +7,15 @@ export const useProviderProjectsStore = defineStore('providerProjectsStore', () 
 
     const projects = ref([]);
     const loading = ref(true);
+    const currentProjectId = ref(null);
 
     const canCreate = computed(() => providerStore.limitProjects > projects.value.length);
     const projectCount = computed(() => projects.value.length);
+    const projectMap = computed(() => projects.value.reduce((acc, project) => {
+        acc[project.id] = project;
+        return acc;
+    }, {}));
+    const currentProject = computed(() => projectMap.value?.[currentProjectId.value] ?? null);
 
     function addProject(project) {
         projects.value.push(project);
@@ -45,8 +51,11 @@ export const useProviderProjectsStore = defineStore('providerProjectsStore', () 
 
     return {
         canCreate,
+        currentProject,
+        currentProjectId,
         addProject,
         projectCount,
+        projectMap,
         projects,
         loading,
         init,

@@ -11,12 +11,13 @@ const updated = ref(new Date(props.project.updatedAt).toLocaleDateString());
 
 <template>
     <div class="shadow-md px-4 border rounded">
-        <p
+        <NuxtLink
             class="uppercase text-sm font-bold truncate"
             :title="props.project.name"
+            :to="`/provider/projects/${props.project.id}`"
         >
             {{ props.project.name }}
-        </p>
+        </NuxtLink>
 
         <ul class="list-disc">
             <li>Created <strong>{{ created }}</strong></li>
