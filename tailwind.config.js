@@ -15,7 +15,21 @@ module.exports = {
             padding: '2rem',
         },
 
-        extend: {},
+        extend: {
+            animation: {
+                wiggle: 'wiggle 3s ease-in-out infinite',
+            },
+            keyframes: {
+                wiggle: {
+                    '0%': {transform: 'rotate(0deg)'},
+                    '12%': {transform: 'rotate(-5deg)'},
+                    '24%': {transform: 'rotate(5deg)'},
+                    '36%': {transform: 'rotate(-5deg)'},
+                    '48%': {transform: 'rotate(0deg)'},
+                    '100%': {transform: 'rotate(0deg)'},
+                },
+            },
+        },
     },
 
     variants: {
