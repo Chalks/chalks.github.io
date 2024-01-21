@@ -1,4 +1,10 @@
 import {
+    describe,
+    expect,
+    it,
+} from 'vitest';
+
+import {
     isValidParsedNotation,
     isValidNotation,
     parseNotation,
@@ -32,7 +38,7 @@ describe('assets/js/notationValidator.js test validation function', () => {
         expect(isValidParsedNotation(parseObj)).toBe(false);
     });
 
-    it('isValidParsedNotation() rejects weird input ', () => {
+    it('isValidParsedNotation() rejects weird input', () => {
         let parseObj = parseNotation({notation: 'a5xb6+ e.p. (=)'});
         expect(isValidParsedNotation(parseObj)).toBe(true);
 
