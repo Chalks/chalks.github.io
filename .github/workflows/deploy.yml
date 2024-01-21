@@ -1,0 +1,37 @@
+on:
+  release:
+    types: [prereleased]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run generate
+      - name: Deploy to netlify branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch
+          git checkout netlify
+          rm -rf ./*
+          rm -rf .nuxt
+          mv .output/public/* .
+          rm -rf .output
+          git add .
+          git config --global user.email "publish-action@github.com"
+          git config --global user.name "publish action"
+          git commit -m "deploy: $GITHUB_REF_NAME"
+          git push origin netlify
+      - name: Set release to latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release edit ${GITHUB_REF_NAME} --prerelease=false --latest
+

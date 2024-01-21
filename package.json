@@ -10,11 +10,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "nuxt start",
-    "deploy": "rm -rf .output; npm run generate; npm run deploy:2",
-    "deploy:2": "cd .output/public; git init --initial-branch=main; git remote add origin git@github.com:Chalks/jdw.me.git; npm run deploy:3",
-    "deploy:3": "cd .output/public; git add .; git commit -m 'Initial commit'; npm run deploy:4",
-    "deploy:4": "cd .output/public; git push --force origin main:netlify"
+    "start": "nuxt start"
   },
   "repository": {
     "type": "git",
