@@ -76,7 +76,7 @@
 
 @font-face {
     font-family: 'Cousine';
-    src: url(~/public/Cousine-bold.ttf);
+    src: url('/public/Cousine-bold.ttf');
 }
 
 @media (hover: none) {
