@@ -1,17 +1,5 @@
-<script>
-import ContactForm from '~/components/ContactForm.vue';
-
-export default {
-    components: {
-        ContactForm,
-    },
-
-    methods: {
-        focusContact() {
-            this.$refs.contactForm.focus();
-        },
-    },
-};
+<script setup>
+seo();
 </script>
 <template>
     <div class="prose mx-auto my-12 px-4 prose-red">

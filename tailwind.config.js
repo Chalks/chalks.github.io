@@ -3,9 +3,8 @@ module.exports = {
         './src/components/**/*.{js,vue,ts}',
         './src/layouts/**/*.vue',
         './src/pages/**/*.vue',
-        // './plugins/**/*.{js,ts}',
-        // './nuxt.config.{js,ts}',
         './src/app.vue',
+        './src/error.vue',
     ],
 
     darkMode: 'class',

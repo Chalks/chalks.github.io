@@ -11,11 +11,9 @@ const email = ref('');
 const message = ref('');
 
 const onSubmit = () => { contactForm.value.submit(); };
-const focus = () => { emailField.value.focus(); };
 
 onMounted(() => {
     window.recaptchaJank = onSubmit;
-    focus();
 });
 </script>
 

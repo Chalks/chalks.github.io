@@ -1,7 +1,7 @@
 <script setup>
-useHead(() => ({
+seo({
     title: 'Felix - Jonathan Walters',
-}));
+});
 </script>
 
 <template>

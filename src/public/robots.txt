@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /josephine
+User-agent: *
+Disallow: /felix
+Sitemap: https://jdw.me/sitemap.xml

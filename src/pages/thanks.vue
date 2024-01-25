@@ -1,11 +1,7 @@
-<script>
-export default {
-    head() {
-        return {
-            title: 'Thanks - Jonathan Walters',
-        };
-    },
-};
+<script setup>
+seo({
+    title: 'Thanks - Jonathan Walters',
+});
 </script>
 
 <template>

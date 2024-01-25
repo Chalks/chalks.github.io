@@ -18,6 +18,7 @@ module.exports = {
         useFetch: 'readonly',
         $fetch: 'readonly',
         ref: 'readonly',
+        seo: 'readonly',
         computed: 'readonly',
         useHead: 'readonly',
         onMounted: 'readonly',
