@@ -7,8 +7,10 @@ export default ({
     imageHeight = 600,
     type = 'website',
 } = {}) => {
-    const url = `${window.location.origin}${window.location.pathname}`.replace(/\/$/, '');
-    const imageUrl = `${window.location.origin}${imagePath}`;
+    const route = useRoute();
+    const {origin} = useRuntimeConfig().public;
+    const url = `${origin}${route.path}`.replace(/\/$/, '');
+    const imageUrl = `${origin}${imagePath}`;
 
     useHead({
         meta: [

@@ -71,6 +71,9 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             authCookieName: 'auth',
+            origin: process.env.NODE_ENV === 'production'
+                ? 'https://jdw.me'
+                : 'http://localhost:3000',
             jwtApi: process.env.NODE_ENV === 'development'
                 ? 'http://localhost:3001'
                 : 'https://seahorse-app-w4qv4.ondigitalocean.app',
@@ -79,7 +82,7 @@ export default defineNuxtConfig({
 
     srcDir: 'src/',
 
-    ssr: false,
+    ssr: true,
 
     telemetry: false,
 });
