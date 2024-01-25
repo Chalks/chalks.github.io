@@ -6,6 +6,8 @@ export default ({
     imageType = 'image/png',
     imageWidth = 600,
     imageHeight = 600,
+    author = 'Jonathan Walters',
+    published,
     type = 'website',
 } = {}) => {
     const route = useRoute();
@@ -22,7 +24,7 @@ export default ({
         ],
     });
 
-    useSeoMeta({
+    const seoMeta = {
         title: pageTitle ?? title,
         colorScheme: 'only light',
         themeColor: '#60a5fa',
@@ -40,5 +42,14 @@ export default ({
         twitterTitle: title,
         twitterSite: '@chalksy',
         twitterImage: imageUrl,
-    });
+    };
+
+    if (type === 'article') {
+        seoMeta.articleAuthor = author;
+        if (published) {
+            seoMeta.articlePublishedTime = published;
+        }
+    }
+
+    useSeoMeta(seoMeta);
 };

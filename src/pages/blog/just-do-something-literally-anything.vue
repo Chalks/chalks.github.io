@@ -6,6 +6,8 @@ seo({
     imageType: 'image/jpeg',
     imageWidth: 800,
     imageHeight: 511,
+    type: 'article',
+    published: '2024-01-21',
 });
 
 // https://search.google.com/test/rich-results
