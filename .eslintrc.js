@@ -13,6 +13,7 @@ module.exports = {
         useCookie: 'readonly',
         useRoute: 'readonly',
         useRouter: 'readonly',
+        useSeoMeta: 'readonly',
         navigateTo: 'readonly',
         useFetch: 'readonly',
         $fetch: 'readonly',

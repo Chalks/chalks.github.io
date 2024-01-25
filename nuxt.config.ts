@@ -33,14 +33,6 @@ export default defineNuxtConfig({
             meta: [
                 {charset: 'utf-8'},
                 {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-                {hid: 'description', name: 'description', content: 'Jon has things to say.'},
-                {hid: 'og-title', property: 'og:title', content: 'Jonathan Walters'},
-                {hid: 'og-description', property: 'og:description', content: 'Jon has things to say.'},
-                {hid: 'og-type', property: 'og:type', content: 'website'},
-                {hid: 'og-site_name', property: 'og:og-site_name', content: 'Jonathan Walters'},
-                {hid: 'twitter-title', property: 'twitter:title', content: 'Jonathan Walters'},
-                {hid: 'twitter-description', property: 'twitter:description', content: 'Jon has things to say.'},
-                {hid: 'twitter-site', property: 'twitter:site', content: 'formcake.com'},
             ],
             link: [
                 {
