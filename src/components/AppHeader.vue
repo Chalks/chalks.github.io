@@ -37,11 +37,9 @@ import {Icon} from '@iconify/vue';
             <Icon icon="carbon:network-2" />
         </NuxtLink>
 
-        <!--
         <NuxtLink to="/blog" class="hover:text-blue-300 transition-colors">
             <Icon icon="fluent-emoji-high-contrast:writing-hand" />
         </NuxtLink>
-        -->
 
         <NuxtLink
             to="/"

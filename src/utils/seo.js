@@ -1,6 +1,7 @@
 export default ({
+    pageTitle,
     title = 'Jonathan Walters',
-    description = 'I\'m a software engineer who likes to make fun stuff online and this is my personal website. Here be dragons.',
+    description = 'I\'m a software engineer and I like to make fun stuff online. This is my personal website. Here be dragons.',
     imagePath = '/jdw-600x600.png',
     imageType = 'image/png',
     imageWidth = 600,
@@ -22,6 +23,7 @@ export default ({
     });
 
     useSeoMeta({
+        title: pageTitle ?? title,
         colorScheme: 'only light',
         themeColor: '#60a5fa',
         ogUrl: url,
@@ -37,5 +39,6 @@ export default ({
         twitterDescription: description,
         twitterTitle: title,
         twitterSite: '@chalksy',
+        twitterImage: imageUrl,
     });
 };
