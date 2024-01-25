@@ -5,7 +5,7 @@ import {Icon} from '@iconify/vue';
 <template>
     <div
         class="
-            relative
+            sticky
             md:fixed
             top-0
             bg-gray-700
@@ -36,6 +36,12 @@ import {Icon} from '@iconify/vue';
         <NuxtLink to="/links" class="hover:text-blue-300 transition-colors">
             <Icon icon="carbon:network-2" />
         </NuxtLink>
+
+        <!--
+        <NuxtLink to="/blog" class="hover:text-blue-300 transition-colors">
+            <Icon icon="fluent-emoji-high-contrast:writing-hand" />
+        </NuxtLink>
+        -->
 
         <NuxtLink
             to="/"

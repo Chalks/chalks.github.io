@@ -14,19 +14,52 @@ export default {
 };
 </script>
 <template>
-    <div class="prose mx-auto my-12 prose-red">
+    <div class="prose mx-auto my-12 px-4 prose-red">
         <h1>Hi, I'm Jonathan Walters</h1>
 
-        <p>I build teams that deliver fantastic product. When I'm not running a dev team I'm building frontend. This website is built entirely without any backend architecture using:</p>
+        <p>
+            I like making things. I'm always looking for like-minded people so
+            please reach out to me if you like making things too.
+        </p>
+
+        <p>
+            Professionally I'm building the frontend for
+            <a href="https://parrot.ai?utm_source=jdw.me">Parrot AI</a>. You can
+            check out my work there. It has been very neat to see how video
+            content embedded in documents changes the way you work on a team.
+        </p>
+
+        <p>
+            Personally I always have a few things cooking. You can check out
+            some of my projects below, I always appreciate the eyes!
+        </p>
 
         <ul>
-            <li><a href="https://vuejs.org/">Vue</a> - Just playing with different frameworks, branching out from React</li>
-            <li><a href="https://nuxtjs.org/">NuxtJS</a> - Something has to generate static files</li>
-            <li><a href="https://tailwindcss.com/">Tailwind CSS</a> - CSS is dead, long live Tailwind</li>
-            <li><a href="https://www.netlify.com/">Netlify</a> - Fast and free static hosting</li>
-            <li><a href="https://formcake.com">Formcake</a> - Easy form backend (I made this!)</li>
-            <li><a href="https://github.com/Chalks/chalks.github.io">This page's source code</a> - I made this too</li>
+            <li>
+                <a href="https://simplejwt.com?utm_source=jdw.me">SimpleJWT</a>
+                - An authentication/user service that is currently in closed beta
+            </li>
+
+            <li>
+                <a href="https://Formcake.com?utm_source=jdw.me">Formcake</a>
+                - A backend service for any HTML form. It's fast and easy to use
+            </li>
+
+            <!--
+            <li>
+                <a href="https://horsey.gg?utm_source=jdw.me">🐴 HORSEY.GG 🐴</a>
+                - A demo site for SimpleJWT, but it also helps you get better at
+                moving the knight!
+            </li>
+            -->
+
+            <li>
+                <a href="https://github.com/Chalks/chalks.github.io">jdw.me source</a>
+                - Written with Vue, NuxtJS, TailwindCSS and hosted on Netlify
+            </li>
         </ul>
+
+        <hr />
 
         <ContactForm ref="contactForm" />
     </div>
