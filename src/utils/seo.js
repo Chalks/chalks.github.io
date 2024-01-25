@@ -1,5 +1,6 @@
 export default ({
     pageTitle,
+    telemetry = true,
     title = 'Jonathan Walters',
     description = 'I\'m a software engineer and I like to make fun stuff online. This is my personal website. Here be dragons.',
     imagePath = '/jdw-600x600.png',
@@ -15,6 +16,14 @@ export default ({
     const url = `${origin}${route.path}`.replace(/\/$/, '');
     const imageUrl = `${origin}${imagePath}`;
 
+    const script = [];
+    if (telemetry) {
+        script.push({
+            'src': 'https://cdn.telemetrydeck.com/websdk/telemetrydeck.min.js',
+            'data-app-id': useRuntimeConfig().public.telemetryAppId,
+        });
+    }
+
     useHead({
         meta: [
             {hid: 'description', name: 'description', content: description},
@@ -22,6 +31,7 @@ export default ({
         link: [
             {rel: 'canonical', href: url},
         ],
+        script,
     });
 
     const seoMeta = {

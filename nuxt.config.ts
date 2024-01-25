@@ -77,6 +77,7 @@ export default defineNuxtConfig({
             jwtApi: process.env.NODE_ENV === 'development'
                 ? 'http://localhost:3001'
                 : 'https://seahorse-app-w4qv4.ondigitalocean.app',
+            telemetryAppId: '2CF2D5B7-8DBC-45A7-A2BE-56EFE6227F08',
         },
     },
 
