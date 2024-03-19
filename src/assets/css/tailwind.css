@@ -6,6 +6,15 @@
     .max-w-side {
         max-width: calc(50% - 32.5ch);
     }
+
+    .prose-tile {
+        width: 11ch;
+        height: 11ch;
+    }
+
+    .gap-tile {
+        @apply gap-[2.5ch];
+    }
 }
 
 @layer base {
