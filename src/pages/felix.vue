@@ -47,6 +47,13 @@ seo({
             </a>
 
             <a
+                href="https://neal.fun/infinite-craft/"
+                class="rounded-lg border bg-white prose-tile flex items-center justify-center p-1 shadow hover:shadow-lg group"
+            >
+                <img src="/kiddos/infinite-craft.png" class="object-contain group-hover:animate-wiggle" />
+            </a>
+
+            <a
                 href="steam://steam"
                 class="rounded-lg border bg-white prose-tile flex items-center justify-center p-1 shadow hover:shadow-lg group"
             >
