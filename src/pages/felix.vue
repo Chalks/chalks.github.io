@@ -59,7 +59,19 @@ seo({
             >
                 <img src="/kiddos/steam.png" class="object-contain group-hover:animate-wiggle" />
             </a>
+
+            <a
+                href="https://chess.com"
+                class="rounded-lg border bg-white prose-tile flex items-center justify-center p-1 shadow hover:shadow-lg group relative"
+            >
+                <img src="/kiddos/chesswhite.webp" class="group-hover:opacity-0 object-contain transition-opacity group-hover:animate-wiggle" />
+                <img src="/kiddos/chess.webp" class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity object-contain group-hover:animate-wiggle" />
+            </a>
         </div>
+    </div>
+
+    <div class="fixed right-2 bottom-2">
+        <p class="text-gray-400 text-sm">Version 0.5.1</p>
     </div>
 </template>
 
