@@ -87,6 +87,22 @@ seo({
             >
                 <img src="/kiddos/pixels.png" class="object-contain group-hover:animate-wiggle" />
             </a>
+
+            <a
+                href="https://crazygames.com/"
+                class="group"
+                target="_blank"
+            >
+                <img src="/kiddos/crazygames.svg" class="p-2 object-contain group-hover:animate-wiggle" />
+            </a>
+
+            <a
+                href="https://me.meshcapade.com/editor"
+                class="group"
+                target="_blank"
+            >
+                <img src="/kiddos/meshcapade.png" class="mix-blend-difference object-contain group-hover:animate-wiggle" />
+            </a>
         </div>
     </div>
 
