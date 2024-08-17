@@ -49,6 +49,7 @@ seo();
 
         <hr />
 
-        <ContactForm ref="contactForm" />
+        <h3>Contact me</h3>
+        <a href="mailto:jon@🔥.kz">jon@🔥.kz</a>, thoughtfully provided by <a href="https://mailoji.com/" target="_blank">Mailoji</a>
     </div>
 </template>
