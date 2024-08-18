@@ -2,12 +2,12 @@
 seo({
     title: 'Startups Are Not Lottery Tickets',
     description: 'A side project won\'t become a unicorn by accident. Stop imagining yours will.',
-    imagePath: '/blog/death-of-formcake.jpg',
-    imageType: 'image/jpeg',
-    imageWidth: 800,
-    imageHeight: 511,
+    imagePath: '/blog/is-this-a-startup.png',
+    imageType: 'image/png',
+    imageWidth: 1000,
+    imageHeight: 563,
     type: 'article',
-    published: '2024-01-21',
+    published: '2024-08-18',
 });
 
 // https://search.google.com/test/rich-results
@@ -83,7 +83,7 @@ seo({
             So far… yes.
         </p>
 
-        <h3>A Case Study: Formcake</h3>
+        <h3 id="formcake">A Case Study: Formcake</h3>
 
         <p>
             Formcake was a platform for handling POSTs from html forms. Its
@@ -174,7 +174,7 @@ seo({
             turn into a lottery ticket, and I am not making something that might
             one day be worth a billion dollars. I'm not! I want to make useful
             tools that solve problems for real people while making a few bucks.
-            I don't need millions I just want vacation money, you know?
+            I don't need millions, I just want vacation money, you know?
         </p>
 
         <p>

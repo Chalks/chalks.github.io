@@ -10,27 +10,28 @@ seo();
 
         <hr />
 
-        <h3 class="peer inline-block">
-            <NuxtLink to="/blog/just-do-something-literally-anything">
-                JUST DO SOMETHING LITERALLY ANYTHING
-            </NuxtLink>
-        </h3>
-
-        <div class="flex gap-4 items-stretch not-prose rounded-l-xl overflow-hidden peer-hover:rounded-l-none transition-all">
-            <img src="/blog/bears-and-cars.jpg" class="object-cover max-w-[20%]" />
-            <p>
-                A note to myself. If you're also trying to make things and
-                feeling overwhelmed, you might find it encouraging too. Please
-                ignore the somewhat combative title.
-            </p>
-        </div>
-
-        <div class="flex items-center not-prose mt-[0.6rem]">
-            <p class="text-xs">
-                <strong>January 21, 2024</strong>
-            </p>
-        </div>
+        <BlogEntry
+            blog-path="/blog/startups-are-not-lottery-tickets"
+            image-path="/blog/is-this-a-startup.png"
+            title="Startups Are Not Lottery Tickets"
+            date="August 18, 2024"
+        >
+            In which I talk about why my side projects keep falling apart.
+            TL;DR I'm an idiot and keep imagining that side projects will
+            magically become unicorns.
+        </BlogEntry>
 
         <hr />
+
+        <BlogEntry
+            blog-path="/blog/just-do-something-literally-anything"
+            image-path="/blog/bears-and-cars.jpg"
+            title="JUST DO SOMETHING LITERALLY ANYTHING"
+            date="January 21, 2024"
+        >
+            A note to myself. If you're also trying to make things and feeling
+            overwhelmed, you might find it encouraging too. Please ignore the
+            somewhat combative title.
+        </BlogEntry>
     </div>
 </template>
