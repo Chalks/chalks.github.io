@@ -28,10 +28,12 @@ seo();
                 - An authentication/user service that is currently in closed beta
             </li>
 
+            <!--
             <li>
                 <a href="https://Formcake.com?utm_source=jdw.me">Formcake</a>
                 - A backend service for any HTML form. It's fast and easy to use
             </li>
+            -->
 
             <!--
             <li>

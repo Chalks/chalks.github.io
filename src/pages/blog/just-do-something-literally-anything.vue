@@ -15,6 +15,9 @@ seo({
 <template>
     <article class="prose prose-red mx-auto py-12 px-4">
         <h1>JUST DO SOMETHING LITERALLY ANYTHING</h1>
+
+        <p class="text-xs">January 21, 2024</p>
+
         <p>
             It's 5pm on a Sunday and I've knocked out a ton of tech debt on my
             personal projects, written a blog post, updated my side projects,
