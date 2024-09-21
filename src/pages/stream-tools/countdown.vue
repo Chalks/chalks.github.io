@@ -71,7 +71,7 @@ if (autoStart) {
         <p v-if="timer > 0">{{ output }}</p>
         <p v-else>{{ label ?? 'TIME\'S UP' }}</p>
     </div>
-    <div class="fixed top-0 right-0" v-if="controls">
+    <div v-if="controls" class="fixed top-0 right-0">
         <div @click="start">start</div>
         <div @click="stop">stop</div>
         <div @click="reset">reset</div>
