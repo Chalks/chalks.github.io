@@ -9,7 +9,7 @@ const route = useRoute();
 const {
     width = 400,
     height = 200,
-    autoStart = true,
+    autoStart = false,
     fontSize,
     fontColor = '000000',
     backgroundColor = '00ff00',
